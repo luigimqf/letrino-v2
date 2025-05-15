@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { GameState } from "../types/game";
 
 const initialGameState: GameState = {
   attempts: [],

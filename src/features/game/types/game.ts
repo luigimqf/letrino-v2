@@ -1,13 +1,13 @@
-type LetterStatus = 'correct' | 'warning' | 'incorrect';
+export type LetterStatus = 'correct' | 'warning' | 'incorrect';
 
-type LetterCell = {
+export type LetterCell = {
   letter: string;
   status: LetterStatus;
 }
 
-type Attempt = LetterCell[];
+export type Attempt = LetterCell[];
 
-type GameState = {
+export type GameState = {
   attempts: Attempt[];
   currentAttemptIndex: number;
   targetWord: string | null;
