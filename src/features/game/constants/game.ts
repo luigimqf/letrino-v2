@@ -6,3 +6,4 @@
 
   export const GRID_ROWS = 6;
   export const LETTERS_PER_ROW = 5;
+  export const MAX_ATTEMPTS = 6;

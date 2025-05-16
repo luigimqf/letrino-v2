@@ -1,8 +1,12 @@
-export type LetterStatus = 'correct' | 'warning' | 'incorrect';
+export enum ELetterStatus {
+  CORRECT = "correct",
+  INCORRECT = 'incorrect',
+  WARNING = 'warning'
+};
 
 export type LetterCell = {
   letter: string;
-  status: LetterStatus;
+  status: ELetterStatus;
 }
 
 export type Attempt = LetterCell[];
