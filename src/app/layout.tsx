@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`dark ${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-100 antialiased`}
+        className={`dark ${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-200 antialiased`}
       >
         <ReduxProvider>
           {children}
