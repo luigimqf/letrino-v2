@@ -18,9 +18,7 @@ export const Row = ({children,disabled,maxLength, value, onChange, ...props}: Ro
 
   return (
     <InputOTP ref={inputRef} disabled={disabled} maxLength={maxLength} value={value} onChange={onChange} {...props}>
-      <InputOTPGroup className="gap-0.5">
-        {children}
-      </InputOTPGroup>
+      {children}
     </InputOTP>
   )
 }

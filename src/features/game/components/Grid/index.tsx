@@ -7,32 +7,44 @@ import { RootState } from "@/shared/store";
 import {GRID_ROWS, LETTERS_PER_ROW} from '@/features/game/constants/game'
 import { validateAttempt } from "../../store/gameSlice";
 import React from "react";
+import { REGEXP_ONLY_CHARS } from "input-otp";
 
 export const Grid = () => {
-  const gameState = useSelector((state: RootState) => state.game)
+  const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
   const [guess, setGuess] = React.useState<string>('');
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(guess)
     if(guess?.length < 5) return;
 
     if((event.key === 'Enter')) {
       dispatch(validateAttempt(guess))
     }
   }
-
+  
   return (
-    <div className="w-[250px] flex flex-col justify-start items-center gap-8">
+    <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
       {
         [...Array(GRID_ROWS)].map((_, rowIndex) => {
-          const isActiveRow = gameState.currentAttemptIndex === rowIndex;
+          const isActiveRow = currentAttemptIndex === rowIndex;
+
           return  (
-          <Row onKeyDown={onKeyDown} onChange={(value) => setGuess(value)} autoComplete="off" disabled={!isActiveRow || gameState.isGameOver} key={`row-${rowIndex}`} maxLength={LETTERS_PER_ROW}>
+          <Row 
+            key={`row-${rowIndex}`}
+            pattern={REGEXP_ONLY_CHARS} 
+            onKeyDown={onKeyDown} 
+            onChange={(value) => setGuess(value.toLowerCase())} 
+            autoComplete="off" 
+            disabled={!isActiveRow || isGameOver} 
+            maxLength={LETTERS_PER_ROW}
+          >
             {
-              [...Array(LETTERS_PER_ROW)].map((_,letterIndex) => (
-                <Letter key={`letter-${letterIndex}`} index={letterIndex}/>
-              ))
+              [...Array(LETTERS_PER_ROW)].map((_,letterIndex) => {
+                const letterStatus = attempts?.[rowIndex]?.[letterIndex].status;
+                return (
+                <Letter key={`letter-${letterIndex}`} index={letterIndex} status={letterStatus}/>
+              )
+              })
             }
           </Row>
         )
