@@ -1,12 +1,12 @@
 "use-client"
 
-import { InputOTP, InputOTPGroup } from "@/shared/components/ui/input-otp";
+import { InputOTP } from "@/shared/components/ui/input-otp";
 import { OTPInput } from "input-otp";
 import React from "react";
 
-type RowProps = Omit<React.ComponentProps<typeof OTPInput>, "render">;
+type AttemptProps = Omit<React.ComponentProps<typeof OTPInput>, "render">;
 
-export const Row = ({children,disabled,maxLength, value, onChange, ...props}: RowProps) => {
+export const Attempt = ({children,disabled,maxLength, value, onChange, ...props}: AttemptProps) => {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 

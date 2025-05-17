@@ -2,22 +2,23 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { Letter } from "./Letter";
-import { Row } from "./Row";
 import { RootState } from "@/shared/store";
-import {GRID_ROWS, LETTERS_PER_ROW} from '@/features/game/constants/game'
-import { validateAttempt } from "../../store/gameSlice";
+import {ENTER_KEY, GRID_ATTEMPTS, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants/game'
+import { setAttempt, validateAttempt } from "../../store/gameSlice";
 import React from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
+import { Attempt } from "./Attempt";
 
 export const Grid = () => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
-  const [guess, setGuess] = React.useState<string>('');
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(guess?.length < 5) return;
+    if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;
 
-    if((event.key === 'Enter')) {
+    const guess = attempts?.[currentAttemptIndex]?.reduce((acc, curr) => acc + curr.letter, '');
+
+    if((event.key === ENTER_KEY)) {
       dispatch(validateAttempt(guess))
     }
   }
@@ -25,28 +26,29 @@ export const Grid = () => {
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
       {
-        [...Array(GRID_ROWS)].map((_, rowIndex) => {
-          const isActiveRow = currentAttemptIndex === rowIndex;
-
+        [...Array(GRID_ATTEMPTS)].map((_, attemptIndex) => {
+          const isActiveAttempt = currentAttemptIndex === attemptIndex;
+          const value = attempts?.[attemptIndex]?.reduce((acc, curr) => {return acc + curr.letter},"");
           return  (
-          <Row 
-            key={`row-${rowIndex}`}
+          <Attempt 
+            key={`attempt-${attemptIndex}`}
             pattern={REGEXP_ONLY_CHARS} 
-            onKeyDown={onKeyDown} 
-            onChange={(value) => setGuess(value.toLowerCase())} 
+            onKeyDown={onKeyDown}
+            value={value}
+            onChange={(value) => dispatch(setAttempt({guess: value, attemptIndex: attemptIndex}))} 
             autoComplete="off" 
-            disabled={!isActiveRow || isGameOver} 
-            maxLength={LETTERS_PER_ROW}
+            disabled={!isActiveAttempt || isGameOver} 
+            maxLength={LETTERS_PER_ATTEMPT}
           >
             {
-              [...Array(LETTERS_PER_ROW)].map((_,letterIndex) => {
-                const letterStatus = attempts?.[rowIndex]?.[letterIndex].status;
+              [...Array(LETTERS_PER_ATTEMPT)].map((_,letterIndex) => {
+                const letterStatus = attempts?.[attemptIndex]?.[letterIndex]?.status;
                 return (
                 <Letter key={`letter-${letterIndex}`} index={letterIndex} status={letterStatus}/>
               )
               })
             }
-          </Row>
+          </Attempt>
         )
         })
       }

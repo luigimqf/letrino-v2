@@ -6,7 +6,7 @@ export enum ELetterStatus {
 
 export type LetterCell = {
   letter: string;
-  status: ELetterStatus;
+  status?: ELetterStatus;
 }
 
 export type Attempt = LetterCell[];

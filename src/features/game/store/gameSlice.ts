@@ -87,7 +87,6 @@ const gameSlice = createSlice({
     setKeyboardBackspace: (state) => {
       const attempt = state.attempts?.[state.currentAttemptIndex];
 
-      console.log('entrei')
       if(!attempt || attempt.length <= 0) return;
 
       state.attempts[state.currentAttemptIndex] = attempt.slice(0, attempt.length - 1)
