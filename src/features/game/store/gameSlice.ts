@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Attempt, ELetterStatus, GameState } from "../types/game";
-import { MAX_ATTEMPTS } from "../constants/game";
+import { LETTERS_PER_ATTEMPT, MAX_ATTEMPTS } from "../constants/game";
 
 const initialGameState: GameState = {
   attempts: [],
@@ -10,21 +10,6 @@ const initialGameState: GameState = {
   isWin: false,
 };
 
-function generateAttempt(guess: string, target: string): Attempt {
-  const guessLetters = guess.split('');
-  const targetLetters = target.split('');
-
-  return guessLetters.map((letter, index) => {
-    if (letter === targetLetters[index]) {
-      return { letter, status: ELetterStatus.CORRECT };
-    } else if (targetLetters.includes(letter)) {
-      return { letter, status: ELetterStatus.WARNING };
-    } else {
-      return { letter, status: ELetterStatus.INCORRECT };
-    }
-  });
-}
-
 const gameSlice = createSlice({
   name: 'game',
   initialState: initialGameState,
@@ -33,11 +18,33 @@ const gameSlice = createSlice({
       const guess = action.payload.toLowerCase();
       const target = "pavio"
 
-      if (!guess || !target || state.isGameOver) return;
+      if (!guess || guess.length < LETTERS_PER_ATTEMPT || !target || state.isGameOver) return;
 
-      const newAttempt = generateAttempt(guess, target);
+      const guessLetters = guess.split('');
+      const targetLetters = target.split('');
 
-      state.attempts.push(newAttempt);
+      const attemptWithLetterStatus = guessLetters.map((letter, index) => {
+        if(targetLetters[index] === guessLetters[index]) {
+          return {
+            letter,
+            status: ELetterStatus.CORRECT
+          }
+        }
+        if(targetLetters.includes(letter)) {
+          return {
+            letter,
+            status: ELetterStatus.WARNING
+          }
+        }
+
+        return {
+          letter,
+          status: ELetterStatus.INCORRECT
+        }
+
+      })
+
+      state.attempts[state.currentAttemptIndex] = attemptWithLetterStatus;
       state.currentAttemptIndex += 1;
 
       if (guess === target) {
@@ -53,11 +60,43 @@ const gameSlice = createSlice({
       state.targetWord = action.payload.toLowerCase();
     },
 
+    setAttempt: (state, action: PayloadAction<{guess:string, attemptIndex:number}>) => {
+      const {attemptIndex,guess} = action.payload
+      const letters = guess?.split('');
+      const attempts: Attempt = letters.map(letter => ({
+        letter,
+      }))
+
+      state.attempts[attemptIndex] = attempts;
+    },
+
+    setKeyboardInput: (state, action: PayloadAction<string>) => {
+      const attempt = state.attempts?.[state.currentAttemptIndex] ?? [];
+
+      if(attempt.length >= LETTERS_PER_ATTEMPT) return;
+      
+      const newAttempt = [
+        ...attempt,
+        {
+          letter: action.payload
+        }
+      ];
+      state.attempts[state.currentAttemptIndex] = newAttempt;
+    },
+    
+    setKeyboardBackspace: (state) => {
+      const attempt = state.attempts?.[state.currentAttemptIndex];
+
+      console.log('entrei')
+      if(!attempt || attempt.length <= 0) return;
+
+      state.attempts[state.currentAttemptIndex] = attempt.slice(0, attempt.length - 1)
+    },
     resetGame: (state) => {
       Object.assign(state, initialGameState);
     },
   }
 });
 
-export const { validateAttempt, setTargetWord, resetGame } = gameSlice.actions;
+export const { validateAttempt, setTargetWord,setAttempt,setKeyboardInput, setKeyboardBackspace, resetGame } = gameSlice.actions;
 export default gameSlice.reducer;
