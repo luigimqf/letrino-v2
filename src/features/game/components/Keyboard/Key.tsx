@@ -10,9 +10,9 @@ type KeyProps = ChildrenProp & ComponentProps<"button"> & {
   size?: 'xs';
 }
 
-export const Key = ({children,status,size, ...props}: KeyProps) => {
+export const Key = ({children,status,size,disabled, ...props}: KeyProps) => {
     const keyVariants = tv({
-      base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-300',
+      base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-300 disabled:opacity-50 disabled:cursor-default',
       variants: {
         color: {
           correct: 'bg-success',
@@ -26,7 +26,7 @@ export const Key = ({children,status,size, ...props}: KeyProps) => {
       }
     })
   return (
-    <button className={keyVariants({color: status, size})} {...props}>
+    <button disabled={disabled} className={keyVariants({color: status, size})} {...props}>
       {children}
     </button>
   )

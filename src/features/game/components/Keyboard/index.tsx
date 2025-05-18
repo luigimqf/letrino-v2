@@ -1,13 +1,15 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux"
-import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS } from "../../constants/game"
+import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../constants/game"
 import { Key } from "./Key"
 import { RootState } from "@/shared/store"
 import { setKeyboardBackspace, setKeyboardInput, validateAttempt } from "../../store/gameSlice"
+import { LetterCell } from "../../types/game"
+import { useCallback } from "react"
 
 export const Keyboard = () => {
-  const {attempts,currentAttemptIndex} = useSelector((state: RootState) => state.game);
+  const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
 
   const onAction = (key: string) => {
@@ -21,21 +23,40 @@ export const Keyboard = () => {
 
   }
 
+  const playedLetters = useCallback(() => {
+    console.log('callback')
+    const flat = attempts.flat();
+    const map = new Map<string, LetterCell>();
+
+    for(const obj of flat) {
+      const existing = map.get(obj.letter);
+
+      if(!existing || STATUS_PRIORITY[obj.status!] > STATUS_PRIORITY[existing.status!]) {
+        map.set(obj.letter, obj)
+      }
+    }
+
+    return Array.from(map.values());
+  }, [currentAttemptIndex])
+
   return (
     <div className="flex flex-col items-center gap-2">
       {KEYBOARD_KEYS.map((row, rowIndex) => (
         <div key={rowIndex} className="flex gap-2">
           {row.map((key) => {
             const isActionKey = key === ENTER_KEY || key === BACKSPACE_KEY;
-            const keyRender = key === BACKSPACE_KEY ? '←' : key;
+            const keyToRender = key === BACKSPACE_KEY ? '←' : key;
+            const keyStatus = playedLetters()?.find(k => k.letter.toLowerCase() === key.toLowerCase())?.status;
 
             return (
-            <Key 
+            <Key
               onClick={() => isActionKey ? onAction(key) : dispatch(setKeyboardInput(key.toLowerCase()))} 
-              key={key} 
+              key={key}
+              disabled={isGameOver}
+              status={keyStatus}
               size={isActionKey ? "xs" : undefined}
             >
-              {keyRender}
+              {keyToRender}
             </Key>
           )
           })}
