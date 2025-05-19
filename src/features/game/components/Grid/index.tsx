@@ -8,10 +8,12 @@ import { setAttempt, validateAttempt } from "../../store/gameSlice";
 import React from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
+import { useWordQuery } from "../../services/queries";
 
 export const Grid = () => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
+  const {data} = useWordQuery();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;

@@ -24,7 +24,6 @@ export const Keyboard = () => {
   }
 
   const playedLetters = useCallback(() => {
-    console.log('callback')
     const flat = attempts.flat();
     const map = new Map<string, LetterCell>();
 

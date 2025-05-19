@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fredoka } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/shared/providers/ReduxProvider";
+import { QueryProvider } from "@/shared/providers/QueryProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,9 +35,11 @@ export default function RootLayout({
       <body
         className={`dark ${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-200 antialiased`}
       >
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        <QueryProvider>
+          <ReduxProvider>
+            {children}
+          </ReduxProvider>
+        </QueryProvider>
       </body>
     </html>
   );
