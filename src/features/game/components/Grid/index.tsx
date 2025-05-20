@@ -4,16 +4,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { Letter } from "./Letter";
 import { RootState } from "@/shared/store";
 import {ENTER_KEY, GRID_ATTEMPTS, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants/game'
-import { setAttempt, validateAttempt } from "../../store/gameSlice";
-import React from "react";
+import { setAttempt, setTargetWord, validateAttempt } from "@/features/game/store/gameSlice";
+import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
-import { useWordQuery } from "../../services/queries";
+import { useWordQuery } from "@/features/game/services/queries";
 
 export const Grid = () => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
-  const {data} = useWordQuery();
+  const {data: response, isLoading, isSuccess} = useWordQuery();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;
@@ -24,7 +24,13 @@ export const Grid = () => {
       dispatch(validateAttempt(guess))
     }
   }
-  
+
+  useEffect(() => {
+    if(isSuccess && response?.data) {
+      dispatch(setTargetWord(response.data))
+    }
+  },[isSuccess, response, dispatch]);
+
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
       {
@@ -39,7 +45,7 @@ export const Grid = () => {
             value={value}
             onChange={(value) => dispatch(setAttempt({guess: value, attemptIndex: attemptIndex}))} 
             autoComplete="off" 
-            disabled={!isActiveAttempt || isGameOver} 
+            disabled={!isActiveAttempt || isGameOver || isLoading} 
             maxLength={LETTERS_PER_ATTEMPT}
           >
             {

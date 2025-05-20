@@ -1,4 +1,6 @@
+import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
 import { useQuery } from "@tanstack/react-query";
+import { TargetWord } from "../types/game";
 
 async function getWord() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/word`,{
@@ -16,7 +18,7 @@ async function getWord() {
 }
 
 export const useWordQuery = () => {
-  return useQuery({
+  return useQuery<PromiseSuccess<TargetWord>, PromiseFailed>({
   queryKey: ["word"],
   queryFn: getWord,
 })

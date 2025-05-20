@@ -1,22 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attempt, ELetterStatus, GameState } from "../types/game";
-import { LETTERS_PER_ATTEMPT, MAX_ATTEMPTS } from "../constants/game";
-
-const initialGameState: GameState = {
-  attempts: [],
-  currentAttemptIndex: 0,
-  targetWord: null,
-  isGameOver: false,
-  isWin: false,
-};
+import { Attempt, ELetterStatus, GameState, TargetWord } from "../types/game";
+import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, MAX_ATTEMPTS } from "../constants/game";
 
 const gameSlice = createSlice({
   name: 'game',
-  initialState: initialGameState,
+  initialState: INITIAL_GAME_STATE,
   reducers: {
     validateAttempt: (state, action: PayloadAction<string>) => {
       const guess = action.payload.toLowerCase();
-      const target = "pavio"
+      const target = state.targetWord?.word
 
       if (!guess || guess.length < LETTERS_PER_ATTEMPT || !target || state.isGameOver) return;
 
@@ -56,8 +48,12 @@ const gameSlice = createSlice({
       }
     },
 
-    setTargetWord: (state, action: PayloadAction<string>) => {
-      state.targetWord = action.payload.toLowerCase();
+    setTargetWord: (state, action: PayloadAction<TargetWord>) => {
+      const {word,isGolden} = action.payload;
+      state.targetWord = {
+        word: word.toLowerCase(),
+        isGolden
+      }
     },
 
     setAttempt: (state, action: PayloadAction<{guess:string, attemptIndex:number}>) => {
@@ -92,7 +88,7 @@ const gameSlice = createSlice({
       state.attempts[state.currentAttemptIndex] = attempt.slice(0, attempt.length - 1)
     },
     resetGame: (state) => {
-      Object.assign(state, initialGameState);
+      Object.assign(state, INITIAL_GAME_STATE);
     },
   }
 });

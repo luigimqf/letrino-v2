@@ -14,7 +14,12 @@ export type Attempt = LetterCell[];
 export type GameState = {
   attempts: Attempt[];
   currentAttemptIndex: number;
-  targetWord: string | null;
+  targetWord: TargetWord | null;
   isGameOver: boolean;
   isWin: boolean;
+}
+
+export type TargetWord = {
+  word: string;
+  isGolden: boolean;
 }
