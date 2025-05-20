@@ -1,9 +1,8 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux";
-import { Letter } from "./Letter";
 import { RootState } from "@/shared/store";
-import {ENTER_KEY, GRID_ATTEMPTS, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants/game'
+import {ENTER_KEY, ATTEMPTS_PER_GRID, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants/game'
 import { setAttempt, setTargetWord, validateAttempt } from "@/features/game/store/gameSlice";
 import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
@@ -34,11 +33,13 @@ export const Grid = () => {
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
       {
-        [...Array(GRID_ATTEMPTS)].map((_, attemptIndex) => {
+        [...Array(ATTEMPTS_PER_GRID)].map((_, attemptIndex) => {
           const isActiveAttempt = currentAttemptIndex === attemptIndex;
-          const value = attempts?.[attemptIndex]?.reduce((acc, curr) => {return acc + curr.letter},"");
+          const letters = attempts?.[attemptIndex];
+          const value = letters?.reduce((acc, curr) => {return acc + curr.letter},"");
           return  (
-          <Attempt 
+          <Attempt
+            letters={letters}
             key={`attempt-${attemptIndex}`}
             pattern={REGEXP_ONLY_CHARS} 
             onKeyDown={onKeyDown}
@@ -47,16 +48,7 @@ export const Grid = () => {
             autoComplete="off" 
             disabled={!isActiveAttempt || isGameOver || isLoading} 
             maxLength={LETTERS_PER_ATTEMPT}
-          >
-            {
-              [...Array(LETTERS_PER_ATTEMPT)].map((_,letterIndex) => {
-                const letterStatus = attempts?.[attemptIndex]?.[letterIndex]?.status;
-                return (
-                <Letter key={`letter-${letterIndex}`} index={letterIndex} status={letterStatus}/>
-              )
-              })
-            }
-          </Attempt>
+          />
         )
         })
       }
