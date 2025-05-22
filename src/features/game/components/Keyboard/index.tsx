@@ -12,13 +12,9 @@ import { useIsFetching } from "@tanstack/react-query"
 export const Keyboard = () => {
   const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
-  const isFetchingWord = useIsFetching({
-    queryKey: ["word"]
-  });
   
   const onAction = (key: string, attempt: Attempt) => {
-
-    const guess = attempts?.[currentAttemptIndex]?.reduce((acc, curr) => acc + curr.letter, "");
+    const guess = attempt?.reduce((acc, curr) => acc + curr.letter, "");
 
     if(!guess) return;
 
@@ -55,7 +51,7 @@ export const Keyboard = () => {
             <Key
               onClick={() => isActionKey ? onAction(key, attempts?.[currentAttemptIndex]) : dispatch(setKeyboardInput(key.toLowerCase()))} 
               key={key}
-              disabled={isGameOver || isFetchingWord > 0}
+              disabled={isGameOver}
               status={keyStatus}
               size={isActionKey ? "xs" : undefined}
             >

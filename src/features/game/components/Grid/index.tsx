@@ -7,14 +7,11 @@ import { setAttempt, setTargetWord, validateAttempt } from "@/features/game/stor
 import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
-import { useWordQuery } from "@/features/game/services/queries";
+import { TargetWord } from "../../types/game";
 
-export const Grid = () => {
+export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
-  const {data: response, isLoading, isSuccess} = useWordQuery();
-
-  console.log(attempts, "grid")
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;
@@ -27,10 +24,10 @@ export const Grid = () => {
   }
 
   useEffect(() => {
-    if(isSuccess && response?.data) {
-      dispatch(setTargetWord(response.data))
+    if(targetWord.word) {
+      dispatch(setTargetWord(targetWord))
     }
-  },[isSuccess, response, dispatch]);
+  },[targetWord, dispatch]);
 
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
@@ -48,7 +45,7 @@ export const Grid = () => {
             value={value}
             onChange={(value) => dispatch(setAttempt({guess: value, attemptIndex: attemptIndex}))} 
             autoComplete="off" 
-            disabled={!isActiveAttempt || isGameOver || isLoading} 
+            disabled={!isActiveAttempt || isGameOver} 
             maxLength={LETTERS_PER_ATTEMPT}
           />
         )
