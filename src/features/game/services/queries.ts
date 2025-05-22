@@ -21,5 +21,6 @@ export const useWordQuery = () => {
   return useQuery<PromiseSuccess<TargetWord>, PromiseFailed>({
   queryKey: ["word"],
   queryFn: getWord,
+  refetchOnWindowFocus: false
 })
 }

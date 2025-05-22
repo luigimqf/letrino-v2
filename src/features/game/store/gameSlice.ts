@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Attempt, ELetterStatus, GameState, TargetWord } from "../types/game";
-import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, MAX_ATTEMPTS } from "../constants/game";
+import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants/game";
 
 const gameSlice = createSlice({
   name: 'game',
@@ -42,7 +42,7 @@ const gameSlice = createSlice({
       if (guess === target) {
         state.isWin = true;
         state.isGameOver = true;
-      } else if (state.attempts.length >= MAX_ATTEMPTS) {
+      } else if (state.attempts.length >= ATTEMPTS_PER_GRID) {
         state.isWin = false;
         state.isGameOver = true;
       }
@@ -77,6 +77,9 @@ const gameSlice = createSlice({
           letter: action.payload
         }
       ];
+
+      console.log({newAttempt})
+
       state.attempts[state.currentAttemptIndex] = newAttempt;
     },
     

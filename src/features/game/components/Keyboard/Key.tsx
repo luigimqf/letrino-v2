@@ -10,7 +10,7 @@ type KeyProps = ChildrenProp & ComponentProps<"button"> & {
   size?: 'xs';
 }
 
-const KeyComponent = ({children,status,size,disabled, ...props}: KeyProps) => {
+export const Key = ({children,status,size,disabled, ...props}: KeyProps) => {
   const keyVariants = tv({
     base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-300 disabled:opacity-50 disabled:cursor-default',
     variants: {
@@ -33,10 +33,10 @@ const KeyComponent = ({children,status,size,disabled, ...props}: KeyProps) => {
   )
 }
 
-export const Key = memo(KeyComponent, (prevProps, nextProps) => {
-  if(prevProps.disabled !== nextProps.disabled) return false;
+// export const Key = memo(KeyComponent, (prevProps, nextProps) => {
+//   if(prevProps.disabled !== nextProps.disabled) return false;
 
-  if((prevProps.status === nextProps.status)) return true;
+//   if(prevProps.status !== nextProps.status) return false;
 
-  return false;
-})
+//   return true;
+// })

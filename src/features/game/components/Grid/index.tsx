@@ -14,6 +14,8 @@ export const Grid = () => {
   const dispatch = useDispatch();
   const {data: response, isLoading, isSuccess} = useWordQuery();
 
+  console.log(attempts, "grid")
+
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;
 

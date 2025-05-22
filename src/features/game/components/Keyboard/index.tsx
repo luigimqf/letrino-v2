@@ -5,7 +5,7 @@ import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../
 import { Key } from "./Key"
 import { RootState } from "@/shared/store"
 import { setKeyboardBackspace, setKeyboardInput, validateAttempt } from "../../store/gameSlice"
-import { LetterCell } from "../../types/game"
+import { Attempt, LetterCell } from "../../types/game"
 import { useCallback } from "react"
 import { useIsFetching } from "@tanstack/react-query"
 
@@ -15,8 +15,9 @@ export const Keyboard = () => {
   const isFetchingWord = useIsFetching({
     queryKey: ["word"]
   });
+  
+  const onAction = (key: string, attempt: Attempt) => {
 
-  const onAction = (key: string) => {
     const guess = attempts?.[currentAttemptIndex]?.reduce((acc, curr) => acc + curr.letter, "");
 
     if(!guess) return;
@@ -50,10 +51,9 @@ export const Keyboard = () => {
             const isActionKey = key === ENTER_KEY || key === BACKSPACE_KEY;
             const keyToRender = key === BACKSPACE_KEY ? '←' : key;
             const keyStatus = playedLetters()?.find(k => k.letter.toLowerCase() === key.toLowerCase())?.status;
-
             return (
             <Key
-              onClick={() => isActionKey ? onAction(key) : dispatch(setKeyboardInput(key.toLowerCase()))} 
+              onClick={() => isActionKey ? onAction(key, attempts?.[currentAttemptIndex]) : dispatch(setKeyboardInput(key.toLowerCase()))} 
               key={key}
               disabled={isGameOver || isFetchingWord > 0}
               status={keyStatus}
