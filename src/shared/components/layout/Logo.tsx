@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { GAME_NAME } from '@/shared/constants'
 import React from 'react'
 
@@ -8,7 +8,7 @@ export const Logo = () => {
   const lastIndex = splittedName.length - 1;
 
   return(
-    <div className='flex justify-center items-center font- gap-3 select-none'>
+    <div className='flex justify-center items-center gap-2 select-none'>
       {
         splittedName.map((letter, index) => (
           <span 
