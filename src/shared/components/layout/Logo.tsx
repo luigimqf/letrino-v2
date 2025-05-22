@@ -1,27 +1,29 @@
-import { cn } from '@/shared/lib/utils';
-import { GAME_NAME } from '@/shared/constants'
-import React from 'react'
+"use client"
 
-export const Logo = () => {
-  const splittedName = GAME_NAME.split('');
-  const middleIndex = Math.floor(splittedName.length / 2);
-  const lastIndex = splittedName.length - 1;
+import Image from "next/image"
+import { useEffect, useState } from "react";
+import logoDark from '../../../../public/logo-dark.png'
+import logoWhite from '../../../../public/logo-white.png'
 
-  return(
-    <div className='flex justify-center items-center gap-2 select-none'>
-      {
-        splittedName.map((letter, index) => (
-          <span 
-            key={letter} 
-            className={cn(
-              index === 0 && "text-success",
-              index === middleIndex && "text-warning",
-              index === lastIndex && "text-destructive",
-              "font-[family-name:var(--font-fredoka-sans)] text-4xl font-semibold"
-            )}
-            >{letter}</span>
-        ))
-      }
-    </div>
+export const Logo = ({width = 50, height = 50}) => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDark = () => {
+      setIsDark(document.body.classList.contains('dark'));
+    };
+
+    checkDark();
+    const observer = new MutationObserver(checkDark);
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+  return (
+    <Image src={isDark ? logoWhite : logoDark} alt="logo" width={width} height={height}/>
   )
 }
