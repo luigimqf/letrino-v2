@@ -78,7 +78,7 @@ export default function LoginForm() {
       </div>
       <div className="flex flex-col gap-3">
         <Button disabled={isPending} type="submit">Entrar</Button>
-        <Button variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.CREATE_ACCOUNT)}>Criar conta</Button>
+        <Button variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_IN)}>Criar conta</Button>
       </div>
     </form>
   )

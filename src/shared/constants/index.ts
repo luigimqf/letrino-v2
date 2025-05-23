@@ -5,5 +5,5 @@ export enum ROUTES {
   LOGIN = "/login",
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
-  CREATE_ACCOUNT = "/create-account"
+  SIGN_IN = "/sign-in"
 };
