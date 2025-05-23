@@ -2,8 +2,8 @@ export const GAME_NAME = 'Letrino';
 
 export enum ROUTES {
   HOME = "/",
-  LOGIN = "/login",
+  SIGN_IN = "/sign-in",
+  SIGN_UP = "/sign-up",
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
-  SIGN_IN = "/sign-in"
 };

@@ -1,34 +1,38 @@
 "use client"
 
+import { signIn } from "@/app/actions/signIn"
 import { Logo } from "@/shared/components/layout/Logo"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
 import { Label } from "@/shared/components/ui/label"
 import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from "react"
+import { useDispatch } from "react-redux"
+import { setUserInfo } from "../../store/authSlice"
 import { toast } from "sonner"
 import { ROUTES } from "@/shared/constants"
-import { signIn } from "@/app/actions/signIn"
 
 export default function SignInForm() {
-  const [result, handleSignIn, isPending] = useActionState(signIn, null);
+  const [result, handleLogin, isPending] = useActionState(signIn, null);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if(result?.success) {
-      toast("Perfil criado com sucesso!", {
-        description: "Faça login para continuar",
+    if(result?.success && result.data) {
+      dispatch(setUserInfo(result.data.user.username))
+      toast("Login efetuado com sucesso!", {
+        description: `Seja bem-vindo ${result.data.user.username}`,
         action: {
           label: "Fechar",
           onClick: () => {}
         },
         duration: 3000
       })
-      router.push(ROUTES.LOGIN)
+      router.push(ROUTES.HOME)
     }
 
     if(!result?.success && result?.errors?.api_err) {
-      toast("Erro ao criar perfil", {
+      toast("Erro ao efetuar login", {
         description: result.errors.api_err,
         action: {
           label: "Fechar",
@@ -40,60 +44,40 @@ export default function SignInForm() {
   },[result])
   
   return (
-    <form action={handleSignIn} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl">
+    <form action={handleLogin} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl">
       <div className="flex flex-col gap-5 items-center">
         <Logo/>
-        <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
-      </div>
-      <div className="flex flex-col items-start gap-2">
-        <Label htmlFor="username">Username</Label>
-        <Input defaultValue={result?.values?.username ?? ''} id="username" name="username" type="text"/>
-        {result?.errors && result?.errors?.username && (
-          <span
-            data-visible={!!result.errors.username}
-            className="data-[visible='true']:visible invisible text-xs text-destructive font-semibold"
-          >
-            {result.errors.username}
-          </span>
-        )}
+        <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
       </div>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="email">Email</Label>
-        <Input defaultValue={result?.values?.email ?? ''} id="email" name="email" type="email"/>
+        <Input id="email" name="email" type="email"/>
         {result?.errors && result?.errors?.email && (
           <span
-            data-visible={!!result.errors.email}
+            data-visible={!!result?.errors?.email}
             className="data-[visible='true']:visible invisible text-xs text-destructive font-semibold"
           >
-            {result.errors.email}
+            {result?.errors?.email}
           </span>
         )}
       </div>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="password">Senha</Label>
-        <Input defaultValue={result?.values?.password ?? ''} id="password" name="password" type="password"/>
+        <Input id="password" name="password" type="password"/>
         {result?.errors && result?.errors?.password && (
           <span
             data-visible={!!result.errors.password}
             className="data-[visible='true']:visible invisible text-xs text-destructive font-semibold"
           >
-            {result.errors.password}
+            {result?.errors?.password}
           </span>
         )}
+        <a className="text-xs cursor-pointer" href="/forgot-password">Esqueceu a senha?</a>
       </div>
-      <div className="flex flex-col items-start gap-2">
-        <Label htmlFor="confirm-password">Confirmar Senha</Label>
-        <Input defaultValue={result?.values?.confirm_password ?? ''} id="confirm-password" name="confirm-password" type="password"/>
-        {result?.errors && result?.errors?.confirm_password && (
-          <span
-            data-visible={!!result.errors.confirm_password}
-            className="data-[visible='true']:visible invisible text-xs text-destructive font-semibold"
-          >
-            {result.errors.confirm_password}
-          </span>
-        )}
+      <div className="flex flex-col gap-3">
+        <Button className="w-50 self-center" disabled={isPending} type="submit">Entrar</Button>
+        <Button className="w-50 self-center" variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_IN)}>Criar conta</Button>
       </div>
-      <Button className="w-50 self-center" disabled={isPending} type="submit">Criar perfil</Button>
     </form>
   )
 }

@@ -1,32 +1,24 @@
 "use server"
 
-import { ServerActionReturn } from "@/features/auth/types";
-import { ROUTES } from "@/shared/constants";
-import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
+import { LoginData, ServerActionReturn } from "@/features/auth/types";
+import { PromiseFailed, PromiseSuccess } from "@/shared/types";
+import { cookies } from "next/headers";
 import {z} from "zod";
 
-const signInSchema = z.object({
-  username: z.string({message:"Campo Obrigatório"})
-    .nonempty("Campo Obrigatório")
-    .min(5, "Username precisa ter no mínimo 5 caracteres")
-    .regex(/^[a-zA-Z0-9]+$/, {message: 'Apenas alfanuméricos sem espaços são permitidos'}),
-  email: z.string({message:"Campo Obrigatório"})
-    .nonempty("Campo Obrigatório")
-    .email("Email inválido"),
-  password: z.string().nonempty("Campo Obrigatório"),
-  confirm_password: z.string().nonempty("Campo Obrigatório")
-}).refine((data) => data.password === data.confirm_password, {
-  path: ["confirm_password"],
-  message: "As senhas não coincidem",
-});
+type SignInReturn = ServerActionReturn & {
+  data?: LoginData
+}
 
-export async function signIn(_: unknown, formData:FormData): Promise<ServerActionReturn> {
+const signInSchema = z.object({
+  email: z.string({message:"Campo Obrigatório"}).nonempty("Campo Obrigatório").email("Email inválido"),
+  password: z.string().nonempty("Campo Obrigatório")
+})
+
+export async function signIn(_: unknown, formData:FormData): Promise<SignInReturn> {
   const raw = {
-    username: formData.get("username"),
     email: formData.get("email"),
-    password: formData.get("password"),
-    confirm_password: formData.get("confirm-password")
-  };
+    password: formData.get("password")
+  } as Record<string, string>;
 
   const result = signInSchema.safeParse(raw)
 
@@ -41,15 +33,15 @@ export async function signIn(_: unknown, formData:FormData): Promise<ServerActio
     return {
       success: false,
       errors,
-      values: raw as Record<string, string>
+      values: raw
     }
   }
 
-  const {username,email,password} = result.data;
+  const {email,password} = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
     method: 'POST',
-    body: JSON.stringify({username,email,password}),
+    body: JSON.stringify({email,password}),
     headers: {
       'Content-Type': 'application/json',
     }
@@ -62,13 +54,29 @@ export async function signIn(_: unknown, formData:FormData): Promise<ServerActio
       errors: {
         api_err: errData.error
       },
-      values: raw as Record<string, string>
+      values: raw
     }
   }
+  const {data}: PromiseSuccess<LoginData> = await response.json();
+
+  const cookieStore = await cookies();
+
+  cookieStore.set({
+    name: 'token',
+    value: data.token,
+    httpOnly: true,
+  });
+
+  cookieStore.set({
+    name: 'refresh-token',
+    value: data.refresh_token,
+    httpOnly: true,
+  })
 
   return {
     success: true,
     errors: null,
-    values: raw as Record<string, string>
+    values: raw,
+    data
   };
 }
