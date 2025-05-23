@@ -12,7 +12,7 @@ const publicRoutes = [
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const publicRoute = publicRoutes.find(route => route.path === path);
-  const authToken = ''
+  const authToken = request.cookies.get("token")
 
   if(!authToken && publicRoute) {
     return NextResponse.next()

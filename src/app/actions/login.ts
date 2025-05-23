@@ -5,10 +5,11 @@ import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
 import { cookies } from "next/headers";
 import {z} from "zod";
 
-type ErrorReturn = {
-  email?: string[] | undefined;
-  password?: string[] | undefined;
-  login?: string[] | undefined;
+type LoginActionReturn = {
+  success: boolean;
+  errors: Record<string, string> | null;
+  values: Record<string, string> | null;
+  data?: LoginData
 }
 
 const loginSchema = z.object({
@@ -16,18 +17,26 @@ const loginSchema = z.object({
   password: z.string().nonempty("Campo Obrigatório")
 })
 
-export async function login(_: unknown, formData:FormData): Promise<PromiseReturn<LoginData, ErrorReturn>> {
+export async function login(_: unknown, formData:FormData): Promise<LoginActionReturn> {
   const raw = {
     email: formData.get("email"),
     password: formData.get("password")
-  };
+  } as Record<string, string>;
 
   const result = loginSchema.safeParse(raw)
 
   if(!result.success) {
+    const errors = result.error.errors.reduce((acc, err) => {
+      if(err.path[0]) {
+        acc[err.path[0]] = err.message
+      }
+      return acc;
+    },{} as Record<string, string>)
+
     return {
       success: false,
-      error: result.error.flatten().fieldErrors
+      errors,
+      values: raw
     }
   }
 
@@ -45,29 +54,32 @@ export async function login(_: unknown, formData:FormData): Promise<PromiseRetur
     const errData: PromiseFailed = await response.json();
     return {
       success: false,
-      error: {
-        login: [errData.error]
-      }
+      errors: {
+        api_err: errData.error
+      },
+      values: raw
     }
   }
   const {data}: PromiseSuccess<LoginData> = await response.json();
 
   const cookieStore = await cookies();
 
-  cookieStore.set({
-    name: 'token',
-    value: data.token,
-    httpOnly: true,
-  });
+  // cookieStore.set({
+  //   name: 'token',
+  //   value: data.token,
+  //   httpOnly: true,
+  // });
 
-  cookieStore.set({
-    name: 'refresh-token',
-    value: data.refresh_token,
-    httpOnly: true,
-  })
+  // cookieStore.set({
+  //   name: 'refresh-token',
+  //   value: data.refresh_token,
+  //   httpOnly: true,
+  // })
 
   return {
     success: true,
-    data,
+    errors: null,
+    values: raw,
+    data
   };
 }
