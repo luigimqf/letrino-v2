@@ -1,0 +1,79 @@
+"use server"
+
+import { ROUTES } from "@/shared/constants";
+import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
+import {z} from "zod";
+
+type SignInReturn = {
+  success: boolean;
+  errors: Record<string, string> | null;
+  values: Record<string, string> | null;
+}
+
+const signInSchema = z.object({
+  username: z.string({message:"Campo Obrigatório"})
+    .nonempty("Campo Obrigatório")
+    .min(5, "Username precisa ter no mínimo 5 caracteres")
+    .regex(/^[a-zA-Z0-9]+$/, {message: 'Apenas alfanuméricos sem espaços são permitidos'}),
+  email: z.string({message:"Campo Obrigatório"})
+    .nonempty("Campo Obrigatório")
+    .email("Email inválido"),
+  password: z.string().nonempty("Campo Obrigatório"),
+  confirm_password: z.string().nonempty("Campo Obrigatório")
+}).refine((data) => data.password === data.confirm_password, {
+  path: ["confirm_password"],
+  message: "As senhas não coincidem",
+});
+
+export async function signIn(_: unknown, formData:FormData): Promise<SignInReturn> {
+  const raw = {
+    username: formData.get("username"),
+    email: formData.get("email"),
+    password: formData.get("password"),
+    confirm_password: formData.get("confirm-password")
+  };
+
+  const result = signInSchema.safeParse(raw)
+
+  if(!result.success) {
+    const errors = result.error.errors.reduce((acc, err) => {
+      if(err.path[0]) {
+        acc[err.path[0]] = err.message
+      }
+      return acc;
+    },{} as Record<string, string>)
+
+    return {
+      success: false,
+      errors,
+      values: raw as Record<string, string>
+    }
+  }
+
+  const {username,email,password} = result.data;
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
+    method: 'POST',
+    body: JSON.stringify({username,email,password}),
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  });
+
+  if(!response.ok) {
+    const errData: PromiseFailed = await response.json();
+    return {
+      success: false,
+      errors: {
+        api_err: errData.error
+      },
+      values: raw as Record<string, string>
+    }
+  }
+
+  return {
+    success: true,
+    errors: null,
+    values: raw as Record<string, string>
+  };
+}

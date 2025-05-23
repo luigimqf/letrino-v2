@@ -1,6 +1,6 @@
 "use client"
 
-import { login } from "@/app/actions/auth"
+import { login } from "@/app/actions/login"
 import { Logo } from "@/shared/components/layout/Logo"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
@@ -46,7 +46,7 @@ export default function LoginForm() {
   },[result])
   
   return (
-    <form action={handleLogin} className=" bg-bkg-100 flex flex-col gap-8 px-20 py-10 rounded-xl">
+    <form action={handleLogin} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl">
       <div className="flex flex-col gap-5 items-center">
         <Logo/>
         <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
@@ -77,8 +77,8 @@ export default function LoginForm() {
         <a className="text-xs cursor-pointer" href="/forgot-password">Esqueceu a senha?</a>
       </div>
       <div className="flex flex-col gap-3">
-        <Button disabled={isPending} type="submit">Entrar</Button>
-        <Button variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_IN)}>Criar conta</Button>
+        <Button className="w-50 self-center" disabled={isPending} type="submit">Entrar</Button>
+        <Button className="w-50 self-center" variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_IN)}>Criar conta</Button>
       </div>
     </form>
   )
