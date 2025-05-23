@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Attempt, ELetterStatus, GameState, TargetWord } from "../types/game";
-import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants/game";
+import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants";
 
 const gameSlice = createSlice({
   name: 'game',
@@ -77,8 +77,6 @@ const gameSlice = createSlice({
           letter: action.payload
         }
       ];
-
-      console.log({newAttempt})
 
       state.attempts[state.currentAttemptIndex] = newAttempt;
     },

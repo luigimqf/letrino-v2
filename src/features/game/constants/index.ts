@@ -1,12 +1,12 @@
 import { ELetterStatus, GameState } from "../types/game";
 
   export const INITIAL_GAME_STATE: GameState = {
-  attempts: [],
-  currentAttemptIndex: 0,
-  targetWord: null,
-  isGameOver: false,
-  isWin: false,
-};
+    attempts: [],
+    currentAttemptIndex: 0,
+    targetWord: null,
+    isGameOver: false,
+    isWin: false,
+  };
 
   export const ENTER_KEY: string = 'Enter';
   export const BACKSPACE_KEY: string = 'Backspace'

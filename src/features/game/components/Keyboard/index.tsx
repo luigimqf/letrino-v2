@@ -1,7 +1,7 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux"
-import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../constants/game"
+import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../constants"
 import { Key } from "./Key"
 import { RootState } from "@/shared/store"
 import { setKeyboardBackspace, setKeyboardInput, validateAttempt } from "../../store/gameSlice"

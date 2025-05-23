@@ -4,7 +4,7 @@ import { InputOTP } from "@/shared/components/ui/input-otp";
 import { OTPInput } from "input-otp";
 import React, { memo } from "react";
 import { type Attempt as AttemptType } from "../../types/game";
-import { LETTERS_PER_ATTEMPT } from "../../constants/game";
+import { LETTERS_PER_ATTEMPT } from "../../constants";
 import { Letter } from "./Letter";
 
 type AttemptProps = Omit<React.ComponentProps<typeof OTPInput>, "render"> & {

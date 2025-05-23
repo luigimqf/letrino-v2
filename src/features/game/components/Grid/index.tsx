@@ -2,7 +2,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/shared/store";
-import {ENTER_KEY, ATTEMPTS_PER_GRID, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants/game'
+import {ENTER_KEY, ATTEMPTS_PER_GRID, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants'
 import { setAttempt, setTargetWord, validateAttempt } from "@/features/game/store/gameSlice";
 import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
