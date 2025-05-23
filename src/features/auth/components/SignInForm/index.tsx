@@ -11,7 +11,7 @@ import { ROUTES } from "@/shared/constants"
 import { signIn } from "@/app/actions/signIn"
 
 export default function SignInForm() {
-  const [result, handleLogin, isPending] = useActionState(signIn, null);
+  const [result, handleSignIn, isPending] = useActionState(signIn, null);
   const router = useRouter();
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function SignInForm() {
   },[result])
   
   return (
-    <form action={handleLogin} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl">
+    <form action={handleSignIn} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl">
       <div className="flex flex-col gap-5 items-center">
         <Logo/>
         <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
@@ -93,7 +93,7 @@ export default function SignInForm() {
           </span>
         )}
       </div>
-      <Button disabled={isPending} type="submit">Criar perfil</Button>
+      <Button className="w-50 self-center" disabled={isPending} type="submit">Criar perfil</Button>
     </form>
   )
 }

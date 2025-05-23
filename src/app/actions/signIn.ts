@@ -1,14 +1,9 @@
 "use server"
 
+import { ServerActionReturn } from "@/features/auth/types";
 import { ROUTES } from "@/shared/constants";
 import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
 import {z} from "zod";
-
-type SignInReturn = {
-  success: boolean;
-  errors: Record<string, string> | null;
-  values: Record<string, string> | null;
-}
 
 const signInSchema = z.object({
   username: z.string({message:"Campo Obrigatório"})
@@ -25,7 +20,7 @@ const signInSchema = z.object({
   message: "As senhas não coincidem",
 });
 
-export async function signIn(_: unknown, formData:FormData): Promise<SignInReturn> {
+export async function signIn(_: unknown, formData:FormData): Promise<ServerActionReturn> {
   const raw = {
     username: formData.get("username"),
     email: formData.get("email"),

@@ -1,14 +1,11 @@
 "use server"
 
-import { LoginData } from "@/features/auth/types";
-import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
+import { LoginData, ServerActionReturn } from "@/features/auth/types";
+import { PromiseFailed, PromiseSuccess } from "@/shared/types";
 import { cookies } from "next/headers";
 import {z} from "zod";
 
-type LoginActionReturn = {
-  success: boolean;
-  errors: Record<string, string> | null;
-  values: Record<string, string> | null;
+type LoginActionReturn = ServerActionReturn & {
   data?: LoginData
 }
 
@@ -64,17 +61,17 @@ export async function login(_: unknown, formData:FormData): Promise<LoginActionR
 
   const cookieStore = await cookies();
 
-  // cookieStore.set({
-  //   name: 'token',
-  //   value: data.token,
-  //   httpOnly: true,
-  // });
+  cookieStore.set({
+    name: 'token',
+    value: data.token,
+    httpOnly: true,
+  });
 
-  // cookieStore.set({
-  //   name: 'refresh-token',
-  //   value: data.refresh_token,
-  //   httpOnly: true,
-  // })
+  cookieStore.set({
+    name: 'refresh-token',
+    value: data.refresh_token,
+    httpOnly: true,
+  })
 
   return {
     success: true,
