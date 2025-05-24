@@ -1,6 +1,5 @@
 "use client"
 
-import { signIn } from "@/app/actions/signIn"
 import { Logo } from "@/shared/components/layout/Logo"
 import { Button } from "@/shared/components/ui/button"
 import { Input } from "@/shared/components/ui/input"
@@ -11,6 +10,7 @@ import { useDispatch } from "react-redux"
 import { setUserInfo } from "../../store/authSlice"
 import { toast } from "sonner"
 import { ROUTES } from "@/shared/constants"
+import { signIn } from "@/app/actions/sign-in"
 
 export default function SignInForm() {
   const [result, handleLogin, isPending] = useActionState(signIn, null);

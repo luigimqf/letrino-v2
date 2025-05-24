@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import { ROUTES } from "@/shared/constants"
-import { signUp } from "@/app/actions/signUp"
+import { signUp } from "@/app/actions/sign-up"
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);

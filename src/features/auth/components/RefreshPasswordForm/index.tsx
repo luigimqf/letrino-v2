@@ -6,16 +6,16 @@ import { Input } from "@/shared/components/ui/input"
 import { Label } from "@/shared/components/ui/label"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
-import { forgotPassword } from "@/app/actions/forgot-password"
 import { useRouter, useSearchParams } from "next/navigation"
 import { ROUTES } from "@/shared/constants"
+import { refreshPassword } from "@/app/actions/refresh-password"
 
 export default function RefreshPasswordForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
 
-  const [result, handleRefreshPassword, isPending] = useActionState(forgotPassword, null);
+  const [result, handleRefreshPassword, isPending] = useActionState(refreshPassword, null);
 
   useEffect(() => {
     if(result?.success) {
