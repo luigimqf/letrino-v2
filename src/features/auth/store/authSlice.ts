@@ -8,9 +8,12 @@ const authSlicer = createSlice({
   reducers: {
     setUserInfo: (state, action: PayloadAction<string>) => {
       state.username = action.payload
+    },
+    removeUserInfo: (state) => {
+      state.username = ''
     }
   }
 });
 
-export const { setUserInfo } = authSlicer.actions;
+export const { setUserInfo, removeUserInfo } = authSlicer.actions;
 export default authSlicer.reducer;
