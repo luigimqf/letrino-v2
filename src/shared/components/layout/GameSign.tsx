@@ -8,7 +8,7 @@ export const GameSign = () => {
   const lastIndex = splittedName.length - 1;
 
   return(
-    <div className='flex justify-center items-center gap-2 select-none'>
+    <div className='absolute top-3 left-1/2 -translate-x-1/2 flex justify-center items-center gap-2 select-none'>
       {
         splittedName.map((letter, index) => (
           <span 

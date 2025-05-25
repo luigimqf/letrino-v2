@@ -34,8 +34,8 @@ export const AccountMenu = () => {
       return;
     };
 
-    if(!logoutResult?.success) {
-      toast("Erro durante o logout")
+    if(logoutResult && !logoutResult?.success) {
+      toast("Erro durante o logout",{duration:1500})
     }
   },[logoutResult])
 

@@ -1,5 +1,5 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/shared/components/ui/sheet"
-import { Award } from "lucide-react"
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/shared/components/ui/sheet"
+import { Award, Crown } from "lucide-react"
 import { Leaderboard } from "./Leaderboard"
 
 export const LeaderboardMenu = () => {
@@ -8,9 +8,9 @@ export const LeaderboardMenu = () => {
       <SheetTrigger>
         <Award className="cursor-pointer" color="var(--warning)"/>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="bg-bkg-100">
         <SheetHeader>
-          <SheetTitle>Leaderboard</SheetTitle>
+          <SheetTitle className="flex items-center gap-2"><Crown size={13} color="var(--warning)"/> Leaderboard</SheetTitle>
         </SheetHeader>
         <Leaderboard />
       </SheetContent>

@@ -9,6 +9,7 @@ import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
 import { ROUTES } from "@/shared/constants"
 import { signUp } from "@/app/actions/sign-up"
+import { Back } from "@/shared/components/layout/Back"
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);
@@ -45,6 +46,7 @@ export default function SignUpForm() {
         <Logo/>
         <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
       </div>
+      <Back href={ROUTES.SIGN_IN}/>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="username">Username</Label>
         <Input defaultValue={result?.values?.username ?? ''} id="username" name="username" type="text"/>

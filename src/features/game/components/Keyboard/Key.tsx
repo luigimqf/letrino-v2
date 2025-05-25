@@ -12,7 +12,7 @@ type KeyProps = ChildrenProp & ComponentProps<"button"> & {
 
 export const Key = ({children,status,size,disabled, ...props}: KeyProps) => {
   const keyVariants = tv({
-    base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-300 disabled:opacity-50 disabled:cursor-default',
+    base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm bg-input font-medium rounded-sm border border-primary-100 disabled:opacity-50 disabled:cursor-default',
     variants: {
       color: {
         correct: 'bg-success',
@@ -32,11 +32,3 @@ export const Key = ({children,status,size,disabled, ...props}: KeyProps) => {
     </button>
   )
 }
-
-// export const Key = memo(KeyComponent, (prevProps, nextProps) => {
-//   if(prevProps.disabled !== nextProps.disabled) return false;
-
-//   if(prevProps.status !== nextProps.status) return false;
-
-//   return true;
-// })

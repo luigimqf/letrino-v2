@@ -11,6 +11,7 @@ import { setUserInfo } from "../../store/authSlice"
 import { toast } from "sonner"
 import { ROUTES } from "@/shared/constants"
 import { signIn } from "@/app/actions/sign-in"
+import { Back } from "@/shared/components/layout/Back"
 
 export default function SignInForm() {
   const [result, handleLogin, isPending] = useActionState(signIn, null);
@@ -49,6 +50,7 @@ export default function SignInForm() {
         <Logo/>
         <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
       </div>
+      <Back />
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email"/>

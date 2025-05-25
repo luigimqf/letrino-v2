@@ -10,7 +10,7 @@ export const Logo = ({width = 50, height = 50}) => {
 
   useEffect(() => {
     const checkDark = () => {
-      setIsDark(document.body.classList.contains('dark'));
+      setIsDark(document.documentElement.classList.contains('dark'));
     };
 
     checkDark();
