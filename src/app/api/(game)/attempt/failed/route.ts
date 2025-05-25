@@ -1,9 +1,7 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request:Request) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('token')?.value;
+export async function POST(request:NextRequest) {
+  const token = request.cookies.get('token')?.value;
 
   if(!token) {
     return NextResponse.json({message: 'Unauthorized'}, {status: 401});

@@ -71,7 +71,7 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
     name: 'refresh-token',
     value: data.refresh_token,
     httpOnly: true,
-  })
+  });
 
   return {
     success: true,

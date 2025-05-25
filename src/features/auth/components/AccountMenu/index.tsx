@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/shared/components/ui/dropdown-menu"
 import { RootState } from "@/shared/store"
-import { LogOut } from "lucide-react"
+import { CircleHelp, LogOut } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "sonner"
 import { removeUserInfo } from "../../store/authSlice"
@@ -44,10 +44,17 @@ export const AccountMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuItem disabled className="text-xs">{username}</DropdownMenuItem>
         <DropdownMenuSeparator/>
-        <DropdownMenuItem className="cursor-pointer" onClick={logout}>
-          <span className="text-destructive text-xs font-medium">Log out</span>
+        <DropdownMenuItem className="cursor-pointer hover:bg-accent transition-all duration-300" onClick={logout}>
+          <span className="text-destructive text-xs">Log out</span>
           <DropdownMenuShortcut>
             <LogOut color="var(--destructive)"/>
+          </DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator/>
+        <DropdownMenuItem className="cursor-pointer hover:bg-accent transition-all duration-300">
+          <span className="text-xs">Suporte</span>
+          <DropdownMenuShortcut>
+            <CircleHelp />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

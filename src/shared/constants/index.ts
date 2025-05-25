@@ -6,4 +6,5 @@ export enum ROUTES {
   SIGN_UP = "/sign-up",
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
+  REFRESH_TOKEN = "/refresh-token"
 };
