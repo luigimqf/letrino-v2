@@ -19,7 +19,7 @@ export default function SignInForm() {
 
   useEffect(() => {
     if(result?.success && result.data) {
-      dispatch(setUserInfo(result.data.user.username))
+      dispatch(setUserInfo(result.data.user))
       toast("Login efetuado com sucesso!", {
         description: `Seja bem-vindo ${result.data.user.username}`,
         action: {

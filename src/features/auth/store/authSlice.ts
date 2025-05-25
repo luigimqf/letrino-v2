@@ -3,14 +3,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const authSlicer = createSlice({
   name: 'auth',
   initialState: {
-    username: ''
+    username: '',
+    score: 0,
   },
   reducers: {
-    setUserInfo: (state, action: PayloadAction<string>) => {
-      state.username = action.payload
+    setUserInfo: (state, action: PayloadAction<{username: string, score: number}>) => {
+      state.username = action.payload.username
+      state.score = action.payload.score
     },
     removeUserInfo: (state) => {
       state.username = ''
+      state.score = 0
     }
   }
 });

@@ -7,11 +7,13 @@ export type ServerActionReturn<T = Record<string, string>> = {
 export type LoginData = {
   token: string;
   refresh_token: string;
-  user: {
-    username: string;
-  }
+  user: UserBasicData
 }
 
+export type UserBasicData = {
+  username: string;
+  score: number;
+}
 export type UserInfo = {
   username: string;
 }

@@ -6,30 +6,36 @@ import { RootState } from "@/shared/store"
 import { CircleHelp, LogOut } from "lucide-react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "sonner"
-import { removeUserInfo } from "../../store/authSlice"
+import { removeUserInfo, setUserInfo } from "../../store/authSlice"
 import { Button } from "@/shared/components/ui/button"
 import { useRouter } from "next/navigation"
 import { ROUTES } from "@/shared/constants"
+import { useUserData } from "../../services/queries"
+import { useEffect } from "react"
+import { useLogout } from "../../services/mutations"
 
 export const AccountMenu = () => {
-  const {username} = useSelector((state: RootState) => state.auth);
+  const {username, score} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const router = useRouter()
+  const router = useRouter();
+  const {data: dataResult, isPending: isDataPending} = useUserData();
+  const {data: logoutResult,isPending: isLogoutPending, mutate} = useLogout();
 
-  const logout = async () => {
-    try {
-      const res = await fetch("/api/logout", {
-        method: "POST"
-      });
-
-      if(res.ok) {
-        dispatch(removeUserInfo())
-        router.push(ROUTES.HOME)
-      }
-    } catch (error) {
-      toast("Erro durante o logout")
+  useEffect(() => {
+    if(dataResult?.success) {
+      dispatch(setUserInfo(dataResult.data))
     }
-  }
+  },[dataResult])
+
+  useEffect(() => {
+    if(logoutResult?.success) {
+      dispatch(removeUserInfo())
+      router.push(ROUTES.HOME)
+      return;
+    };
+
+    toast("Erro durante o logout")
+  },[logoutResult])
 
   if(!username) return <Button variant="outline" className="w-15" onClick={() => router.push(ROUTES.SIGN_IN)}>Login</Button>;
 
@@ -42,9 +48,9 @@ export const AccountMenu = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem disabled className="text-xs">{username}</DropdownMenuItem>
+        <DropdownMenuItem disabled className="text-xs flex items-center justify-between">{username} <span>{score} pts</span></DropdownMenuItem>
         <DropdownMenuSeparator/>
-        <DropdownMenuItem className="cursor-pointer hover:bg-accent transition-all duration-300" onClick={logout}>
+        <DropdownMenuItem disabled={isDataPending || isLogoutPending} className="cursor-pointer hover:bg-accent transition-all duration-300" onClick={() => mutate()}>
           <span className="text-destructive text-xs">Log out</span>
           <DropdownMenuShortcut>
             <LogOut color="var(--destructive)"/>

@@ -1,6 +1,7 @@
 "use server"
 
 import { LoginData, ServerActionReturn } from "@/features/auth/types";
+import { ROUTES } from "@/shared/constants";
 import { PromiseFailed, PromiseSuccess } from "@/shared/types";
 import { cookies } from "next/headers";
 import {z} from "zod";
@@ -39,7 +40,7 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
 
   const {email,password} = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/login`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
     method: 'POST',
     body: JSON.stringify({email,password}),
     headers: {
