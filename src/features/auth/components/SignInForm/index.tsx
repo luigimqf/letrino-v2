@@ -76,7 +76,7 @@ export default function SignInForm() {
       </div>
       <div className="flex flex-col gap-3">
         <Button className="w-50 self-center" disabled={isPending} type="submit">Entrar</Button>
-        <Button className="w-50 self-center" variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_IN)}>Criar conta</Button>
+        <Button type="button" className="w-50 self-center" variant="ghost" disabled={isPending} onClick={() => router.push(ROUTES.SIGN_UP)}>Criar conta</Button>
       </div>
     </form>
   )

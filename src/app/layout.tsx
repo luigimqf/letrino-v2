@@ -4,6 +4,8 @@ import "./globals.css";
 import { ReduxProvider } from "@/shared/providers/ReduxProvider";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { Toaster } from "@/shared/components/ui/sonner";
+import { ThemeProvider } from "@/shared/components/layout/theme-provider";
+import { ModeToggle } from "@/shared/components/ModeToggle";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,12 +38,20 @@ export default function RootLayout({
       <body
         className={`dark ${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-200 antialiased`}
       >
-        <QueryProvider>
-          <ReduxProvider>
-            {children}
-            <Toaster />
-          </ReduxProvider>
-        </QueryProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryProvider>
+            <ReduxProvider>
+              {children}
+              <Toaster />
+              <ModeToggle />
+            </ReduxProvider>
+          </QueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
