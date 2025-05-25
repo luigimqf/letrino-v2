@@ -15,7 +15,7 @@ import { useEffect } from "react"
 import { useLogout } from "../../services/mutations"
 
 export const AccountMenu = () => {
-  const {username, score} = useSelector((state: RootState) => state.auth);
+  const {avatar,username, score} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
   const {data: dataResult, isPending: isDataPending} = useUserData();
@@ -34,7 +34,9 @@ export const AccountMenu = () => {
       return;
     };
 
-    toast("Erro durante o logout")
+    if(!logoutResult?.success) {
+      toast("Erro durante o logout")
+    }
   },[logoutResult])
 
   if(!username) return <Button variant="outline" className="w-15" onClick={() => router.push(ROUTES.SIGN_IN)}>Login</Button>;
@@ -43,7 +45,7 @@ export const AccountMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar className="cursor-pointer select-none">
-          <AvatarImage src="https://github.com/shadcn.png" alt="avatar"/>
+          <AvatarImage src={avatar} alt="avatar"/>
           <AvatarFallback>--</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>

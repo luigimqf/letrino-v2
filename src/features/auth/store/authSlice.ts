@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const authSlicer = createSlice({
   name: 'auth',
   initialState: {
+    avatar: '',
     username: '',
     score: 0,
   },

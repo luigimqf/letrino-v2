@@ -7,5 +7,6 @@ export enum ROUTES {
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
   REFRESH_TOKEN = "/refresh-token",
-  GET_USER_DATA = "/user-data"
+  GET_USER_DATA = "/user-data",
+  LEADERBOARD = "/leaderboard"
 };

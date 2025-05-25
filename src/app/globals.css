@@ -50,6 +50,7 @@
   --color-card: var(--card);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --text-tiny: 0.625rem;
 }
 
 :root {

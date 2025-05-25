@@ -9,6 +9,7 @@ const signUpSchema = z.object({
   username: z.string({message:"Campo Obrigatório"})
     .nonempty("Campo Obrigatório")
     .min(5, "Username precisa ter no mínimo 5 caracteres")
+    .max(16, "Username precisa ter no máximo 16 caracteres")
     .regex(/^[a-zA-Z0-9]+$/, {message: 'Apenas alfanuméricos sem espaços são permitidos'}),
   email: z.string({message:"Campo Obrigatório"})
     .nonempty("Campo Obrigatório")

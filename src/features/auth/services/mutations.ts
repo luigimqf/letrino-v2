@@ -6,16 +6,16 @@ async function logout() {
       method: "POST"
     });
 
-    if(res.ok) {
+    if(!res.ok) {
       return {
-        success: true,
-        message: null,
+        success: false,
+        error: 'unable to logout'
       }
     }
 
     return {
-      success: false,
-      error: 'unable to logout'
+      success: true,
+      message: null,
     }
   } catch (error) {
     return {

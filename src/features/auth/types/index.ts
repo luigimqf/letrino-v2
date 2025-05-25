@@ -11,6 +11,7 @@ export type LoginData = {
 }
 
 export type UserBasicData = {
+  avatar: string;
   username: string;
   score: number;
 }

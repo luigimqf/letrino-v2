@@ -4,12 +4,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request:NextRequest) {
   const token = request.cookies.get('token')?.value;
 
-  if(!token) {
-    return NextResponse.json({success: false, error: 'unauthorized'}, {status: 401});
-  }
-
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.GET_USER_DATA}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.LEADERBOARD}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
