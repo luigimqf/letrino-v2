@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Attempt, ELetterStatus, GameState, TargetWord } from "../types/game";
 import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants";
+import confetti from "canvas-confetti";
 
 const gameSlice = createSlice({
   name: 'game',
@@ -41,6 +42,11 @@ const gameSlice = createSlice({
 
       if (guess === target) {
         state.isWin = true;
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
         state.isGameOver = true;
       } else if (state.attempts.length >= ATTEMPTS_PER_GRID) {
         state.isWin = false;

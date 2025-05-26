@@ -8,6 +8,8 @@ import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
 import { TargetWord } from "../../types/game";
+import { Button } from "@/shared/components/ui/button";
+import confetti from "canvas-confetti"; "canvas-confetti"
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
