@@ -1,6 +1,6 @@
 "use client"
 
-import { ComponentProps, memo } from "react"
+import { ComponentProps } from "react"
 import { ELetterStatus } from "../../types/game"
 import { tv } from "tailwind-variants";
 import { ChildrenProp } from "@/shared/types";

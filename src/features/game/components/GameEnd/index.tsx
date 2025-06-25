@@ -25,7 +25,7 @@ const getEmoji = (status?: ELetterStatus) =>
 
 const buildGameResult = (attempts: Attempt[]) =>
   attempts
-    .map((row) => row.map((letter) => getEmoji(letter.status)).join(""))
+    .map((att) => att.letters.map((letter) => getEmoji(letter.status)).join(""))
     .join("\n");
 
 export const GameEnd = () => {
@@ -75,7 +75,7 @@ export const GameEnd = () => {
           <div className="flex flex-col items-center mt-4">
             {attempts?.map((attempt, attemptIndex) => (
               <div key={`att-${attemptIndex}`} className="flex">
-                {attempt.map((letter, letterIndex) => (
+                {attempt?.letters?.map((letter, letterIndex) => (
                   <span key={`emoji-${letterIndex}`}>
                     {getEmoji(letter.status)}
                   </span>

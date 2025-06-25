@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attempt, ELetterStatus, GameState, TargetWord } from "../types/game";
+import { Attempt, ELetterStatus, TargetWord } from "../types/game";
 import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants";
 import confetti from "canvas-confetti";
 
@@ -37,7 +37,7 @@ const gameSlice = createSlice({
 
       })
 
-      state.attempts[state.currentAttemptIndex] = attemptWithLetterStatus;
+      state.attempts[state.currentAttemptIndex].letters = attemptWithLetterStatus;
       state.currentAttemptIndex += 1;
 
       if (guess === target) {
@@ -65,34 +65,37 @@ const gameSlice = createSlice({
     setAttempt: (state, action: PayloadAction<{guess:string, attemptIndex:number}>) => {
       const {attemptIndex,guess} = action.payload
       const letters = guess?.split('');
-      const attempts: Attempt = letters.map(letter => ({
-        letter,
-      }))
+      const attempt: Attempt = {
+        id: crypto.randomUUID(),
+        letters: letters.map(letter => ({
+          letter,
+        }))
+      }
 
-      state.attempts[attemptIndex] = attempts;
+      state.attempts[attemptIndex] = attempt;
     },
 
     setKeyboardInput: (state, action: PayloadAction<string>) => {
-      const attempt = state.attempts?.[state.currentAttemptIndex] ?? [];
+      const letters = state.attempts?.[state.currentAttemptIndex].letters ?? [];
 
-      if(attempt.length >= LETTERS_PER_ATTEMPT) return;
+      if(letters.length >= LETTERS_PER_ATTEMPT) return;
       
-      const newAttempt = [
-        ...attempt,
+      const newLetters = [
+        ...letters,
         {
           letter: action.payload
         }
       ];
 
-      state.attempts[state.currentAttemptIndex] = newAttempt;
+      state.attempts[state.currentAttemptIndex].letters = newLetters;
     },
     
     setKeyboardBackspace: (state) => {
-      const attempt = state.attempts?.[state.currentAttemptIndex];
+      const letters = state.attempts?.[state.currentAttemptIndex].letters;
 
-      if(!attempt || attempt.length <= 0) return;
+      if(!letters || letters.length <= 0) return;
 
-      state.attempts[state.currentAttemptIndex] = attempt.slice(0, attempt.length - 1)
+      state.attempts[state.currentAttemptIndex].letters = letters.slice(0, letters.length - 1)
     },
     resetGame: (state) => {
       Object.assign(state, INITIAL_GAME_STATE);

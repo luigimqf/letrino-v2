@@ -8,17 +8,15 @@ import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
 import { TargetWord } from "../../types/game";
-import { Button } from "@/shared/components/ui/button";
-import confetti from "canvas-confetti"; "canvas-confetti"
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
   const dispatch = useDispatch();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.length < LETTERS_PER_ATTEMPT) return;
+    if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.letters?.length < LETTERS_PER_ATTEMPT) return;
 
-    const guess = attempts?.[currentAttemptIndex]?.reduce((acc, curr) => acc + curr.letter, '');
+    const guess = attempts?.[currentAttemptIndex]?.letters?.reduce((acc, curr) => acc + curr.letter, '');
 
     if((event.key === ENTER_KEY)) {
       dispatch(validateAttempt(guess))
@@ -36,7 +34,7 @@ export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
       {
         [...Array(ATTEMPTS_PER_GRID)].map((_, attemptIndex) => {
           const isActiveAttempt = currentAttemptIndex === attemptIndex;
-          const letters = attempts?.[attemptIndex];
+          const letters = attempts?.[attemptIndex]?.letters;
           const value = letters?.reduce((acc, curr) => {return acc + curr.letter},"");
           return  (
           <Attempt

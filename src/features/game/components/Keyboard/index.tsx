@@ -7,14 +7,13 @@ import { RootState } from "@/shared/store"
 import { setKeyboardBackspace, setKeyboardInput, validateAttempt } from "../../store/gameSlice"
 import { Attempt, LetterCell } from "../../types/game"
 import { useCallback } from "react"
-import { useIsFetching } from "@tanstack/react-query"
 
 export const Keyboard = () => {
   const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
   const dispatch = useDispatch();
   
   const onAction = (key: string, attempt: Attempt) => {
-    const guess = attempt?.reduce((acc, curr) => acc + curr.letter, "");
+    const guess = attempt?.letters?.reduce((acc, curr) => acc + curr.letter, "");
 
     if(!guess) return;
 
@@ -25,10 +24,11 @@ export const Keyboard = () => {
   };
 
   const playedLetters = useCallback(() => {
-    const flat = attempts.flat();
+    const flat = attempts.flat()
+    const letters = flat.map(att => att.letters).flat();
     const map = new Map<string, LetterCell>();
 
-    for(const obj of flat) {
+    for(const obj of letters) {
       const existing = map.get(obj.letter);
 
       if(!existing || STATUS_PRIORITY[obj.status!] > STATUS_PRIORITY[existing.status!]) {
@@ -47,6 +47,7 @@ export const Keyboard = () => {
             const isActionKey = key === ENTER_KEY || key === BACKSPACE_KEY;
             const keyToRender = key === BACKSPACE_KEY ? '←' : key;
             const keyStatus = playedLetters()?.find(k => k.letter.toLowerCase() === key.toLowerCase())?.status;
+            
             return (
             <Key
               onClick={() => isActionKey ? onAction(key, attempts?.[currentAttemptIndex]) : dispatch(setKeyboardInput(key.toLowerCase()))} 

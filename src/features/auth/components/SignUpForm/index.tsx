@@ -23,7 +23,7 @@ export default function SignUpForm() {
           label: "Fechar",
           onClick: () => {}
         },
-        duration: 3000
+        duration: 5000
       })
       router.push(ROUTES.SIGN_IN)
     }
@@ -35,7 +35,7 @@ export default function SignUpForm() {
           label: "Fechar",
           onClick: () => {}
         },
-        duration: 3000
+        duration: 5000
       })
     }
   },[result])

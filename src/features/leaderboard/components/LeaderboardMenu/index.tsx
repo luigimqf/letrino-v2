@@ -1,4 +1,4 @@
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/shared/components/ui/sheet"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/shared/components/ui/sheet"
 import { Award, Crown } from "lucide-react"
 import { Leaderboard } from "./Leaderboard"
 

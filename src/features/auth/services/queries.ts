@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { UserBasicData } from "../types";
-import { PromiseReturn, PromiseSuccess } from "@/shared/types";
+import { PromiseReturn } from "@/shared/types";
 
 async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
   try {

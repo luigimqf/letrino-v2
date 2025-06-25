@@ -48,7 +48,7 @@ export async function signUp(_: unknown, formData:FormData): Promise<ServerActio
 
   const {username,email,password} = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_UP}`, {
     method: 'POST',
     body: JSON.stringify({username,email,password}),
     headers: {

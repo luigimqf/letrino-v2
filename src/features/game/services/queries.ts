@@ -1,4 +1,4 @@
-import { PromiseFailed, PromiseReturn, PromiseSuccess } from "@/shared/types";
+import { PromiseReturn } from "@/shared/types";
 import { useQuery } from "@tanstack/react-query";
 import { TargetWord } from "../types/game";
 

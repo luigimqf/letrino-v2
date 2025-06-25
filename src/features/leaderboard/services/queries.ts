@@ -1,4 +1,4 @@
-import { PromiseReturn, PromiseSuccess } from "@/shared/types";
+import { PromiseReturn } from "@/shared/types";
 import { useQuery } from "@tanstack/react-query";
 import { LeaderboardResult } from "../types";
 
@@ -17,7 +17,7 @@ async function getLeaderboard() {
 
     return response.json();
   } catch (error) {
-    
+    console.log(error)
   }
 }
 

@@ -58,16 +58,16 @@ async function deleteSkipped() {
 
 export const useAttemptSuccessMutation = () => {
   return useMutation({
-  mutationKey: ["attempt","fail"],
-  mutationFn: ({attempt}: {attempt: string}) => registerAttempt({attempt, status: 'fail'})
-})
+    mutationKey: ["attempt-fail"],
+    mutationFn: ({attempt}: {attempt: string}) => registerAttempt({attempt, status: 'fail'})
+  })
 }
 
 export const useAttemptFailedMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["attempt", "success"],
+    mutationKey: ["attempt-success"],
     mutationFn: ({attempt}: {attempt: string}) => registerAttempt({attempt, status: 'success'}),
     onSuccess: () => {
       queryClient.invalidateQueries({queryKey: ['leaderboard']})
@@ -84,7 +84,7 @@ export const useRegisterSkippedMutation = () => {
 
 export const useDeleteSkippedMutation = () => {
   return useMutation({
-  mutationKey: ["attempt", "skipped", "delete"],
+  mutationKey: ["attempt"],
   mutationFn: deleteSkipped
 })
 }

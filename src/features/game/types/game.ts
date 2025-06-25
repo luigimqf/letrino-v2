@@ -1,3 +1,9 @@
+export enum EAttemptStatus {
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  FAILED = 'failed'
+}
+
 export enum ELetterStatus {
   CORRECT = "correct",
   INCORRECT = 'incorrect',
@@ -9,7 +15,11 @@ export type LetterCell = {
   status?: ELetterStatus;
 }
 
-export type Attempt = LetterCell[];
+export type Attempt = {
+  id?: string;
+  status?: EAttemptStatus;
+  letters: LetterCell[];
+};
 
 export type GameState = {
   attempts: Attempt[];
