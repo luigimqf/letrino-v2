@@ -3,24 +3,25 @@
 import { useDispatch, useSelector } from "react-redux"
 import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../constants"
 import { Key } from "./Key"
-import { RootState } from "@/shared/store"
-import { setKeyboardBackspace, setKeyboardInput, validateAttempt } from "../../store/gameSlice"
+import { AppDispatch, RootState } from "@/shared/store"
+import { setKeyboardBackspace, setKeyboardInput } from "../../store/gameSlice"
 import { Attempt, LetterCell } from "../../types/game"
 import { useCallback } from "react"
+import { useAttemptValidation } from "../../hooks"
 
 export const Keyboard = () => {
   const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
   
   const onAction = (key: string, attempt: Attempt) => {
-    const guess = attempt?.letters?.reduce((acc, curr) => acc + curr.letter, "");
-
-    if(!guess) return;
-
-    if(key === ENTER_KEY) return dispatch(validateAttempt(guess));
+    if(key === ENTER_KEY && canSubmitAttempt()) {
+      // TODO: Passar isUserLoggedIn do contexto de autenticação
+      const isUserLoggedIn = true; // Substitua pela lógica real de autenticação
+      handleAttemptSubmission(isUserLoggedIn);
+    };
 
     if(key === BACKSPACE_KEY) return dispatch(setKeyboardBackspace());
-
   };
 
   const playedLetters = useCallback(() => {

@@ -1,7 +1,11 @@
 import { ELetterStatus, GameState } from "../types/game";
 
   export const INITIAL_GAME_STATE: GameState = {
-    attempts: [],
+    attempts: Array(6).fill(null).map(() => ({ 
+      id: undefined,
+      status: undefined,
+      letters: [] 
+    })),
     currentAttemptIndex: 0,
     targetWord: null,
     isGameOver: false,

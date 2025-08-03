@@ -1,7 +1,46 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attempt, ELetterStatus, TargetWord } from "../types/game";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Attempt, EAttemptStatus, ELetterStatus, TargetWord } from "../types/game";
 import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants";
 import confetti from "canvas-confetti";
+
+export const registerUserAttempt = createAsyncThunk(
+  'game/registerUserAttempt',
+  async (guess: string, { getState }) => {
+    const {game} = getState() as { game: typeof INITIAL_GAME_STATE };
+    const target = game.targetWord?.word;
+    
+    if (!guess || guess.length < LETTERS_PER_ATTEMPT || !target || game.isGameOver) {
+      throw new Error('Invalid attempt');
+    }
+
+    const guessLower = guess.toLowerCase();
+    const targetLower = target.toLowerCase();
+
+    const isCorrect = guessLower === targetLower;
+    const endpoint = isCorrect ? '/api/attempt/success' : '/api/attempt/failed';
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        attempt: guessLower
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to register attempt');
+    }
+
+    return { 
+      guess: guessLower, 
+      target: targetLower,
+      isCorrect, 
+    };
+  }
+);
 
 const gameSlice = createSlice({
   name: 'game',
@@ -40,7 +79,8 @@ const gameSlice = createSlice({
       state.attempts[state.currentAttemptIndex].letters = attemptWithLetterStatus;
       state.currentAttemptIndex += 1;
 
-      if (guess === target) {
+      const isCorrect = guess === target;
+      if (isCorrect) {
         state.isWin = true;
         confetti({
           particleCount: 100,
@@ -48,7 +88,7 @@ const gameSlice = createSlice({
           origin: { y: 0.6 }
         });
         state.isGameOver = true;
-      } else if (state.attempts.length >= ATTEMPTS_PER_GRID) {
+      } else if (state.currentAttemptIndex >= ATTEMPTS_PER_GRID) {
         state.isWin = false;
         state.isGameOver = true;
       }
@@ -100,6 +140,42 @@ const gameSlice = createSlice({
     resetGame: (state) => {
       Object.assign(state, INITIAL_GAME_STATE);
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUserAttempt.pending, (state, _) => {
+        const lastAttemptIndex = state.currentAttemptIndex - 1;
+        const lastAttempt = state.attempts[lastAttemptIndex];
+        
+        if (lastAttempt) {
+          state.attempts[lastAttemptIndex] = {
+            ...lastAttempt,
+            status: EAttemptStatus.PENDING,
+          };
+        }
+      })
+      .addCase(registerUserAttempt.fulfilled, (state, action) => {
+        const lastAttemptIndex = state.currentAttemptIndex - 1;
+        const lastAttempt = state.attempts[lastAttemptIndex];
+        
+        if (lastAttempt) {
+          state.attempts[lastAttemptIndex] = {
+            ...lastAttempt,
+            status: EAttemptStatus.SUCCESS,
+          };
+        }
+      })
+      .addCase(registerUserAttempt.rejected, (state, _) => {
+        const lastAttemptIndex = state.currentAttemptIndex - 1;
+        const lastAttempt = state.attempts[lastAttemptIndex];
+        
+        if (lastAttempt) {
+          state.attempts[lastAttemptIndex] = {
+            ...lastAttempt,
+            status: EAttemptStatus.FAILED,
+          };
+        }
+      })
   }
 });
 

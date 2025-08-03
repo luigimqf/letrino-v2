@@ -1,25 +1,27 @@
 "use client"
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/shared/store";
+import { AppDispatch, RootState } from "@/shared/store";
 import {ENTER_KEY, ATTEMPTS_PER_GRID, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants'
-import { setAttempt, setTargetWord, validateAttempt } from "@/features/game/store/gameSlice";
+import { setAttempt, setTargetWord } from "@/features/game/store/gameSlice";
 import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
 import { TargetWord } from "../../types/game";
+import { useAttemptValidation } from "../../hooks";
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+  const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if(INVALID_KEYS.includes(event.key) || attempts?.[currentAttemptIndex]?.letters?.length < LETTERS_PER_ATTEMPT) return;
-
-    const guess = attempts?.[currentAttemptIndex]?.letters?.reduce((acc, curr) => acc + curr.letter, '');
+    if(INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
 
     if((event.key === ENTER_KEY)) {
-      dispatch(validateAttempt(guess))
+      // TODO: Passar isUserLoggedIn do contexto de autenticação
+      const isUserLoggedIn = true; // Substitua pela lógica real de autenticação
+      return handleAttemptSubmission(isUserLoggedIn);
     }
   }
 
