@@ -9,7 +9,7 @@ export const registerUserAttempt = createAsyncThunk(
     const {game} = getState() as { game: typeof INITIAL_GAME_STATE };
     const target = game.targetWord?.word;
     
-    if (!guess || guess.length < LETTERS_PER_ATTEMPT || !target || game.isGameOver) {
+    if (!guess || !target) {
       throw new Error('Invalid attempt');
     }
 
@@ -80,6 +80,7 @@ const gameSlice = createSlice({
       state.currentAttemptIndex += 1;
 
       const isCorrect = guess === target;
+      
       if (isCorrect) {
         state.isWin = true;
         confetti({

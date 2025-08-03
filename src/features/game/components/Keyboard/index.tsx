@@ -11,14 +11,14 @@ import { useAttemptValidation } from "../../hooks"
 
 export const Keyboard = () => {
   const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
+  const { username } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
   
-  const onAction = (key: string, attempt: Attempt) => {
+  const onAction = (key: string) => {
     if(key === ENTER_KEY && canSubmitAttempt()) {
-      // TODO: Passar isUserLoggedIn do contexto de autenticação
-      const isUserLoggedIn = true; // Substitua pela lógica real de autenticação
-      handleAttemptSubmission(isUserLoggedIn);
+      const isLoggedIn = !!username;
+      return handleAttemptSubmission(isLoggedIn);
     };
 
     if(key === BACKSPACE_KEY) return dispatch(setKeyboardBackspace());
@@ -51,7 +51,7 @@ export const Keyboard = () => {
             
             return (
             <Key
-              onClick={() => isActionKey ? onAction(key, attempts?.[currentAttemptIndex]) : dispatch(setKeyboardInput(key.toLowerCase()))} 
+              onClick={() => isActionKey ? onAction(key) : dispatch(setKeyboardInput(key.toLowerCase()))} 
               key={key}
               disabled={isGameOver}
               status={keyStatus}

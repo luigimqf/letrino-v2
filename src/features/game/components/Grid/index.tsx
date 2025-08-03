@@ -12,6 +12,7 @@ import { useAttemptValidation } from "../../hooks";
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
+  const {username} = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>();
   const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
 
@@ -19,9 +20,8 @@ export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
     if(INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
 
     if((event.key === ENTER_KEY)) {
-      // TODO: Passar isUserLoggedIn do contexto de autenticação
-      const isUserLoggedIn = true; // Substitua pela lógica real de autenticação
-      return handleAttemptSubmission(isUserLoggedIn);
+      const isLoggedIn = !!username;
+      return handleAttemptSubmission(isLoggedIn);
     }
   }
 
