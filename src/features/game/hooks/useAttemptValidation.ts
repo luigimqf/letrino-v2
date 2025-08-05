@@ -4,6 +4,8 @@ import { AppDispatch, RootState } from '@/shared/store';
 import { validateAttempt, registerUserAttempt } from '../store/gameSlice';
 import { LETTERS_PER_ATTEMPT } from '../constants';
 import { Attempt } from '../types/game';
+import { allowedWords } from '../utils';
+import { toast } from 'sonner';
 
 export const useAttemptValidation = () => {
   const { attempts, currentAttemptIndex, targetWord, isGameOver } = useSelector(
@@ -17,6 +19,18 @@ export const useAttemptValidation = () => {
 
     if (!guess || guess.length < LETTERS_PER_ATTEMPT || !targetWord?.word || isGameOver) {
       return false;
+    }
+
+    if(!allowedWords.includes(guess.toUpperCase())) {
+      toast("Palavra inválida", {
+        action: {
+          label: "Fechar",
+          onClick: () => {}
+        },
+        position: "top-right",
+        duration: 3000
+      })
+      return;
     }
 
     dispatch(validateAttempt(guess));
