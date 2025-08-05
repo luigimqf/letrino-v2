@@ -5,7 +5,7 @@ import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../
 import { Key } from "./Key"
 import { AppDispatch, RootState } from "@/shared/store"
 import { setKeyboardBackspace, setKeyboardInput } from "../../store/gameSlice"
-import { Attempt, LetterCell } from "../../types/game"
+import { LetterCell } from "../../types/game"
 import { useCallback } from "react"
 import { useAttemptValidation } from "../../hooks"
 
@@ -41,7 +41,7 @@ export const Keyboard = () => {
   }, [currentAttemptIndex])
 
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 z-10">
       {KEYBOARD_KEYS.map((row, rowIndex) => (
         <div key={rowIndex} className="flex gap-2">
           {row.map((key) => {

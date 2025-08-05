@@ -6,12 +6,13 @@ import React, { memo } from "react";
 import { LetterCell } from "../../types/game";
 import { LETTERS_PER_ATTEMPT } from "../../constants";
 import { Letter } from "./Letter";
+import { cn } from "@/shared/lib/utils";
 
 type AttemptProps = Omit<React.ComponentProps<typeof OTPInput>, "render"> & {
   letters: LetterCell[];
 };
 
-const AttemptComponent = ({letters,disabled,maxLength, value, onChange, ...props}: AttemptProps) => {
+const AttemptComponent = ({letters,disabled,maxLength, value, onChange,className, ...props}: AttemptProps) => {
 
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -22,7 +23,7 @@ const AttemptComponent = ({letters,disabled,maxLength, value, onChange, ...props
   },[disabled])
   
   return (
-    <InputOTP ref={inputRef} disabled={disabled} maxLength={maxLength} value={value} onChange={onChange} {...props}>
+    <InputOTP containerClassName={cn('z-10', className)} ref={inputRef} disabled={disabled} maxLength={maxLength} value={value} onChange={onChange} {...props}>
       {
         [...Array(LETTERS_PER_ATTEMPT)].map((_,letterIndex) => {
           const letterStatus = letters?.[letterIndex]?.status;

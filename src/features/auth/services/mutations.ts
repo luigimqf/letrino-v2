@@ -17,7 +17,7 @@ async function logout() {
       success: true,
       message: null,
     }
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: 'server error'

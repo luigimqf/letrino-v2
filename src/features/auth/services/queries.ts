@@ -16,7 +16,7 @@ async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
     }
 
     return response.json()
-  } catch (error) {
+  } catch {
     return {
       success: false,
       error: "server error"

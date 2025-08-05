@@ -1,3 +1,4 @@
+import { BackgroundBoxes } from "@/shared/components/background/background-boxes";
 import { Header } from "@/shared/components/layout/Header";
 import { ChildrenProp } from "@/shared/types";
 

@@ -5,7 +5,7 @@ import { ReduxProvider } from "@/shared/providers/ReduxProvider";
 import { QueryProvider } from "@/shared/providers/QueryProvider";
 import { Toaster } from "@/shared/components/ui/sonner";
 import { ThemeProvider } from "@/shared/components/layout/theme-provider";
-import { ModeToggle } from "@/shared/components/ModeToggle";
+import { ModeToggle } from "@/shared/components/toggle-mode";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

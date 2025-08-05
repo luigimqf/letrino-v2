@@ -144,7 +144,7 @@ const gameSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUserAttempt.pending, (state, _) => {
+      .addCase(registerUserAttempt.pending, (state) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
         const lastAttempt = state.attempts[lastAttemptIndex];
         
@@ -155,7 +155,7 @@ const gameSlice = createSlice({
           };
         }
       })
-      .addCase(registerUserAttempt.fulfilled, (state, action) => {
+      .addCase(registerUserAttempt.fulfilled, (state) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
         const lastAttempt = state.attempts[lastAttemptIndex];
         
@@ -166,7 +166,7 @@ const gameSlice = createSlice({
           };
         }
       })
-      .addCase(registerUserAttempt.rejected, (state, _) => {
+      .addCase(registerUserAttempt.rejected, (state) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
         const lastAttempt = state.attempts[lastAttemptIndex];
         

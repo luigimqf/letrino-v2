@@ -12,7 +12,7 @@ type KeyProps = ChildrenProp & ComponentProps<"button"> & {
 
 export const Key = ({children,status,size,disabled, ...props}: KeyProps) => {
   const keyVariants = tv({
-    base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm bg-input font-medium rounded-sm border border-primary-100 disabled:opacity-50 disabled:cursor-default',
+    base: 'p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-100 bg-neutral-700 disabled:brightness-50 disabled:cursor-default',
     variants: {
       color: {
         correct: 'bg-success',
