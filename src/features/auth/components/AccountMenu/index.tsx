@@ -15,11 +15,11 @@ import { useEffect } from "react"
 import { useLogout } from "../../services/mutations"
 
 export const AccountMenu = () => {
-  const {avatar,username, score} = useSelector((state: RootState) => state.auth);
+  const {user} = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
   const {data: dataResult, isPending: isDataPending} = useUserData();
-  const {data: logoutResult,isPending: isLogoutPending, mutate} = useLogout();
+  const {data: logoutResult,isPending: isLogoutPending, mutate: logout} = useLogout();
 
   useEffect(() => {
     if(dataResult?.success) {
@@ -39,13 +39,13 @@ export const AccountMenu = () => {
     }
   },[logoutResult])
 
-  if(!username) return <Button variant="outline" className="w-15" onClick={() => router.push(ROUTES.SIGN_IN)}>Login</Button>;
+  if(!user.username) return <Button variant="outline" className="w-15" onClick={() => router.push(ROUTES.SIGN_IN)}>Login</Button>;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Avatar className="cursor-pointer select-none">
-          <AvatarImage src={avatar} alt="avatar"/>
+          <AvatarImage src={user.avatar} alt="avatar"/>
           <AvatarFallback>--</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
@@ -54,13 +54,13 @@ export const AccountMenu = () => {
           disabled 
           className="text-xs flex items-center justify-between"
           >
-            {username} <span>{score} pts</span>
+            {user.username} <span>{user.score} pts</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator/>
         <DropdownMenuItem 
           disabled={isDataPending || isLogoutPending} 
           className="cursor-pointer hover:bg-accent transition-all duration-300" 
-          onClick={() => mutate()}
+          onClick={() => logout()}
         >
           <span className="text-destructive text-xs">Log out</span>
           <DropdownMenuShortcut>

@@ -8,5 +8,6 @@ export enum ROUTES {
   REFRESH_PASSWORD = "/refresh-password",
   REFRESH_TOKEN = "/refresh-token",
   GET_USER_DATA = "/user-data",
-  LEADERBOARD = "/leaderboard"
+  LEADERBOARD = "/leaderboard",
+  TUTORIAL = "/tutorial",
 };
