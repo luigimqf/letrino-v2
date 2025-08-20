@@ -1,12 +1,12 @@
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/shared/components/ui/sheet"
-import { Award, Crown } from "lucide-react"
+import {  Crown, Trophy } from "lucide-react"
 import { Leaderboard } from "./Leaderboard"
 
 export const LeaderboardMenu = () => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Award className="cursor-pointer" color="var(--warning)"/>
+        <Trophy size={23} className="cursor-pointer" color="var(--warning)"/>
       </SheetTrigger>
       <SheetContent className="bg-bkg-100">
         <SheetHeader>

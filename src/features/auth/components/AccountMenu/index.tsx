@@ -50,9 +50,18 @@ export const AccountMenu = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem disabled className="text-xs flex items-center justify-between">{username} <span>{score} pts</span></DropdownMenuItem>
+        <DropdownMenuItem 
+          disabled 
+          className="text-xs flex items-center justify-between"
+          >
+            {username} <span>{score} pts</span>
+        </DropdownMenuItem>
         <DropdownMenuSeparator/>
-        <DropdownMenuItem disabled={isDataPending || isLogoutPending} className="cursor-pointer hover:bg-accent transition-all duration-300" onClick={() => mutate()}>
+        <DropdownMenuItem 
+          disabled={isDataPending || isLogoutPending} 
+          className="cursor-pointer hover:bg-accent transition-all duration-300" 
+          onClick={() => mutate()}
+        >
           <span className="text-destructive text-xs">Log out</span>
           <DropdownMenuShortcut>
             <LogOut color="var(--destructive)"/>
