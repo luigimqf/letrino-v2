@@ -9,10 +9,11 @@ import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
 import { TargetWord } from "../../types/game";
 import { useAttemptValidation } from "../../hooks";
+import { GameSign } from "@/shared/components/layout/GameSign";
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
-  const {username} = useSelector((state: RootState) => state.auth)
+  const {user} = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>();
   const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
 
@@ -20,7 +21,7 @@ export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
     if(INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
 
     if((event.key === ENTER_KEY)) {
-      const isLoggedIn = !!username;
+      const isLoggedIn = !!user.username;
       return handleAttemptSubmission(isLoggedIn);
     }
   }
@@ -32,27 +33,30 @@ export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   },[targetWord, dispatch]);
 
   return (
-    <div className="w-[250px] flex flex-col justify-start items-center gap-8 font-sans">
-      {
-        [...Array(ATTEMPTS_PER_GRID)].map((_, attemptIndex) => {
-          const isActiveAttempt = currentAttemptIndex === attemptIndex;
-          const letters = attempts?.[attemptIndex]?.letters;
-          const value = letters?.reduce((acc, curr) => {return acc + curr.letter},"");
-          return  (
-          <Attempt
-            letters={letters}
-            key={`attempt-${attemptIndex}`}
-            pattern={REGEXP_ONLY_CHARS} 
-            onKeyDown={onKeyDown}
-            value={value}
-            onChange={(value) => dispatch(setAttempt({guess: value, attemptIndex: attemptIndex}))} 
-            autoComplete="off" 
-            disabled={!isActiveAttempt || isGameOver} 
-            maxLength={LETTERS_PER_ATTEMPT}
-          />
-        )
-        })
-      }
+    <div className="w-[250px] flex flex-col justify-start items-center gap-12 font-sans">
+      <GameSign />
+      <div className="w-full flex flex-col gap-8 justify-center items-center">
+        {
+          [...Array(ATTEMPTS_PER_GRID)].map((_, attemptIndex) => {
+            const isActiveAttempt = currentAttemptIndex === attemptIndex;
+            const letters = attempts?.[attemptIndex]?.letters;
+            const value = letters?.reduce((acc, curr) => {return acc + curr.letter},"");
+            return  (
+            <Attempt
+              letters={letters}
+              key={`attempt-${attemptIndex}`}
+              pattern={REGEXP_ONLY_CHARS} 
+              onKeyDown={onKeyDown}
+              value={value}
+              onChange={(value) => dispatch(setAttempt({guess: value, attemptIndex: attemptIndex}))} 
+              autoComplete="off" 
+              disabled={!isActiveAttempt || isGameOver} 
+              maxLength={LETTERS_PER_ATTEMPT}
+            />
+          )
+          })
+        }
+      </div>
     </div>
   )
 }

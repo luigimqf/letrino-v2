@@ -121,11 +121,11 @@ export function Sidemenu() {
                                         "focus:bg-accent focus:text-accent-foreground"
                                     )}
                                 >
-                                    <Icon size={20} className="shrink-0" />
+                                    <Icon size={18} className="shrink-0" />
 
                                     <span
                                         className={cn(
-                                            "ml-3 text-sm font-medium transition-all duration-300 ease-out whitespace-nowrap overflow-hidden",
+                                            "ml-3 text-xs font-medium transition-all duration-300 ease-out whitespace-nowrap overflow-hidden",
                                             isOpen ? "opacity-100 w-auto max-w-none" : "opacity-0 w-0 max-w-0"
                                         )}
                                     >
