@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useActionState } from 'react';
 import { Trophy, Medal, Award } from 'lucide-react';
 import LeaderboardCard from '@/features/leaderboard/components/Card';
 import UserRankCard from '@/features/leaderboard/components/UserRank';
 import { LeaderboardResponse } from '@/features/leaderboard/types';
+import { useLeaderboard } from '@/features/leaderboard/services/queries';
 
 const mockData: LeaderboardResponse = {
   success: true,
@@ -93,99 +94,71 @@ const mockData: LeaderboardResponse = {
 };
 
 export default function LeaderboardPage() {
-  const [data, setData] = useState<LeaderboardResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {data, isLoading, isSuccess, error} = useLeaderboard();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setData(mockData);
-      setLoading(false);
-    }, 1000);
-  }, []);
+  console.log("Leaderboard Data:", data);
 
-  const fetchLeaderboard = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      setTimeout(() => {
-        setData(mockData);
-        setLoading(false);
-      }, 1000);
-    } catch (err) {
-      setError('Erro de conexão');
-      setLoading(false);
-    }
-  };
-
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-accent-400"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
       </div>
     );
   }
 
-  if (error) {
+  if (!isSuccess) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Ops! Algo deu errado</h2>
-          <p className="text-gray-300 mb-6">{error}</p>
-          <button 
-            onClick={fetchLeaderboard}
-            className="bg-accent-500 hover:bg-accent-600 text-white px-6 py-3 rounded-lg transition-colors"
-          >
-            Tentar novamente
-          </button>
+          <h2 className="text-2xl font-bold text-foreground mb-4">Ops! Algo deu errado</h2>
+          <p className="text-muted-foreground mb-6">{error?.message}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="px-4 py-6 lg:px-8">
+    <div className="px-4 py-6 lg:px-8 overflow-auto">
       <div className="text-center mb-8 lg:mb-12">
         <div className="flex items-center justify-center mb-4">
-          <Trophy className="h-10 w-10 lg:h-12 lg:w-12 text-accent-400 mr-3" />
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
+          <Trophy className="h-10 w-10 lg:h-12 lg:w-12 text-primary mr-3" />
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
             Leaderboard
           </h1>
         </div>
-        <p className="text-gray-300 text-base lg:text-lg">
+        <p className="text-muted-foreground text-base lg:text-lg">
           Os melhores jogadores do momento
         </p>
       </div>
 
-      {data?.data.leaderboard.length && (
+      {mockData?.data.leaderboard.length && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-12 max-w-6xl mx-auto">
-          {data.data.leaderboard[1] && (
+          {mockData.data.leaderboard[1] && (
             <div className="order-2 lg:order-1">
               <LeaderboardCard 
-                user={data.data.leaderboard[1]} 
+                user={mockData.data.leaderboard[1]} 
                 rank={2}
                 isPodium={true}
-                icon={<Medal className="h-5 w-5 lg:h-6 lg:w-6 text-gray-400" />}
+                icon={<Medal className="h-5 w-5 lg:h-6 lg:w-6 text-muted-foreground" />}
               />
             </div>
           )}
           
-          {data.data.leaderboard[0] && (
+          {mockData.data.leaderboard[0] && (
             <div className="order-1 lg:order-2 transform lg:scale-110 lg:-mt-4">
               <LeaderboardCard 
-                user={data.data.leaderboard[0]} 
+                user={mockData.data.leaderboard[0]} 
                 rank={1}
                 isPodium={true}
-                icon={<Trophy className="h-5 w-5 lg:h-6 lg:w-6 text-yellow-400" />}
+                icon={<Trophy className="h-5 w-5 lg:h-6 lg:w-6 text-yellow-500" />}
               />
             </div>
           )}
           
-          {data.data.leaderboard[2] && (
+          {mockData.data.leaderboard[2] && (
             <div className="order-3 lg:order-3">
               <LeaderboardCard 
-                user={data.data.leaderboard[2]} 
+                user={mockData.data.leaderboard[2]} 
                 rank={3}
                 isPodium={true}
                 icon={<Award className="h-5 w-5 lg:h-6 lg:w-6 text-amber-600" />}
@@ -196,7 +169,7 @@ export default function LeaderboardPage() {
       )}
 
       <div className="max-w-4xl mx-auto space-y-3 lg:space-y-4">
-        {data?.data.leaderboard.slice(3).map((user, index) => (
+        {mockData?.data.leaderboard.slice(3).map((user, index) => (
           <LeaderboardCard 
             key={user.username} 
             user={user} 
@@ -206,12 +179,12 @@ export default function LeaderboardPage() {
         ))}
       </div>
 
-      {data?.data.user && (
+      {mockData?.data.user && (
         <div className="max-w-4xl mx-auto mt-6 lg:mt-8">
           <div className="text-center mb-4">
-            <h3 className="text-lg lg:text-xl font-semibold text-white">Sua Posição</h3>
+            <h3 className="text-lg lg:text-xl font-semibold text-foreground">Sua Posição</h3>
           </div>
-          <UserRankCard user={data.data.user} />
+          <UserRankCard user={mockData.data.user} />
         </div>
       )}
     </div>

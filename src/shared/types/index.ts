@@ -2,15 +2,13 @@ export type ChildrenProp = {
   children: React.ReactNode;
 }
 
-export type PromiseReturn<T = null, K=string> = PromiseSuccess<T> | PromiseFailed<K>;
-
-export type PromiseSuccess<T = null> = {
-  success: true;
-  data: T;
-  message?: string | null;
+export type ErrorResponse = {
+  message: string;
+  code: string;
 }
 
-export type PromiseFailed<T = string> = {
-  success: false;
-  error: T;
+export type PromiseReturn<T = null> = {
+  success: boolean;
+  data?: T;
+  error?: ErrorResponse;
 }

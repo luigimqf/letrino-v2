@@ -11,7 +11,10 @@ async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
     if(!response.ok) {
       return {
         success: false,
-        error: "unable to get user data"
+        error: {
+          message: "unable to get user data",
+          code: "USER_DATA_FAILED"
+        }
       };
     }
 
@@ -19,7 +22,10 @@ async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
   } catch {
     return {
       success: false,
-      error: "server error"
+      error: {
+        message: "server error",
+        code: "SERVER_ERROR"
+      }
     };
   }
 }

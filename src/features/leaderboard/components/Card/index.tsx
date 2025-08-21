@@ -18,7 +18,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
       case 3:
         return 'bg-gradient-to-r from-amber-600/20 to-amber-700/20 border-amber-600/50';
       default:
-        return 'bg-primary-800/50 border-primary-700/50';
+        return 'bg-card border-border';
     }
   };
 
@@ -31,7 +31,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
       case 3:
         return 'bg-gradient-to-r from-amber-600 to-amber-700 text-white';
       default:
-        return 'bg-primary-700 text-gray-300';
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -47,7 +47,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
         
         <div className="text-center space-y-3 lg:space-y-4">
           <div className="flex justify-center">
-            <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden ring-4 ring-accent-400/30">
+            <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden ring-4 ring-primary/30">
               <img
                 src={user.avatar}
                 alt={`Avatar de ${user.username}`}
@@ -64,18 +64,18 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
           </div>
 
           <div>
-            <h3 className="text-lg lg:text-xl font-bold text-white mb-2 truncate">
+            <h3 className="text-lg lg:text-xl font-bold text-foreground mb-2 truncate">
               {user.username}
             </h3>
             <div className="space-y-1">
-              <div className="text-xl lg:text-2xl font-bold text-white">
+              <div className="text-xl lg:text-2xl font-bold text-foreground">
                 {user.score.toLocaleString()}
               </div>
-              <div className="text-xs lg:text-sm text-gray-400">
+              <div className="text-xs lg:text-sm text-muted-foreground">
                 pontos
               </div>
               {user.winRate && (
-                <div className="text-xs lg:text-sm text-gray-300">
+                <div className="text-xs lg:text-sm text-muted-foreground">
                   {user.winRate}% vitórias
                 </div>
               )}
@@ -99,7 +99,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
           #{rank}
         </div>
 
-        <div className="relative w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden ring-4 ring-accent-400/30 shrink-0">
+        <div className="relative w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden ring-4 ring-primary/30 shrink-0">
           <img
             src={user.avatar}
             alt={`Avatar de ${user.username}`}
@@ -108,15 +108,15 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
         </div>
 
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg lg:text-xl font-bold text-white mb-1 truncate">
+          <h3 className="text-lg lg:text-xl font-bold text-foreground mb-1 truncate">
             {user.username}
           </h3>
           <div className="flex items-center space-x-2 lg:space-x-4 text-xs lg:text-sm">
-            <span className="text-accent-400 font-semibold">
+            <span className="text-primary font-semibold">
               {user.score.toLocaleString()} pts
             </span>
             {user.winRate && (
-              <span className="text-gray-300">
+              <span className="text-muted-foreground">
                 {user.winRate}% vitórias
               </span>
             )}
@@ -124,10 +124,10 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
         </div>
 
         <div className="text-right shrink-0">
-          <div className="text-lg lg:text-2xl font-bold text-white">
+          <div className="text-lg lg:text-2xl font-bold text-foreground">
             {user.score.toLocaleString()}
           </div>
-          <div className="text-xs lg:text-sm text-gray-400">
+          <div className="text-xs lg:text-sm text-muted-foreground">
             pontos
           </div>
         </div>

@@ -3,7 +3,7 @@ import { Grid } from "@/features/game/components/Grid";
 import { Keyboard } from "@/features/game/components/Keyboard";
 import { TargetWord } from "@/features/game/types/game";
 import { ROUTES } from "@/shared/constants";
-import { PromiseSuccess } from "@/shared/types";
+import { PromiseReturn } from "@/shared/types";
 import { redirect } from "next/navigation";
 
 export default async function GamePage() {
@@ -11,7 +11,11 @@ export default async function GamePage() {
 
   if(!response.ok) redirect(ROUTES.WORD_NOT_FOUND);
 
-  const {data: targetWord}: PromiseSuccess<TargetWord> = await response.json();
+  const {data: targetWord}: PromiseReturn<TargetWord> = await response.json();
+
+  if (!targetWord) {
+    redirect(ROUTES.WORD_NOT_FOUND);
+  }
 
   return (
     <main className="w-full h-full flex flex-col py-15 justify-between items-center">

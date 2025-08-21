@@ -9,6 +9,7 @@ const publicRoutes = [
   {path: ROUTES.FORGOT_PASSWORD, whenAuthenticated: "redirect"},
   {path: ROUTES.WORD_NOT_FOUND, whenAuthenticated: "next"},
   {path: ROUTES.LEADERBOARD, whenAuthenticated: "next"},
+  {path: ROUTES.TUTORIAL, whenAuthenticated: "next"},
 ] as const;
 
 export function middleware(request: NextRequest) {
