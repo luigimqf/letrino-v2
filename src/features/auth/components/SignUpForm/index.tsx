@@ -41,7 +41,7 @@ export default function SignUpForm() {
   },[result])
   
   return (
-    <form action={handleSignUp} className="bg-bkg-100 w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10">
+    <form action={handleSignUp} className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10">
       <div className="flex flex-col gap-5 items-center">
         <Logo/>
         <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
