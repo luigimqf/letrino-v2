@@ -74,11 +74,9 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
               <div className="text-xs lg:text-sm text-muted-foreground">
                 pontos
               </div>
-              {user.winRate && (
-                <div className="text-xs lg:text-sm text-muted-foreground">
-                  {user.winRate}% vitórias
-                </div>
-              )}
+              <div className="text-xs lg:text-sm text-muted-foreground">
+                {user.winRate}% vitórias
+              </div>
             </div>
           </div>
         </div>
@@ -115,11 +113,9 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
             <span className="text-primary font-semibold">
               {user.score.toLocaleString()} pts
             </span>
-            {user.winRate && (
-              <span className="text-muted-foreground">
-                {user.winRate}% vitórias
-              </span>
-            )}
+            <span className="text-muted-foreground">
+              {user.winRate}% vitórias
+            </span>
           </div>
         </div>
 
