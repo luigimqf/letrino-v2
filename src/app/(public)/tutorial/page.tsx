@@ -22,7 +22,7 @@ export default function TutorialPage() {
     <div className="px-4 py-6 lg:px-8 overflow-auto">
       <div className="text-center mb-8 lg:mb-12">
         <div className="flex items-center justify-center mb-4">
-          <BookOpen className="h-10 w-10 lg:h-12 lg:w-12 text-primary mr-3" />
+          <BookOpen className="h-10 w-10 text-primary mr-3" />
           <h1 className="text-3xl font-bold text-foreground">
             Como Jogar
           </h1>

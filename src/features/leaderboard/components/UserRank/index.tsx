@@ -1,8 +1,8 @@
-import { LeaderboardUser } from '../../types';
+import { PlayerRank } from '../../types';
 import { User } from 'lucide-react';
 
 interface UserRankCardProps {
-  user: LeaderboardUser;
+  user: PlayerRank;
 }
 
 export default function UserRankCard({ user }: UserRankCardProps) {

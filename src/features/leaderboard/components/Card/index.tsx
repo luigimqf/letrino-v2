@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
-import { LeaderboardUser } from '../../types';
+import { PlayerRank } from '../../types';
 
 interface LeaderboardCardProps {
-  user: LeaderboardUser;
+  user: PlayerRank;
   rank: number;
   isPodium: boolean;
   icon?: ReactNode;
