@@ -1,8 +1,8 @@
 "use server"
 
 import { LoginData, ServerActionReturn } from "@/features/auth/types";
-import { ROUTES } from "@/shared/constants";
-import { PromiseFailed, PromiseSuccess } from "@/shared/types";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
+import { PromiseReturn } from "@/shared/types";
 import { cookies } from "next/headers";
 import {z} from "zod";
 
@@ -30,7 +30,6 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
       }
       return acc;
     },{} as Record<string, string>)
-
     return {
       success: false,
       errors,
@@ -49,34 +48,35 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
   });
 
   if(!response.ok) {
-    const errData: PromiseFailed = await response.json();
+    const errData: PromiseReturn = await response.json();
     return {
       success: false,
-      errors: {
-        api_err: errData.error
+      api_error: {
+        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+        code: errData.error?.code || "UNKNOWN_ERROR",
       },
       values: raw
     }
   }
-  const {data}: PromiseSuccess<LoginData> = await response.json();
+  const {data}: PromiseReturn<LoginData> = await response.json();
 
   const cookieStore = await cookies();
 
   cookieStore.set({
     name: 'token',
-    value: data.token,
+    value: data?.token ?? '',
     httpOnly: true,
   });
 
   cookieStore.set({
     name: 'refresh-token',
-    value: data.refresh_token,
+    value: data?.refresh_token ?? '',
     httpOnly: true,
   });
 
   return {
     success: true,
-    errors: null,
+    api_error: null,
     values: raw,
     data
   };

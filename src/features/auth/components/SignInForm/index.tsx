@@ -9,7 +9,7 @@ import { useActionState, useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { setUserInfo } from "../../store/authSlice"
 import { toast } from "sonner"
-import { ROUTES } from "@/shared/constants"
+import { ErrorsByCode, ROUTES } from "@/shared/constants"
 import { signIn } from "@/app/actions/sign-in"
 import { Back } from "@/shared/components/layout/Back"
 
@@ -32,9 +32,11 @@ export default function SignInForm() {
       router.push(ROUTES.HOME)
     }
 
-    if(!result?.success && result?.errors?.api_err) {
+    if(!result?.success && result?.api_error) {
+      const errorMessage = ErrorsByCode[result.api_error.code as keyof typeof ErrorsByCode ?? "UNKNOWN_ERROR"];
+
       toast("Erro ao efetuar login", {
-        description: result.errors.api_err,
+        description: errorMessage,
         action: {
           label: "Fechar",
           onClick: () => {}

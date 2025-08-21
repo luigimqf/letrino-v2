@@ -7,7 +7,7 @@ import { Label } from "@/shared/components/ui/label"
 import { useRouter } from "next/navigation"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
-import { ROUTES } from "@/shared/constants"
+import { ErrorsByCode, ROUTES } from "@/shared/constants"
 import { signUp } from "@/app/actions/sign-up"
 import { Back } from "@/shared/components/layout/Back"
 
@@ -28,9 +28,11 @@ export default function SignUpForm() {
       router.push(ROUTES.SIGN_IN)
     }
 
-    if(!result?.success && result?.errors?.api_err) {
+    if(!result?.success && result?.api_error) {
+      const errorMessage = ErrorsByCode[result.api_error.code as keyof typeof ErrorsByCode ?? "UNKNOWN_ERROR"];
+
       toast("Erro ao criar perfil", {
-        description: result.errors.api_err,
+        description: errorMessage,
         action: {
           label: "Fechar",
           onClick: () => {}

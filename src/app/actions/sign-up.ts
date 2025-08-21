@@ -1,8 +1,8 @@
 "use server"
 
 import { ServerActionReturn } from "@/features/auth/types";
-import { ROUTES } from "@/shared/constants";
-import { PromiseFailed } from "@/shared/types";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
+import { PromiseReturn } from "@/shared/types";
 import {z} from "zod";
 
 const signUpSchema = z.object({
@@ -57,11 +57,12 @@ export async function signUp(_: unknown, formData:FormData): Promise<ServerActio
   });
 
   if(!response.ok) {
-    const errData: PromiseFailed = await response.json();
+    const errData: PromiseReturn = await response.json();
     return {
       success: false,
-      errors: {
-        api_err: errData.error
+      api_error: {
+        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+        code: errData.error?.code || "UNKNOWN_ERROR",
       },
       values: raw as Record<string, string>
     }
@@ -69,7 +70,7 @@ export async function signUp(_: unknown, formData:FormData): Promise<ServerActio
 
   return {
     success: true,
-    errors: null,
+    api_error: null,
     values: raw as Record<string, string>
   };
 }

@@ -1,6 +1,10 @@
 export type ServerActionReturn<T = Record<string, string>> = {
   success: boolean;
-  errors: Record<string, string> | null;
+  api_error?: {
+    message: string;
+    code: string;
+  } | null;
+  errors?: Record<string, string> | null;
   values: T;
 }
 

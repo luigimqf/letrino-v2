@@ -1,8 +1,8 @@
 "use server"
 
 import { ServerActionReturn } from "@/features/auth/types";
-import { ROUTES } from "@/shared/constants";
-import { PromiseFailed } from "@/shared/types";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
+import { PromiseReturn } from "@/shared/types";
 import {z} from "zod";
 
 const newPasswordSchema = z.object({
@@ -49,11 +49,12 @@ export async function refreshPassword(_: unknown, formData:FormData): Promise<Se
   });
 
   if(!response.ok) {
-    const errData: PromiseFailed = await response.json();
+    const errData: PromiseReturn = await response.json();
     return {
       success: false,
       errors: {
-        api_err: errData.error
+        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+        code: errData.error?.code || "UNKNOWN_ERROR",
       },
       values: rawData
     }
