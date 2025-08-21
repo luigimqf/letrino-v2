@@ -10,4 +10,5 @@ export enum ROUTES {
   GET_USER_DATA = "/user-data",
   LEADERBOARD = "/leaderboard",
   TUTORIAL = "/tutorial",
+  WORD_NOT_FOUND = '/word-not-found',
 };

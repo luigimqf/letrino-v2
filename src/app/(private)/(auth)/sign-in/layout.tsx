@@ -8,7 +8,7 @@ export default function SignInLayout({children}:ChildrenProp) {
         <BackgroundBoxes className="absolute inset-0 w-full h-full" />
       </div>
 
-      <div className="flex justify-center items-center border-r border-foreground ">
+      <div className="flex justify-center items-center border-l border-foreground">
         {children}
       </div>
     </div>

@@ -4,7 +4,7 @@ import { ChildrenProp } from "@/shared/types";
 export default function SignUpLayout({children}:ChildrenProp) {
   return (
     <div className="h-screen grid grid-cols-2">
-      <div className="flex justify-center items-center border-r border-foreground ">
+      <div className="flex justify-center items-center border-r border-foreground">
         {children}
       </div>
 

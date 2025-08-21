@@ -6,7 +6,8 @@ const publicRoutes = [
   {path: ROUTES.SIGN_UP, whenAuthenticated: "redirect"},
   {path: ROUTES.SIGN_IN, whenAuthenticated: "redirect"},
   {path: ROUTES.REFRESH_PASSWORD, whenAuthenticated: "redirect"},
-  {path: ROUTES.FORGOT_PASSWORD, whenAuthenticated: "redirect"}
+  {path: ROUTES.FORGOT_PASSWORD, whenAuthenticated: "redirect"},
+  {path: ROUTES.WORD_NOT_FOUND, whenAuthenticated: "next"},
 ] as const;
 
 export function middleware(request: NextRequest) {

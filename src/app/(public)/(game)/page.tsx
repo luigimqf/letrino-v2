@@ -2,12 +2,14 @@ import { GameEnd } from "@/features/game/components/GameEnd";
 import { Grid } from "@/features/game/components/Grid";
 import { Keyboard } from "@/features/game/components/Keyboard";
 import { TargetWord } from "@/features/game/types/game";
+import { ROUTES } from "@/shared/constants";
 import { PromiseSuccess } from "@/shared/types";
+import { redirect } from "next/navigation";
 
 export default async function GamePage() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/word`);
 
-  if(!response.ok) return null;
+  if(!response.ok) redirect(ROUTES.WORD_NOT_FOUND);
 
   const {data: targetWord}: PromiseSuccess<TargetWord> = await response.json();
 
