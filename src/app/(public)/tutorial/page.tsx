@@ -1,4 +1,4 @@
-import { BookOpen, Target, Palette, Trophy, Star, Lightbulb, AlertTriangle } from "lucide-react";
+import { AlertTriangle, BookOpen, Lightbulb, Palette, Star, Target, Trophy } from "lucide-react";
 
 const POINT_SYSTEM = [
   { attempt: "1ª", points: 100, label: "Perfeito!", color: "from-yellow-500 to-yellow-600" },
@@ -108,10 +108,6 @@ export default function TutorialPage() {
               <ul className="space-y-2 text-muted-foreground">
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2">•</span>
-                  Comece com palavras que têm vogais comuns (A, E, I, O, U)
-                </li>
-                <li className="flex items-start">
-                  <span className="text-green-500 mr-2">•</span>
                   Use palavras com letras diferentes na primeira tentativa
                 </li>
                 <li className="flex items-start">
@@ -120,8 +116,7 @@ export default function TutorialPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2">•</span>
-                  Palavras como <span className="text-primary font-mono">AUDIO</span>,{" "}
-                  <span className="text-primary font-mono">STONE</span> são bons pontos de partida
+                  Tente formar palavras que usem as dicas recebidas
                 </li>
               </ul>
             </div>

@@ -10,12 +10,13 @@ import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { cn } from "@/shared/lib/utils";
 import { RootState } from "@/shared/store";
 import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, X } from "lucide-react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
-const menuItems = [
+const MENU_ITENS = [
   {
     icon: Home,
     label: "Home",
@@ -33,7 +34,7 @@ const menuItems = [
   },
 ];
 
-export function Sidemenu() {
+function SidemenuComponent() {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const {
@@ -154,22 +155,21 @@ export function Sidemenu() {
 
           <nav className="flex-1 p-4">
             <ul className="space-y-2">
-              {menuItems.map((item) => {
+              {MENU_ITENS.map((item) => {
                 const Icon = item.icon;
                 return (
                   <li key={item.href}>
-                    <a
+                    <Link
                       href={item.href}
                       onClick={handleMenuItemClick}
                       className={cn(
                         "flex items-center p-2 rounded-lg transition-colors h-10",
                         "hover:bg-accent hover:text-accent-foreground",
-                        "focus:bg-accent focus:text-accent-foreground",
                       )}
                     >
                       <Icon size={18} className="shrink-0" />
                       <span className="ml-3 text-xs font-medium">{item.label}</span>
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -233,12 +233,12 @@ export function Sidemenu() {
 
       <nav className="flex-1 p-2">
         <ul className="space-y-2">
-          {menuItems.map((item) => {
+          {MENU_ITENS.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
                   data-active={isActive}
                   aria-current={isActive ? "page" : undefined}
@@ -249,10 +249,11 @@ export function Sidemenu() {
                     "focus:bg-accent focus:text-accent-foreground",
                   )}
                 >
-                  <div className={cn(
-                    "flex items-center justify-center bg-primary-300 p-2 rounded-lg",
-                    isActive ? "bg-primary-100 text-primary-300" : "bg-bkg-200 text-text-200",
-                  )}
+                  <div
+                    className={cn(
+                      "flex items-center justify-center bg-primary-300 p-2 rounded-lg",
+                      isActive ? "bg-primary-100 text-primary-300" : "bg-bkg-200 text-text-200",
+                    )}
                   >
                     <Icon size={18} className="shrink-0" />
                   </div>
@@ -266,7 +267,7 @@ export function Sidemenu() {
                   >
                     {item.label}
                   </span>
-                </a>
+                </Link>
               </li>
             );
           })}
@@ -279,7 +280,8 @@ export function Sidemenu() {
           className={cn(
             "w-full h-10 transition-all duration-300 ease-out",
             isOpen ? "justify-start" : "justify-center",
-            isAuthenticated && "bg-transparent border border-destructive text-destructive hover:bg-destructive/10"
+            isAuthenticated &&
+              "bg-transparent border border-destructive text-destructive hover:bg-destructive/10",
           )}
           disabled={disabled}
           onClick={handleLogout}
@@ -351,3 +353,5 @@ function UserInfo({
     </div>
   );
 }
+
+export const Sidemenu = memo(SidemenuComponent);
