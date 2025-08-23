@@ -1,4 +1,4 @@
-import { Logo } from "@/shared/components/layout/logo";
+import { Logo } from "@/shared/components/layout/Logo";
 import { ROUTES } from "@/shared/constants";
 import Link from "next/link";
 
