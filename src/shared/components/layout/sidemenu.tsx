@@ -57,7 +57,7 @@ function SidemenuComponent() {
     if (!isDesktop && isOpen) {
       setIsOpen(false);
     }
-  }, [router, isDesktop]);
+  }, [pathname, isDesktop]);
 
   useEffect(() => {
     if (isDesktop) {
@@ -66,8 +66,8 @@ function SidemenuComponent() {
   }, [isDesktop]);
 
   useEffect(() => {
-    if (dataResult?.success && dataResult.data) {
-      dispatch(setUserInfo(dataResult.data));
+    if (dataResult?.success && dataResult?.data) {
+      dispatch(setUserInfo(dataResult?.data));
     }
   }, [dataResult, dispatch]);
 
@@ -153,22 +153,41 @@ function SidemenuComponent() {
             )}
           </div>
 
-          <nav className="flex-1 p-4">
-            <ul className="space-y-2">
+          <nav className="flex-1 p-2 b">
+            <ul className="flex flex-col justify-start items-start space-y-2">
               {MENU_ITENS.map((item) => {
                 const Icon = item.icon;
+                const isActive = pathname === item.href;
                 return (
-                  <li key={item.href}>
+                  <li key={item.href} className="w-full">
                     <Link
                       href={item.href}
+                      data-active={isActive}
+                      aria-current={isActive ? "page" : undefined}
                       onClick={handleMenuItemClick}
                       className={cn(
-                        "flex items-center p-2 rounded-lg transition-colors h-10",
-                        "hover:bg-accent hover:text-accent-foreground",
+                        "flex data-[active='true']:text-primary-100 text-primary-200 items-center justify-start rounded-lg transition-colors h-10 w-full px-2",
+                        "hover:text-primary-100",
+                        "focus:bg-accent focus:text-accent-foreground",
                       )}
                     >
-                      <Icon size={18} className="shrink-0" />
-                      <span className="ml-3 text-xs font-medium">{item.label}</span>
+                      <div
+                        className={cn(
+                          "flex items-center justify-center p-2 rounded-lg shrink-0",
+                          isActive ? "bg-primary-100 text-primary-300" : "bg-bkg-200 text-text-200",
+                        )}
+                      >
+                        <Icon size={18} className="shrink-0" />
+                      </div>
+
+                      <span
+                        className={cn(
+                          "ml-3 text-xs font-medium transition-all duration-300 ease-out whitespace-nowrap",
+                          isActive ? "text-text-100" : "text-text-200",
+                        )}
+                      >
+                        {item.label}
+                      </span>
                     </Link>
                   </li>
                 );
@@ -232,26 +251,26 @@ function SidemenuComponent() {
       </div>
 
       <nav className="flex-1 p-2">
-        <ul className="space-y-2">
+        <ul className="flex flex-col justify-start items-start space-y-2">
           {MENU_ITENS.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
             return (
-              <li key={item.href}>
+              <li key={item.href} className="w-full">
                 <Link
                   href={item.href}
                   data-active={isActive}
                   aria-current={isActive ? "page" : undefined}
                   onClick={handleMenuItemClick}
                   className={cn(
-                    "flex data-[active='true']:text-primary-100 text-primary-200 items-center p-2 rounded-lg transition-colors h-10",
+                    "flex data-[active='true']:text-primary-100 text-primary-200 items-center justify-start rounded-lg transition-colors h-10 w-full px-2",
                     "hover:text-primary-100",
                     "focus:bg-accent focus:text-accent-foreground",
                   )}
                 >
                   <div
                     className={cn(
-                      "flex items-center justify-center bg-primary-300 p-2 rounded-lg",
+                      "flex items-center justify-center p-2 rounded-lg shrink-0",
                       isActive ? "bg-primary-100 text-primary-300" : "bg-bkg-200 text-text-200",
                     )}
                   >

@@ -55,29 +55,40 @@ export async function signUp(_: unknown, formData: FormData): Promise<ServerActi
 
   const { username, email, password } = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_UP}`, {
-    method: "POST",
-    body: JSON.stringify({ username, email, password }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_UP}`, {
+      method: "POST",
+      body: JSON.stringify({ username, email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const errData: PromiseReturn = await response.json();
+    if (!response.ok) {
+      const errData: PromiseReturn = await response.json();
+      return {
+        success: false,
+        api_error: {
+          message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+          code: errData.error?.code || "UNKNOWN_ERROR",
+        },
+        values: raw as Record<string, string>,
+      };
+    }
+
+    return {
+      success: true,
+      api_error: null,
+      values: raw as Record<string, string>,
+    };
+  } catch {
     return {
       success: false,
       api_error: {
-        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
-        code: errData.error?.code || "UNKNOWN_ERROR",
+        message: ErrorsByCode.UNKNOWN_ERROR,
+        code: "UNKNOWN_ERROR",
       },
       values: raw as Record<string, string>,
     };
   }
-
-  return {
-    success: true,
-    api_error: null,
-    values: raw as Record<string, string>,
-  };
 }

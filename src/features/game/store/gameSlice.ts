@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Attempt, EAttemptStatus, ELetterStatus, TargetWord } from "../types/game";
-import { INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT, ATTEMPTS_PER_GRID } from "../constants";
 import confetti from "canvas-confetti";
+import { ATTEMPTS_PER_GRID, INITIAL_GAME_STATE, LETTERS_PER_ATTEMPT } from "../constants";
+import { Attempt, EAttemptStatus, ELetterStatus, TargetWord } from "../types/game";
 
 export const registerUserAttempt = createAsyncThunk(
   "game/registerUserAttempt",
@@ -19,26 +19,30 @@ export const registerUserAttempt = createAsyncThunk(
     const isCorrect = guessLower === targetLower;
     const endpoint = isCorrect ? "/api/attempt/success" : "/api/attempt/failed";
 
-    const response = await fetch(endpoint, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        attempt: guessLower,
-      }),
-    });
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          attempt: guessLower,
+        }),
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        throw new Error("Failed to register attempt");
+      }
+
+      return {
+        guess: guessLower,
+        target: targetLower,
+        isCorrect,
+      };
+    } catch {
       throw new Error("Failed to register attempt");
     }
-
-    return {
-      guess: guessLower,
-      target: targetLower,
-      isCorrect,
-    };
   },
 );
 

@@ -35,33 +35,46 @@ export async function forgotPassword(_: unknown, formData: FormData): Promise<Se
     };
   }
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.FORGOT_PASSWORD}`, {
-    method: "POST",
-    body: JSON.stringify({ email }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.FORGOT_PASSWORD}`, {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const errData: PromiseReturn = await response.json();
+    if (!response.ok) {
+      const errData: PromiseReturn = await response.json();
+      return {
+        success: false,
+        errors: {
+          message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+          code: errData.error?.code || "UNKNOWN_ERROR",
+        },
+        values: {
+          email: email as string,
+        },
+      };
+    }
+
+    return {
+      success: true,
+      errors: null,
+      values: {
+        email: email as string,
+      },
+    };
+  } catch {
     return {
       success: false,
       errors: {
-        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
-        code: errData.error?.code || "UNKNOWN_ERROR",
+        message: ErrorsByCode.UNKNOWN_ERROR,
+        code: "UNKNOWN_ERROR",
       },
       values: {
         email: email as string,
       },
     };
   }
-
-  return {
-    success: true,
-    errors: null,
-    values: {
-      email: email as string,
-    },
-  };
 }

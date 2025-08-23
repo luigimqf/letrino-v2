@@ -11,7 +11,7 @@ export type ServerActionReturn<T = Record<string, string>> = {
 export type LoginData = {
   token: string;
   refresh_token: string;
-  user: UserBasicData;
+  username: string;
 };
 
 export type UserBasicData = {
