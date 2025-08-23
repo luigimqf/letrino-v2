@@ -5,35 +5,35 @@ import { PromiseReturn } from "@/shared/types";
 async function getUserData() {
   try {
     const response = await fetch("/api/get-user-data", {
-      method: "GET"
+      method: "GET",
     });
 
-    if(!response.ok) {
+    if (!response.ok) {
       return {
         success: false,
         error: {
           message: "unable to get user data",
-          code: "USER_DATA_FAILED"
-        }
+          code: "USER_DATA_FAILED",
+        },
       };
     }
 
-    return response.json()
+    return response.json();
   } catch {
     return {
       success: false,
       error: {
         message: "server error",
-        code: "SERVER_ERROR"
-      }
+        code: "SERVER_ERROR",
+      },
     };
   }
 }
 
 export const useUserData = () => {
   return useQuery<PromiseReturn<UserBasicData>>({
-  queryKey: ["user-data"],
-  queryFn: getUserData,
-  staleTime: Infinity
-})
-}
+    queryKey: ["user-data"],
+    queryFn: getUserData,
+    staleTime: Infinity,
+  });
+};

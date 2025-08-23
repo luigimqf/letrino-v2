@@ -5,5 +5,5 @@ export default function ForgotPasswordPage() {
     <main className="w-full h-full flex justify-center items-center">
       <ForgotPasswordForm />
     </main>
-  )
+  );
 }

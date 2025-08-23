@@ -6,28 +6,24 @@ import { cn } from "@/shared/lib/utils";
 export const BackgroundBoxesHover = ({ className, ...rest }: { className?: string }) => {
   const rows = new Array(150).fill(1);
   const cols = new Array(100).fill(1);
-  const colors = [
-    "var(--success)",
-    "var(--destructive)",
-    "var(--warning)"
-  ];
+  const colors = ["var(--success)", "var(--destructive)", "var(--warning)"];
 
   const getRandomColor = () => {
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
   const getRandomLetter = () => {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     return alphabet[Math.floor(Math.random() * alphabet.length)];
   };
 
   const boxesData = useMemo(() => {
-    return rows.map((_, i) => 
+    return rows.map((_, i) =>
       cols.map((_, j) => ({
         id: `${i}-${j}`,
         color: getRandomColor(),
-        letter: getRandomLetter()
-      }))
+        letter: getRandomLetter(),
+      })),
     );
   }, []);
 
@@ -40,10 +36,7 @@ export const BackgroundBoxesHover = ({ className, ...rest }: { className?: strin
         className="absolute z-0 flex h-[200vh] w-[200vw]"
       >
         {rows.map((_, i) => (
-          <motion.div
-            key={`row` + i}
-            className="relative h-8 w-16 border-l border-slate-700"
-          >
+          <motion.div key={`row` + i} className="relative h-8 w-16 border-l border-slate-700">
             {cols.map((_, j) => (
               <motion.div
                 whileHover={{

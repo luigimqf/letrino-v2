@@ -1,19 +1,19 @@
 export enum EAttemptStatus {
-  PENDING = 'pending',
-  SUCCESS = 'success',
-  FAILED = 'failed'
+  PENDING = "pending",
+  SUCCESS = "success",
+  FAILED = "failed",
 }
 
 export enum ELetterStatus {
   CORRECT = "correct",
-  INCORRECT = 'incorrect',
-  WARNING = 'warning'
-};
+  INCORRECT = "incorrect",
+  WARNING = "warning",
+}
 
 export type LetterCell = {
   letter: string;
   status?: ELetterStatus;
-}
+};
 
 export type Attempt = {
   id?: string;
@@ -27,9 +27,9 @@ export type GameState = {
   targetWord: TargetWord | null;
   isGameOver: boolean;
   isWin: boolean;
-}
+};
 
 export type TargetWord = {
   word: string;
   isGolden: boolean;
-}
+};

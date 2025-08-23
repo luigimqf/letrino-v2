@@ -1,53 +1,59 @@
-"use server"
+"use server";
 
 import { LoginData, ServerActionReturn } from "@/features/auth/types";
 import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { PromiseReturn } from "@/shared/types";
 import { cookies } from "next/headers";
-import {z} from "zod";
+import { z } from "zod";
 
 type SignInReturn = ServerActionReturn & {
-  data?: LoginData
-}
+  data?: LoginData;
+};
 
 const signInSchema = z.object({
-  email: z.string({message:"Campo Obrigatório"}).nonempty("Campo Obrigatório").email("Email inválido"),
-  password: z.string().nonempty("Campo Obrigatório")
-})
+  email: z
+    .string({ message: "Campo Obrigatório" })
+    .nonempty("Campo Obrigatório")
+    .email("Email inválido"),
+  password: z.string().nonempty("Campo Obrigatório"),
+});
 
-export async function signIn(_: unknown, formData:FormData): Promise<SignInReturn> {
+export async function signIn(_: unknown, formData: FormData): Promise<SignInReturn> {
   const raw = {
     email: formData.get("email"),
-    password: formData.get("password")
+    password: formData.get("password"),
   } as Record<string, string>;
 
-  const result = signInSchema.safeParse(raw)
+  const result = signInSchema.safeParse(raw);
 
-  if(!result.success) {
-    const errors = result.error.errors.reduce((acc, err) => {
-      if(err.path[0]) {
-        acc[err.path[0]] = err.message
-      }
-      return acc;
-    },{} as Record<string, string>)
+  if (!result.success) {
+    const errors = result.error.errors.reduce(
+      (acc, err) => {
+        if (err.path[0]) {
+          acc[err.path[0]] = err.message;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
     return {
       success: false,
       errors,
-      values: raw
-    }
+      values: raw,
+    };
   }
 
-  const {email,password} = result.data;
+  const { email, password } = result.data;
 
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
-    method: 'POST',
-    body: JSON.stringify({email,password}),
+    method: "POST",
+    body: JSON.stringify({ email, password }),
     headers: {
-      'Content-Type': 'application/json',
-    }
+      "Content-Type": "application/json",
+    },
   });
 
-  if(!response.ok) {
+  if (!response.ok) {
     const errData: PromiseReturn = await response.json();
     return {
       success: false,
@@ -55,22 +61,22 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
         message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
         code: errData.error?.code || "UNKNOWN_ERROR",
       },
-      values: raw
-    }
+      values: raw,
+    };
   }
-  const {data}: PromiseReturn<LoginData> = await response.json();
+  const { data }: PromiseReturn<LoginData> = await response.json();
 
   const cookieStore = await cookies();
 
   cookieStore.set({
-    name: 'token',
-    value: data?.token ?? '',
+    name: "token",
+    value: data?.token ?? "",
     httpOnly: true,
   });
 
   cookieStore.set({
-    name: 'refresh-token',
-    value: data?.refresh_token ?? '',
+    name: "refresh-token",
+    value: data?.refresh_token ?? "",
     httpOnly: true,
   });
 
@@ -78,6 +84,6 @@ export async function signIn(_: unknown, formData:FormData): Promise<SignInRetur
     success: true,
     api_error: null,
     values: raw,
-    data
+    data,
   };
 }

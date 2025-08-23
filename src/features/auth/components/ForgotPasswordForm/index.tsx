@@ -1,48 +1,56 @@
-"use client"
+"use client";
 
-import { Logo } from "@/shared/components/layout/Logo"
-import { Button } from "@/shared/components/ui/button"
-import { Input } from "@/shared/components/ui/input"
-import { Label } from "@/shared/components/ui/label"
-import { useActionState, useEffect } from "react"
-import { toast } from "sonner"
-import { forgotPassword } from "@/app/actions/forgot-password"
+import { Logo } from "@/shared/components/layout/Logo";
+import { Button } from "@/shared/components/ui/button";
+import { Input } from "@/shared/components/ui/input";
+import { Label } from "@/shared/components/ui/label";
+import { useActionState, useEffect } from "react";
+import { toast } from "sonner";
+import { forgotPassword } from "@/app/actions/forgot-password";
 
 export default function ForgotPasswordForm() {
   const [result, handleForgotPassword, isPending] = useActionState(forgotPassword, null);
 
   useEffect(() => {
-    if(result?.success) {
+    if (result?.success) {
       toast("E-mail enviado com sucesso!", {
         action: {
           label: "Fechar",
-          onClick: () => {}
+          onClick: () => {},
         },
-        duration: 3000
-      })
+        duration: 3000,
+      });
     }
 
-    if(!result?.success && result?.errors?.api_err) {
+    if (!result?.success && result?.errors?.api_err) {
       toast("Erro ao enviar e-mail de recuperação", {
         description: result.errors.api_err,
         action: {
           label: "Fechar",
-          onClick: () => {}
+          onClick: () => {},
         },
-        duration: 3000
-      })
+        duration: 3000,
+      });
     }
-  },[result])
-  
+  }, [result]);
+
   return (
-    <form action={handleForgotPassword} className="bg-bkg-100 w-sm flex flex-col gap-8 px-20 py-10 rounded-xl">
+    <form
+      action={handleForgotPassword}
+      className="bg-bkg-100 w-sm flex flex-col gap-8 px-20 py-10 rounded-xl"
+    >
       <div className="flex flex-col gap-5 items-center">
-        <Logo/>
+        <Logo />
         <span className="font-bold text-text-100 font-fredoka">Recupere sua senha</span>
       </div>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="recover-email">Email</Label>
-        <Input defaultValue={result?.values?.email ?? ''} id="recover-email" name="recover-email" type="email"/>
+        <Input
+          defaultValue={result?.values?.email ?? ""}
+          id="recover-email"
+          name="recover-email"
+          type="email"
+        />
         {result?.errors && result?.errors?.email && (
           <span
             data-visible={!!result.errors.email}
@@ -52,7 +60,9 @@ export default function ForgotPasswordForm() {
           </span>
         )}
       </div>
-      <Button disabled={isPending} type="submit">Enviar</Button>
+      <Button disabled={isPending} type="submit">
+        Enviar
+      </Button>
     </form>
-  )
+  );
 }

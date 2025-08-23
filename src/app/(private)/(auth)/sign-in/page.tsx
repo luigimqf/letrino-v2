@@ -5,5 +5,5 @@ export default function SignInPage() {
     <main className="bg-bkg-100 w-full h-full flex justify-center items-center">
       <SignInForm />
     </main>
-  )
+  );
 }

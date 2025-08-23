@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import { Provider } from 'react-redux'
-import { persistor, store } from '@/shared/store'
-import { ChildrenProp } from '../types'
-import { PersistGate } from 'redux-persist/integration/react'
+import { Provider } from "react-redux";
+import { persistor, store } from "@/shared/store";
+import { ChildrenProp } from "../types";
+import { PersistGate } from "redux-persist/integration/react";
 
 export function ReduxProvider({ children }: ChildrenProp) {
   return (
@@ -12,5 +12,5 @@ export function ReduxProvider({ children }: ChildrenProp) {
         {children}
       </PersistGate>
     </Provider>
-  )
+  );
 }

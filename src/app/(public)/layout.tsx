@@ -7,5 +7,5 @@ export default function GameLayout({ children }: ChildrenProp) {
       <Sidemenu />
       {children}
     </div>
-  )
+  );
 }

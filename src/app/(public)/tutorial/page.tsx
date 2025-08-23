@@ -1,29 +1,27 @@
-import { BookOpen, Target, Palette, Trophy, Star, Lightbulb, AlertTriangle } from 'lucide-react';
+import { BookOpen, Target, Palette, Trophy, Star, Lightbulb, AlertTriangle } from "lucide-react";
 
 const POINT_SYSTEM = [
-  { attempt: '1ª', points: 100, label: 'Perfeito!', color: 'from-yellow-500 to-yellow-600' },
-  { attempt: '2ª', points: 80, label: 'Excelente', color: 'from-green-500 to-green-600' },
-  { attempt: '3ª', points: 60, label: 'Muito bom', color: 'from-blue-500 to-blue-600' },
-  { attempt: '4ª', points: 40, label: 'Bom', color: 'from-purple-500 to-purple-600' },
-  { attempt: '5ª', points: 20, label: 'Regular', color: 'from-orange-500 to-orange-600' },
-  { attempt: '6ª', points: 10, label: 'No limite', color: 'from-red-500 to-red-600' },
+  { attempt: "1ª", points: 100, label: "Perfeito!", color: "from-yellow-500 to-yellow-600" },
+  { attempt: "2ª", points: 80, label: "Excelente", color: "from-green-500 to-green-600" },
+  { attempt: "3ª", points: 60, label: "Muito bom", color: "from-blue-500 to-blue-600" },
+  { attempt: "4ª", points: 40, label: "Bom", color: "from-purple-500 to-purple-600" },
+  { attempt: "5ª", points: 20, label: "Regular", color: "from-orange-500 to-orange-600" },
+  { attempt: "6ª", points: 10, label: "No limite", color: "from-red-500 to-red-600" },
 ];
 
 const BONUS_SYSTEM = [
-  { title: 'Sequência de 5+ vitórias', bonus: '+10 pontos', icon: '🔥' },
-  { title: 'Sequência de 10+ vitórias', bonus: '+25 pontos', icon: '🚀' },
-  { title: 'Jogo perfeito (1ª tentativa)', bonus: '+50 pontos', icon: '⭐' },
-  { title: 'Taxa de vitória 90%+', bonus: '+5 pontos por jogo', icon: '🏆' },
-] 
+  { title: "Sequência de 5+ vitórias", bonus: "+10 pontos", icon: "🔥" },
+  { title: "Sequência de 10+ vitórias", bonus: "+25 pontos", icon: "🚀" },
+  { title: "Jogo perfeito (1ª tentativa)", bonus: "+50 pontos", icon: "⭐" },
+  { title: "Taxa de vitória 90%+", bonus: "+5 pontos por jogo", icon: "🏆" },
+];
 export default function TutorialPage() {
   return (
     <div className="px-4 py-6 lg:px-8 overflow-auto">
       <div className="text-center mb-8 lg:mb-12">
         <div className="flex items-center justify-center mb-4">
           <BookOpen className="h-10 w-10 text-primary mr-3" />
-          <h1 className="text-3xl font-bold text-foreground">
-            Como Jogar
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Como Jogar</h1>
         </div>
         <p className="text-muted-foreground text-sm">
           Aprenda todas as regras e estratégias para dominar o jogo
@@ -37,8 +35,9 @@ export default function TutorialPage() {
             <h2 className="text-2xl font-bold text-foreground">Objetivo do Jogo</h2>
           </div>
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Descubra a palavra secreta em até <span className="text-primary font-semibold">6 tentativas</span>. 
-            A cada palpite, você receberá dicas sobre quais letras estão corretas e em que posições.
+            Descubra a palavra secreta em até{" "}
+            <span className="text-primary font-semibold">6 tentativas</span>. A cada palpite, você
+            receberá dicas sobre quais letras estão corretas e em que posições.
           </p>
         </section>
 
@@ -50,15 +49,19 @@ export default function TutorialPage() {
           <p className="text-muted-foreground mb-6">
             Cada letra ficará colorida após você enviar sua tentativa:
           </p>
-          
+
           <div className="space-y-4">
             <div className="flex items-start space-x-4 p-4 bg-green-500/10 dark:bg-green-500/20 rounded-lg border border-green-500/30">
               <div className="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center text-white font-bold text-xl shrink-0">
                 A
               </div>
               <div>
-                <h3 className="text-green-500 font-semibold text-lg mb-1">Verde - Posição Correta</h3>
-                <p className="text-muted-foreground">A letra está na palavra e na posição correta</p>
+                <h3 className="text-green-500 font-semibold text-lg mb-1">
+                  Verde - Posição Correta
+                </h3>
+                <p className="text-muted-foreground">
+                  A letra está na palavra e na posição correta
+                </p>
               </div>
             </div>
 
@@ -67,8 +70,12 @@ export default function TutorialPage() {
                 B
               </div>
               <div>
-                <h3 className="text-yellow-500 font-semibold text-lg mb-1">Amarelo - Letra Presente</h3>
-                <p className="text-muted-foreground">A letra está na palavra mas na posição errada</p>
+                <h3 className="text-yellow-500 font-semibold text-lg mb-1">
+                  Amarelo - Letra Presente
+                </h3>
+                <p className="text-muted-foreground">
+                  A letra está na palavra mas na posição errada
+                </p>
               </div>
             </div>
 
@@ -77,7 +84,9 @@ export default function TutorialPage() {
                 C
               </div>
               <div>
-                <h3 className="text-muted-foreground font-semibold text-lg mb-1">Cinza - Letra Ausente</h3>
+                <h3 className="text-muted-foreground font-semibold text-lg mb-1">
+                  Cinza - Letra Ausente
+                </h3>
                 <p className="text-muted-foreground">A letra não está na palavra</p>
               </div>
             </div>
@@ -111,7 +120,8 @@ export default function TutorialPage() {
                 </li>
                 <li className="flex items-start">
                   <span className="text-green-500 mr-2">•</span>
-                  Palavras como <span className="text-primary font-mono">AUDIO</span>, <span className="text-primary font-mono">STONE</span> são bons pontos de partida
+                  Palavras como <span className="text-primary font-mono">AUDIO</span>,{" "}
+                  <span className="text-primary font-mono">STONE</span> são bons pontos de partida
                 </li>
               </ul>
             </div>
@@ -151,7 +161,7 @@ export default function TutorialPage() {
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {POINT_SYSTEM.map((item) => (
-              <div 
+              <div
                 key={item.attempt}
                 className={`bg-gradient-to-br ${item.color} rounded-lg p-4 text-center text-white shadow-lg hover:shadow-xl transition-shadow`}
               >
@@ -171,7 +181,10 @@ export default function TutorialPage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             {BONUS_SYSTEM.map((bonus, index) => (
-              <div key={index} className="bg-card rounded-lg p-4 border border-primary/50 hover:border-primary/70 transition-colors">
+              <div
+                key={index}
+                className="bg-card rounded-lg p-4 border border-primary/50 hover:border-primary/70 transition-colors"
+              >
                 <div className="flex items-center space-x-3">
                   <span className="text-2xl">{bonus.icon}</span>
                   <div>

@@ -2,31 +2,31 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserBasicData } from "../types";
 
 const authSlicer = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState: {
     user: {
-      avatar: '',
-      username: '',
+      avatar: "",
+      username: "",
       score: 0,
-    }
+    },
   },
   reducers: {
     setUserInfo: (state, action: PayloadAction<UserBasicData>) => {
-      const {avatar,score,username} = action.payload
+      const { avatar, score, username } = action.payload;
       state.user = {
         username,
         avatar,
-        score
-      }
+        score,
+      };
     },
     removeUserInfo: (state) => {
       state.user = {
-        avatar: '',
-        username: '',
+        avatar: "",
+        username: "",
         score: 0,
-      }
-    }
-  }
+      };
+    },
+  },
 });
 
 export const { setUserInfo, removeUserInfo } = authSlicer.actions;

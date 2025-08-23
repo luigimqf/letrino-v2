@@ -15,8 +15,8 @@ const geistSans = Geist({
 const fredokaSans = Fredoka({
   weight: ["400"],
   variable: "--font-fredoka-sans",
-  subsets: ["latin"]
-})
+  subsets: ["latin"],
+});
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",

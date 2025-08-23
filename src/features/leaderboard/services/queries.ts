@@ -4,20 +4,20 @@ import { LeaderboardResult } from "../types";
 
 async function getLeaderboard() {
   try {
-    const response = await fetch('/api/leaderboard', {
-      method: 'GET'
+    const response = await fetch("/api/leaderboard", {
+      method: "GET",
     });
 
-    if(!response.ok) {
+    if (!response.ok) {
       return {
         success: false,
-        error: 'error fetching leaderboard'
-      }
+        error: "error fetching leaderboard",
+      };
     }
 
     return response.json();
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
@@ -26,5 +26,5 @@ export const useLeaderboard = () => {
     queryKey: ["leaderboard"],
     queryFn: getLeaderboard,
     staleTime: Infinity,
-  })
-}
+  });
+};

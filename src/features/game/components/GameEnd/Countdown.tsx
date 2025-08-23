@@ -1,17 +1,23 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, memo } from 'react';
+import React, { useEffect, useState, memo } from "react";
 
 function getSecondsUntilMidnight(): number {
   const now = new Date();
-  const nextMidnight = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1));
+  const nextMidnight = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1),
+  );
   return Math.floor((nextMidnight.getTime() - now.getTime()) / 1000);
 }
 
 function formatTime(seconds: number): string {
-  const hrs = Math.floor(seconds / 3600).toString().padStart(2, '0');
-  const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-  const secs = (seconds % 60).toString().padStart(2, '0');
+  const hrs = Math.floor(seconds / 3600)
+    .toString()
+    .padStart(2, "0");
+  const mins = Math.floor((seconds % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
+  const secs = (seconds % 60).toString().padStart(2, "0");
   return `${hrs}:${mins}:${secs}`;
 }
 

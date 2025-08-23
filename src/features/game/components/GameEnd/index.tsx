@@ -20,18 +20,13 @@ const STATUS_EMOJI: Record<ELetterStatus, string> = {
   warning: "🟨",
 };
 
-const getEmoji = (status?: ELetterStatus) =>
-  STATUS_EMOJI[status ?? ELetterStatus.INCORRECT];
+const getEmoji = (status?: ELetterStatus) => STATUS_EMOJI[status ?? ELetterStatus.INCORRECT];
 
 const buildGameResult = (attempts: Attempt[]) =>
-  attempts
-    .map((att) => att.letters.map((letter) => getEmoji(letter.status)).join(""))
-    .join("\n");
+  attempts.map((att) => att.letters.map((letter) => getEmoji(letter.status)).join("")).join("\n");
 
 export const GameEnd = () => {
-  const { attempts, isGameOver, isWin, targetWord } = useSelector(
-    (state: RootState) => state.game
-  );
+  const { attempts, isGameOver, isWin, targetWord } = useSelector((state: RootState) => state.game);
 
   const [shouldOpen, setShouldOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -45,7 +40,7 @@ export const GameEnd = () => {
   const copyResults = async () => {
     try {
       const resultStr = `🎉 Desafio Letrino vencido!\n\n${buildGameResult(
-        attempts
+        attempts,
       )}\n\n🧠 Mostre que você também manda bem!\n\n▶️ Jogue agora em letrino.com.br`;
       await navigator.clipboard.writeText(resultStr);
       setCopied(true);
@@ -59,16 +54,12 @@ export const GameEnd = () => {
     <Dialog open={shouldOpen} onOpenChange={() => setShouldOpen(false)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle className="text-center">
-            {isWin ? "Você ganhou" : "Você perdeu"}
-          </DialogTitle>
+          <DialogTitle className="text-center">{isWin ? "Você ganhou" : "Você perdeu"}</DialogTitle>
 
           {!isWin && (
             <DialogDescription className="text-center">
               A palavra era:{" "}
-              <span className="font-bold text-primary-100 text-lg">
-                {targetWord?.word}
-              </span>
+              <span className="font-bold text-primary-100 text-lg">{targetWord?.word}</span>
             </DialogDescription>
           )}
 
@@ -76,9 +67,7 @@ export const GameEnd = () => {
             {attempts?.map((attempt, attemptIndex) => (
               <div key={`att-${attemptIndex}`} className="flex">
                 {attempt?.letters?.map((letter, letterIndex) => (
-                  <span key={`emoji-${letterIndex}`}>
-                    {getEmoji(letter.status)}
-                  </span>
+                  <span key={`emoji-${letterIndex}`}>{getEmoji(letter.status)}</span>
                 ))}
               </div>
             ))}
@@ -89,11 +78,7 @@ export const GameEnd = () => {
             <Countdown />
           </div>
 
-          <Button
-            variant={copied ? "secondary" : "outline"}
-            onClick={copyResults}
-            className="mt-4"
-          >
+          <Button variant={copied ? "secondary" : "outline"} onClick={copyResults} className="mt-4">
             {copied ? "Copiado" : "Copiar resultado"}
           </Button>
         </DialogHeader>

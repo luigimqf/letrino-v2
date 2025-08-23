@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import Image from "next/image"
+import Image from "next/image";
 import { useEffect, useState } from "react";
-import logoDark from '../../../../public/logo-dark.png'
-import logoWhite from '../../../../public/logo-white.png'
+import logoDark from "../../../../public/logo-dark.png";
+import logoWhite from "../../../../public/logo-white.png";
 
-export const Logo = ({width = 50, height = 50}) => {
+export const Logo = ({ width = 50, height = 50 }) => {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
     const checkDark = () => {
-      setIsDark(document.documentElement.classList.contains('dark'));
+      setIsDark(document.documentElement.classList.contains("dark"));
     };
 
     checkDark();
@@ -18,12 +18,10 @@ export const Logo = ({width = 50, height = 50}) => {
 
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ['class'],
+      attributeFilter: ["class"],
     });
 
     return () => observer.disconnect();
   }, []);
-  return (
-    <Image src={isDark ? logoWhite : logoDark} alt="logo" width={width} height={height}/>
-  )
-}
+  return <Image src={isDark ? logoWhite : logoDark} alt="logo" width={width} height={height} />;
+};
