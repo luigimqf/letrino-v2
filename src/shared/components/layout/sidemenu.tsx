@@ -66,8 +66,8 @@ function SidemenuComponent() {
   }, [isDesktop]);
 
   useEffect(() => {
-    if (dataResult?.success && dataResult.data) {
-      dispatch(setUserInfo(dataResult.data));
+    if (dataResult?.success && dataResult?.data) {
+      dispatch(setUserInfo(dataResult?.data));
     }
   }, [dataResult, dispatch]);
 

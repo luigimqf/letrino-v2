@@ -9,20 +9,16 @@ import { Label } from "@/shared/components/ui/label";
 import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { toast } from "sonner";
-import { setUserInfo } from "../../store/authSlice";
 
 export default function SignInForm() {
   const [result, handleLogin, isPending] = useActionState(signIn, null);
   const router = useRouter();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (result?.success && result.data) {
-      dispatch(setUserInfo(result.data.user));
       toast("Login efetuado com sucesso!", {
-        description: `Seja bem-vindo ${result.data.user.username}`,
+        description: `Seja bem-vindo ${result?.data?.username ?? ""}!`,
         action: {
           label: "Fechar",
           onClick: () => {},

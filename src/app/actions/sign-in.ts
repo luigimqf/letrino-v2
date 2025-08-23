@@ -45,45 +45,56 @@ export async function signIn(_: unknown, formData: FormData): Promise<SignInRetu
 
   const { email, password } = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
-    method: "POST",
-    body: JSON.stringify({ email, password }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.SIGN_IN}`, {
+      method: "POST",
+      body: JSON.stringify({ email, password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const errData: PromiseReturn = await response.json();
+    if (!response.ok) {
+      const errData: PromiseReturn = await response.json();
+      return {
+        success: false,
+        api_error: {
+          message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+          code: errData.error?.code || "UNKNOWN_ERROR",
+        },
+        values: raw,
+      };
+    }
+    const { data }: PromiseReturn<LoginData> = await response.json();
+
+    const cookieStore = await cookies();
+
+    cookieStore.set({
+      name: "token",
+      value: data?.token ?? "",
+      httpOnly: true,
+    });
+
+    cookieStore.set({
+      name: "refresh-token",
+      value: data?.refresh_token ?? "",
+      httpOnly: true,
+    });
+
+    return {
+      success: true,
+      api_error: null,
+      values: raw,
+      data,
+    };
+  } catch {
     return {
       success: false,
       api_error: {
-        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
-        code: errData.error?.code || "UNKNOWN_ERROR",
+        message: ErrorsByCode.UNKNOWN_ERROR,
+        code: "UNKNOWN_ERROR",
       },
       values: raw,
     };
   }
-  const { data }: PromiseReturn<LoginData> = await response.json();
-
-  const cookieStore = await cookies();
-
-  cookieStore.set({
-    name: "token",
-    value: data?.token ?? "",
-    httpOnly: true,
-  });
-
-  cookieStore.set({
-    name: "refresh-token",
-    value: data?.refresh_token ?? "",
-    httpOnly: true,
-  });
-
-  return {
-    success: true,
-    api_error: null,
-    values: raw,
-    data,
-  };
 }

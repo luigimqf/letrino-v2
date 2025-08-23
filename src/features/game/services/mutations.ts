@@ -6,54 +6,66 @@ type AttemptRouteProps = {
 };
 
 async function registerAttempt({ attempt, status }: AttemptRouteProps) {
-  const response = await fetch(`/attempt/${status}`, {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      attempt,
-    }),
-  });
+  try {
+    const response = await fetch(`/attempt/${status}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        attempt,
+      }),
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      throw new Error("Failed to submiting attempt");
+    }
+
+    return response.json();
+  } catch {
     throw new Error("Failed to submiting attempt");
   }
-
-  return response.json();
 }
 
 async function registerSkipped() {
-  const response = await fetch("/attempt/skipped/register", {
-    method: "POST",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch("/attempt/skipped/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      throw new Error("Failed to register skipped attempt");
+    }
+
+    return response.json();
+  } catch {
     throw new Error("Failed to register skipped attempt");
   }
-
-  return response.json();
 }
 
 async function deleteSkipped() {
-  const response = await fetch("/attempt/skipped/delete", {
-    method: "DELETE",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch("/attempt/skipped/delete", {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
+    if (!response.ok) {
+      throw new Error("Failed to register skipped attempt");
+    }
+
+    return response.json();
+  } catch {
     throw new Error("Failed to register skipped attempt");
   }
-
-  return response.json();
 }
 
 export const useAttemptSuccessMutation = () => {

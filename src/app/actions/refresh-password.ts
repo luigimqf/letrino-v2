@@ -45,29 +45,40 @@ export async function refreshPassword(_: unknown, formData: FormData): Promise<S
 
   const { token, new_password } = result.data;
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.REFRESH_PASSWORD}`, {
-    method: "POST",
-    body: JSON.stringify({ token, newPassword: new_password }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.REFRESH_PASSWORD}`, {
+      method: "POST",
+      body: JSON.stringify({ token, newPassword: new_password }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  if (!response.ok) {
-    const errData: PromiseReturn = await response.json();
+    if (!response.ok) {
+      const errData: PromiseReturn = await response.json();
+      return {
+        success: false,
+        errors: {
+          message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
+          code: errData.error?.code || "UNKNOWN_ERROR",
+        },
+        values: rawData,
+      };
+    }
+
+    return {
+      success: true,
+      errors: null,
+      values: rawData,
+    };
+  } catch {
     return {
       success: false,
       errors: {
-        message: errData.error?.message || ErrorsByCode.BAD_REQUEST,
-        code: errData.error?.code || "UNKNOWN_ERROR",
+        message: ErrorsByCode.UNKNOWN_ERROR,
+        code: "UNKNOWN_ERROR",
       },
       values: rawData,
     };
   }
-
-  return {
-    success: true,
-    errors: null,
-    values: rawData,
-  };
 }
