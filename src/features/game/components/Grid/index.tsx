@@ -3,7 +3,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/shared/store";
 import {ENTER_KEY, ATTEMPTS_PER_GRID, INVALID_KEYS, LETTERS_PER_ATTEMPT} from '@/features/game/constants'
-import { setAttempt, setTargetWord } from "@/features/game/store/gameSlice";
+import { resetGame, setAttempt, setTargetWord } from "@/features/game/store/gameSlice";
 import React, { useEffect } from "react";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import { Attempt } from "./Attempt";
@@ -12,7 +12,7 @@ import { useAttemptValidation } from "../../hooks";
 import { GameSign } from "@/shared/components/layout/GameSign";
 
 export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
-  const {attempts,currentAttemptIndex, isGameOver} = useSelector((state: RootState) => state.game)
+  const {attempts,currentAttemptIndex, isGameOver,targetWord: storedTargetWord} = useSelector((state: RootState) => state.game)
   const {user} = useSelector((state: RootState) => state.auth)
   const dispatch = useDispatch<AppDispatch>();
   const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
@@ -27,9 +27,13 @@ export const Grid = ({targetWord}: {targetWord: TargetWord}) => {
   }
 
   useEffect(() => {
-    if(targetWord.word) {
-      dispatch(setTargetWord(targetWord))
+    if(!targetWord || !targetWord.word) return;
+
+    if(targetWord.word !== storedTargetWord?.word) {
+      dispatch(resetGame());
     }
+    
+    dispatch(setTargetWord(targetWord))
   },[targetWord, dispatch]);
 
   return (

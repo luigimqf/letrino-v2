@@ -22,7 +22,7 @@ export const AccountMenu = () => {
   const {data: logoutResult,isPending: isLogoutPending, mutate: logout} = useLogout();
 
   useEffect(() => {
-    if(dataResult?.success) {
+    if(dataResult?.success && dataResult?.data) {
       dispatch(setUserInfo(dataResult.data))
     }
   },[dataResult])

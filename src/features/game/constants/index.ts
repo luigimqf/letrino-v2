@@ -1,11 +1,13 @@
 import { ELetterStatus, GameState } from "../types/game";
 
+  export const EMPTY_ATTEMPTS: GameState['attempts'] = Array(6).fill(null).map(() => ({
+    id: undefined,
+    status: undefined,
+    letters: []
+  }));
+
   export const INITIAL_GAME_STATE: GameState = {
-    attempts: Array(6).fill(null).map(() => ({ 
-      id: undefined,
-      status: undefined,
-      letters: [] 
-    })),
+    attempts: EMPTY_ATTEMPTS,
     currentAttemptIndex: 0,
     targetWord: null,
     isGameOver: false,

@@ -1,5 +1,3 @@
-'use client';
-
 import { BookOpen, Target, Palette, Trophy, Star, Lightbulb, AlertTriangle } from 'lucide-react';
 
 const POINT_SYSTEM = [
@@ -74,7 +72,6 @@ export default function TutorialPage() {
               </div>
             </div>
 
-            {/* Cinza */}
             <div className="flex items-start space-x-4 p-4 bg-muted/50 rounded-lg border border-border">
               <div className="w-12 h-12 bg-muted-foreground rounded-lg flex items-center justify-center text-background font-bold text-xl shrink-0">
                 C

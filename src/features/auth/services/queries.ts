@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UserBasicData } from "../types";
 import { PromiseReturn } from "@/shared/types";
 
-async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
+async function getUserData() {
   try {
     const response = await fetch("/api/get-user-data", {
       method: "GET"
@@ -31,7 +31,7 @@ async function getUserData(): Promise<PromiseReturn<UserBasicData>> {
 }
 
 export const useUserData = () => {
-  return useQuery({
+  return useQuery<PromiseReturn<UserBasicData>>({
   queryKey: ["user-data"],
   queryFn: getUserData,
   staleTime: Infinity

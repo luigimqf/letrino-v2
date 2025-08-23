@@ -8,16 +8,18 @@ import { setKeyboardBackspace, setKeyboardInput } from "../../store/gameSlice"
 import { LetterCell } from "../../types/game"
 import { useCallback } from "react"
 import { useAttemptValidation } from "../../hooks"
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery"
 
 export const Keyboard = () => {
   const { attempts,currentAttemptIndex, isGameOver } = useSelector((state: RootState) => state.game);
-  const { username } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { isDesktop } = useMediaQuery();
   const dispatch = useDispatch<AppDispatch>();
   const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
   
   const onAction = (key: string) => {
     if(key === ENTER_KEY && canSubmitAttempt()) {
-      const isLoggedIn = !!username;
+      const isLoggedIn = !!user.username;
       return handleAttemptSubmission(isLoggedIn);
     };
 
@@ -41,7 +43,10 @@ export const Keyboard = () => {
   }, [currentAttemptIndex])
 
   return (
-    <div className="flex flex-col items-center gap-2 z-10">
+    <div 
+      data-visible={isDesktop}
+      className="flex-col items-center gap-2 z-10 flex data-[visible=false]:hidden"
+    >
       {KEYBOARD_KEYS.map((row, rowIndex) => (
         <div key={rowIndex} className="flex gap-2">
           {row.map((key) => {
