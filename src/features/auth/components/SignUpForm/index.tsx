@@ -1,8 +1,8 @@
 "use client";
 
 import { signUp } from "@/app/actions/sign-up";
-import { Back } from "@/shared/components/layout/Back";
-import { Logo } from "@/shared/components/layout/Logo";
+import { Back } from "@/shared/components/layout/back";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";

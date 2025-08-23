@@ -1,7 +1,7 @@
 "use client";
 
 import { refreshPassword } from "@/app/actions/refresh-password";
-import { Logo } from "@/shared/components/layout/Logo";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
