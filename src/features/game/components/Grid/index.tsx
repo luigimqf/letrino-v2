@@ -1,20 +1,20 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/shared/store";
 import {
-  ENTER_KEY,
   ATTEMPTS_PER_GRID,
+  ENTER_KEY,
   INVALID_KEYS,
   LETTERS_PER_ATTEMPT,
 } from "@/features/game/constants";
 import { resetGame, setAttempt, setTargetWord } from "@/features/game/store/gameSlice";
-import React, { useEffect } from "react";
+import { GameSign } from "@/shared/components/layout/game-sign";
+import { AppDispatch, RootState } from "@/shared/store";
 import { REGEXP_ONLY_CHARS } from "input-otp";
-import { Attempt } from "./Attempt";
-import { TargetWord } from "../../types/game";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useAttemptValidation } from "../../hooks";
-import { GameSign } from "@/shared/components/layout/GameSign";
+import { TargetWord } from "../../types/game";
+import { Attempt } from "./Attempt";
 
 export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
   const {

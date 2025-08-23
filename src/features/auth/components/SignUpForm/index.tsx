@@ -1,15 +1,15 @@
 "use client";
 
-import { Logo } from "@/shared/components/layout/Logo";
+import { signUp } from "@/app/actions/sign-up";
+import { Back } from "@/shared/components/layout/back";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { ErrorsByCode, ROUTES } from "@/shared/constants";
-import { signUp } from "@/app/actions/sign-up";
-import { Back } from "@/shared/components/layout/Back";
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);

@@ -12,12 +12,12 @@ type LetterProps = ComponentProps<"div"> & {
 
 export const Letter = ({ index, status, ...props }: LetterProps) => {
   const letterVariants = tv({
-    base: "rounded-sm transition-all duration-400 bg-neutral-700 font-bold text-sm border-1 border-accent-200",
+    base: "rounded-sm transition-all duration-400 bg-card text-card-foreground font-bold text-sm border border-border",
     variants: {
       color: {
-        correct: "bg-success",
-        warning: "bg-warning",
-        incorrect: "bg-destructive",
+        correct: "bg-green-600 text-green-50 border-green-600",
+        warning: "bg-yellow-600 text-yellow-50 border-yellow-600",
+        incorrect: "bg-red-600 text-red-50 border-red-600",
       },
     },
   });

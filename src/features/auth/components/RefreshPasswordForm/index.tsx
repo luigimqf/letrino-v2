@@ -1,14 +1,14 @@
 "use client";
 
-import { Logo } from "@/shared/components/layout/Logo";
+import { refreshPassword } from "@/app/actions/refresh-password";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { ROUTES } from "@/shared/constants";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { useRouter, useSearchParams } from "next/navigation";
-import { ROUTES } from "@/shared/constants";
-import { refreshPassword } from "@/app/actions/refresh-password";
 
 export default function RefreshPasswordForm() {
   const searchParams = useSearchParams();

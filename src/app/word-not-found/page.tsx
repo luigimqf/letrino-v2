@@ -1,6 +1,6 @@
-import Link from "next/link";
+import { Logo } from "@/shared/components/layout/logo";
 import { ROUTES } from "@/shared/constants";
-import { Logo } from "@/shared/components/layout/Logo";
+import Link from "next/link";
 
 export default function WordNotFoundPage() {
   return (

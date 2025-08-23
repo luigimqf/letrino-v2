@@ -1,17 +1,17 @@
 "use client";
 
-import { Logo } from "@/shared/components/layout/Logo";
+import { signIn } from "@/app/actions/sign-in";
+import { Back } from "@/shared/components/layout/back";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setUserInfo } from "../../store/authSlice";
 import { toast } from "sonner";
-import { ErrorsByCode, ROUTES } from "@/shared/constants";
-import { signIn } from "@/app/actions/sign-in";
-import { Back } from "@/shared/components/layout/Back";
+import { setUserInfo } from "../../store/authSlice";
 
 export default function SignInForm() {
   const [result, handleLogin, isPending] = useActionState(signIn, null);

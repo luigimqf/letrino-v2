@@ -1,9 +1,9 @@
 "use client";
 
-import { ComponentProps } from "react";
-import { ELetterStatus } from "../../types/game";
-import { tv } from "tailwind-variants";
 import { ChildrenProp } from "@/shared/types";
+import { ComponentProps } from "react";
+import { tv } from "tailwind-variants";
+import { ELetterStatus } from "../../types/game";
 
 type KeyProps = ChildrenProp &
   ComponentProps<"button"> & {
@@ -13,12 +13,12 @@ type KeyProps = ChildrenProp &
 
 export const Key = ({ children, status, size, disabled, ...props }: KeyProps) => {
   const keyVariants = tv({
-    base: "p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-primary-100 bg-neutral-700 disabled:brightness-50 disabled:cursor-default",
+    base: "p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-border bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-default transition-colors",
     variants: {
       color: {
-        correct: "bg-success",
-        warning: "bg-warning",
-        incorrect: "bg-destructive",
+        correct: "bg-green-600 text-green-50 border-green-600 hover:bg-green-700",
+        warning: "bg-yellow-600 text-yellow-50 border-yellow-600 hover:bg-yellow-700",
+        incorrect: "bg-red-600 text-red-50 border-red-600 hover:bg-red-700",
       },
       size: {
         xs: "w-[70px]",

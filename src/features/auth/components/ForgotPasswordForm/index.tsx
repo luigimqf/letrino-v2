@@ -1,12 +1,12 @@
 "use client";
 
-import { Logo } from "@/shared/components/layout/Logo";
+import { forgotPassword } from "@/app/actions/forgot-password";
+import { Logo } from "@/shared/components/layout/logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
-import { forgotPassword } from "@/app/actions/forgot-password";
 
 export default function ForgotPasswordForm() {
   const [result, handleForgotPassword, isPending] = useActionState(forgotPassword, null);
