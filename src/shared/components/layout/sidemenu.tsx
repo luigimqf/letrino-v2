@@ -1,19 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Home, Menu, X, LogIn, LogOut, Trophy, BookOpen } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
-import { Button } from "@/shared/components/ui/button";
-import { cn } from "@/shared/lib/utils";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/shared/store";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/shared/constants";
 import { useLogout } from "@/features/auth/services/mutations";
-import { toast } from "sonner";
 import { useUserData } from "@/features/auth/services/queries";
 import { removeUserInfo, setUserInfo } from "@/features/auth/store/authSlice";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
+import { Button } from "@/shared/components/ui/button";
+import { ROUTES } from "@/shared/constants";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { cn } from "@/shared/lib/utils";
+import { RootState } from "@/shared/store";
+import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, X } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
 
 const menuItems = [
   {
@@ -44,6 +44,7 @@ export function Sidemenu() {
   } = useLogout();
   const { data: dataResult, isPending: isDataPending } = useUserData();
   const router = useRouter();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
   const { isDesktop } = useMediaQuery();
@@ -198,7 +199,7 @@ export function Sidemenu() {
   return (
     <div
       className={cn(
-        "fixed left-0 top-0 z-50 h-screen bg-bkg-100 border-r border-border flex flex-col shadow-lg transition-all duration-300 ease-out",
+        "fixed left-0 top-0 z-50 h-screen bg-bkg-200 border-r border-border flex flex-col shadow-lg transition-all duration-300 ease-out",
         isOpen ? "w-64" : "w-16",
       )}
     >
@@ -230,27 +231,37 @@ export function Sidemenu() {
         )}
       </div>
 
-      <nav className="flex-1 p-4">
+      <nav className="flex-1 p-2">
         <ul className="space-y-2">
           {menuItems.map((item) => {
             const Icon = item.icon;
+            const isActive = pathname === item.href;
             return (
               <li key={item.href}>
                 <a
                   href={item.href}
+                  data-active={isActive}
+                  aria-current={isActive ? "page" : undefined}
                   onClick={handleMenuItemClick}
                   className={cn(
-                    "flex items-center p-2 rounded-lg transition-colors h-10",
-                    "hover:bg-accent hover:text-accent-foreground",
+                    "flex data-[active='true']:text-primary-100 text-primary-200 items-center p-2 rounded-lg transition-colors h-10",
+                    "hover:text-primary-100",
                     "focus:bg-accent focus:text-accent-foreground",
                   )}
                 >
-                  <Icon size={18} className="shrink-0" />
+                  <div className={cn(
+                    "flex items-center justify-center bg-primary-300 p-2 rounded-lg",
+                    isActive ? "bg-primary-100 text-primary-300" : "bg-bkg-200 text-text-200",
+                  )}
+                  >
+                    <Icon size={18} className="shrink-0" />
+                  </div>
 
                   <span
                     className={cn(
                       "ml-3 text-xs font-medium transition-all duration-300 ease-out whitespace-nowrap overflow-hidden",
-                      isOpen ? "opacity-100 w-auto max-w-none" : "opacity-0 w-0 max-w-0",
+                      isOpen ? "visible" : "hidden",
+                      isActive ? "text-text-100" : "text-text-200",
                     )}
                   >
                     {item.label}
@@ -268,6 +279,7 @@ export function Sidemenu() {
           className={cn(
             "w-full h-10 transition-all duration-300 ease-out",
             isOpen ? "justify-start" : "justify-center",
+            isAuthenticated && "bg-transparent border border-destructive text-destructive hover:bg-destructive/10"
           )}
           disabled={disabled}
           onClick={handleLogout}

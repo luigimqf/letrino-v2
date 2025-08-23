@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono, Fredoka } from "next/font/google";
-import "./globals.css";
-import { ReduxProvider } from "@/shared/providers/ReduxProvider";
-import { QueryProvider } from "@/shared/providers/QueryProvider";
-import { Toaster } from "@/shared/components/ui/sonner";
 import { ThemeProvider } from "@/shared/components/layout/theme-provider";
 import { ModeToggle } from "@/shared/components/toggle-mode";
+import { Toaster } from "@/shared/components/ui/sonner";
+import { QueryProvider } from "@/shared/providers/QueryProvider";
+import { ReduxProvider } from "@/shared/providers/ReduxProvider";
+import type { Metadata } from "next";
+import { Fredoka, Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-200 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${fredokaSans.variable} bg-bkg-100 antialiased`}
       >
         <ThemeProvider
           attribute="class"

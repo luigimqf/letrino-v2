@@ -13,7 +13,7 @@ type KeyProps = ChildrenProp &
 
 export const Key = ({ children, status, size, disabled, ...props }: KeyProps) => {
   const keyVariants = tv({
-    base: "p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-border bg-card text-card-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-default transition-colors",
+    base: "p-2 w-[40px] h-[40px] cursor-pointer text-sm font-medium rounded-sm border border-foreground bg-accent/50 text-card-foreground hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-default transition-colors",
     variants: {
       color: {
         correct: "bg-green-600 text-green-50 border-green-600 hover:bg-green-700",
