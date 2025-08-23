@@ -4,6 +4,7 @@ import { Trophy, Medal, Award } from 'lucide-react';
 import LeaderboardCard from '@/features/leaderboard/components/Card';
 import { useLeaderboard } from '@/features/leaderboard/services/queries';
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery';
+import { PlayerRank } from '@/features/leaderboard/types';
 
 export default function LeaderboardPage() {
   const { isDesktop } = useMediaQuery();
@@ -80,7 +81,7 @@ export default function LeaderboardPage() {
   );
 }
 
-function DesktopPodium({ podiumUsers }: { podiumUsers: any[] }) {
+function DesktopPodium({ podiumUsers }: { podiumUsers: PlayerRank[] }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 mb-8 lg:mb-12 max-w-6xl mx-auto">
       {podiumUsers[1] && (
@@ -119,7 +120,7 @@ function DesktopPodium({ podiumUsers }: { podiumUsers: any[] }) {
   )
 }
 
-function MobilePodium({ podiumUsers }: { podiumUsers: any[] }) {
+function MobilePodium({ podiumUsers }: { podiumUsers: PlayerRank[] }) {
   return (
     <div className="mb-8 max-w-md mx-auto">
       {podiumUsers[0] && (
