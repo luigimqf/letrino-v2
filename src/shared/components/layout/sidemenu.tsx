@@ -9,7 +9,7 @@ import { ROUTES } from "@/shared/constants";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { cn } from "@/shared/lib/utils";
 import { RootState } from "@/shared/store";
-import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, X } from "lucide-react";
+import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, User, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useState } from "react";
@@ -22,6 +22,11 @@ const MENU_ITENS = [
     icon: Home,
     label: "Home",
     href: ROUTES.HOME,
+  },
+  {
+    icon: User,
+    label: "Estatísticas do usuário",
+    href: ROUTES.USER_STATISTIC,
   },
   {
     icon: Trophy,

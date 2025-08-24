@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.USER_DATA}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.USER_STATISTIC}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,

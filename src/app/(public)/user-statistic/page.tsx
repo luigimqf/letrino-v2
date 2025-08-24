@@ -1,0 +1,134 @@
+"use client";
+
+import StatCard from "@/features/auth/components/StatCard";
+import { useUserStatistics } from "@/features/auth/services/queries";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { RootState } from "@/shared/store";
+import {
+  BarChart3,
+  Star,
+  Target,
+  TrendingUp,
+  Trophy,
+  User,
+  Zap
+} from "lucide-react";
+import { useSelector } from "react-redux";
+
+export default function UserStatisticPage() {
+  const { isDesktop } = useMediaQuery();
+  const { data: statisticResult, isLoading } = useUserStatistics();
+  const { user } = useSelector((state: RootState ) => state.auth);
+
+  const userStatistic = statisticResult?.data;
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (!userStatistic) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-4 py-6 lg:px-8 min-h-screen bg-background overflow-auto">
+      <div className="text-center mb-8 lg:mb-12">
+        <div className="flex items-center justify-center mb-4">
+          <User className="h-10 w-10 text-primary mr-3" />
+          <h1 className="text-3xl font-bold text-foreground">Meu Perfil</h1>
+        </div>
+        <p className="text-muted-foreground text-sm">Suas estatísticas e conquistas</p>
+      </div>
+
+      <div className="max-w-4xl mx-auto mb-8">
+        <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
+              <User className="h-8 w-8 text-primary" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-bold text-center text-foreground mb-2">
+            {user?.username}
+          </h2>
+          <div className="text-center">
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
+              <Trophy className="h-4 w-4 mr-1" />
+              {userStatistic.score} pontos
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto">
+        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'} mb-8`}>
+          <StatCard
+            icon={<Target className="h-6 w-6" />}
+            title="Jogos Jogados"
+            value={userStatistic.gamesPlayed.toString()}
+            subtitle="Total de partidas"
+            color="text-blue-500"
+            bgColor="bg-blue-500/10"
+          />
+
+          <StatCard
+            icon={<Trophy className="h-6 w-6" />}
+            title="Jogos Ganhos"
+            value={userStatistic.gamesWon.toString()}
+            subtitle="Vitórias conquistadas"
+            color="text-green-500"
+            bgColor="bg-green-500/10"
+          />
+
+          <StatCard
+            icon={<BarChart3 className="h-6 w-6" />}
+            title="Taxa de Vitória"
+            value={`${userStatistic.winPercentage}%`}
+            subtitle="Porcentagem de sucesso"
+            color="text-purple-500"
+            bgColor="bg-purple-500/10"
+          />
+        </div>
+
+        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'}`}>
+          <StatCard
+            icon={<TrendingUp className="h-6 w-6" />}
+            title="Sequência Atual"
+            value={userStatistic.winStreak.toString()}
+            subtitle="Vitórias seguidas"
+            color="text-orange-500"
+            bgColor="bg-orange-500/10"
+          />
+
+          <StatCard
+            icon={<Zap className="h-6 w-6" />}
+            title="Melhor Sequência"
+            value={userStatistic.bestWinStreak.toString()}
+            subtitle="Recorde pessoal"
+            color="text-yellow-500"
+            bgColor="bg-yellow-500/10"
+          />
+
+          <StatCard
+            icon={<Star className="h-6 w-6" />}
+            title="Pontuação Total"
+            value={userStatistic.score.toLocaleString()}
+            subtitle="Pontos acumulados"
+            color="text-pink-500"
+            bgColor="bg-pink-500/10"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+

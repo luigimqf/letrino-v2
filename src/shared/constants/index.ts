@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export const GAME_NAME = "Letrino";
 
 export enum ROUTES {
@@ -7,7 +8,8 @@ export enum ROUTES {
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
   REFRESH_TOKEN = "/refresh-token",
-  GET_USER_DATA = "/user-data",
+  USER_DATA = "/user-data",
+  USER_STATISTIC = "/user-statistic",
   LEADERBOARD = "/leaderboard",
   TUTORIAL = "/tutorial",
   WORD_NOT_FOUND = "/word-not-found",

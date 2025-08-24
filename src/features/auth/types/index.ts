@@ -19,6 +19,16 @@ export type UserBasicData = {
   username: string;
   score: number;
 };
+
+export type Statistics = {
+  gamesPlayed: number;
+  gamesWon: number;
+  winStreak: number;
+  bestWinStreak: number;
+  score: number;
+  winPercentage: number;
+};
+
 export type UserInfo = {
   username: string;
 };
