@@ -15,6 +15,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { Countdown } from "../ui/timer";
 
 const MENU_ITENS = [
   {
@@ -250,7 +251,7 @@ function SidemenuComponent() {
         )}
       </div>
 
-      <nav className="flex-1 p-2">
+      <nav className="flex-1 p-2 mt-5">
         <ul className="flex flex-col justify-start items-start space-y-2">
           {MENU_ITENS.map((item) => {
             const Icon = item.icon;
@@ -292,6 +293,11 @@ function SidemenuComponent() {
           })}
         </ul>
       </nav>
+
+      <div className={cn("w-full flex flex-col items-center justify-center mb-4", isOpen ? "visible" : "hidden")}>
+        <span>Próxima palavra em:</span>
+        <Countdown />
+      </div>
 
       <div className="p-4 border-t border-border">
         <Button

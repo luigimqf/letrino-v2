@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { Button } from "@/shared/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +8,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/shared/components/ui/dialog";
-import { Button } from "@/shared/components/ui/button";
+import { Countdown } from "@/shared/components/ui/timer";
 import { RootState } from "@/shared/store";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Attempt, ELetterStatus } from "../../types/game";
-import { Countdown } from "./Countdown";
 
 const STATUS_EMOJI: Record<ELetterStatus, string> = {
   correct: "🟩",

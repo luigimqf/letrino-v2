@@ -1,10 +1,10 @@
 "use client";
 
-import { Trophy, Medal, Award } from "lucide-react";
 import LeaderboardCard from "@/features/leaderboard/components/Card";
 import { useLeaderboard } from "@/features/leaderboard/services/queries";
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { PlayerRank } from "@/features/leaderboard/types";
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { Award, Medal, Trophy } from "lucide-react";
 
 export default function LeaderboardPage() {
   const { isDesktop } = useMediaQuery();
@@ -31,6 +31,32 @@ export default function LeaderboardPage() {
 
   const podiumUsers = data?.data?.leaderboard.slice(0, 3) || [];
   const otherUsers = data?.data?.leaderboard.slice(3) || [];
+
+  if (data?.data?.leaderboard.length === 0) {
+    return (
+      <div className="px-4 py-6 lg:px-8">
+        <div className="text-center mb-8 lg:mb-12">
+          <div className="flex items-center justify-center mb-4">
+            <Trophy className="h-10 w-10 text-primary mr-3" />
+            <h1 className="text-3xl font-bold text-foreground">Leaderboard</h1>
+          </div>
+          <p className="text-muted-foreground text-sm">Os melhores jogadores do momento</p>
+        </div>
+
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center">
+            <Trophy className="h-16 w-16 text-muted-foreground mx-auto mb-4 opacity-50" />
+            <h2 className="text-xl font-semibold text-foreground mb-2">
+              Ainda não há dados disponíveis
+            </h2>
+            <p className="text-muted-foreground">
+              Seja o primeiro a aparecer no leaderboard!
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-6 lg:px-8 overflow-auto">

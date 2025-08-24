@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, memo } from "react";
+import { memo, useEffect, useState } from "react";
 
 function getSecondsUntilMidnight(): number {
   const now = new Date();
