@@ -35,10 +35,13 @@ export const registerUserAttempt = createAsyncThunk(
         throw new Error("Failed to register attempt");
       }
 
+      const { data } = await response.json();
+
       return {
         guess: guessLower,
         target: targetLower,
         isCorrect,
+        userInfo: isCorrect ? data.user : null,
       };
     } catch {
       throw new Error("Failed to register attempt");

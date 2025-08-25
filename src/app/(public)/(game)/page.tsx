@@ -4,11 +4,21 @@ import { Keyboard } from "@/features/game/components/Keyboard";
 import { TargetWord } from "@/features/game/types/game";
 import { ROUTES } from "@/shared/constants";
 import { PromiseReturn } from "@/shared/types";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export default async function GamePage() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/word`);
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/word`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
 
     if (!response.ok) redirect(ROUTES.WORD_NOT_FOUND);
 

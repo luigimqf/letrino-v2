@@ -1,3 +1,4 @@
+import { registerUserAttempt } from "@/features/game/store/gameSlice";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { UserBasicData } from "../types";
 
@@ -26,6 +27,13 @@ const authSlicer = createSlice({
         score: 0,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(registerUserAttempt.fulfilled, (state, action) => {
+      if (action.payload.isCorrect && action.payload.userInfo) {
+        state.user = action.payload.userInfo;
+      }
+    });
   },
 });
 
