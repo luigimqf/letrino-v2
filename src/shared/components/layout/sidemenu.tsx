@@ -88,7 +88,6 @@ function SidemenuComponent() {
       dispatch(removeUserInfo());
       resetLogout();
       router.push(ROUTES.HOME);
-      toast("Logout realizado com sucesso", { duration: 1500 });
       return;
     }
 
