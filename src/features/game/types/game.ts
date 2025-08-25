@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 export enum EAttemptStatus {
   PENDING = "pending",
   SUCCESS = "success",
@@ -19,6 +20,13 @@ export type Attempt = {
   id?: string;
   status?: EAttemptStatus;
   letters: LetterCell[];
+};
+
+export type AuthenticatedAttempt = {
+  attempts: {
+    userInput: string;
+    status: EAttemptStatus;
+  }[];
 };
 
 export type GameState = {

@@ -6,13 +6,13 @@ import {
   INVALID_KEYS,
   LETTERS_PER_ATTEMPT,
 } from "@/features/game/constants";
-import { resetGame, setAttempt, setTargetWord } from "@/features/game/store/gameSlice";
+import { resetGame, setCurrAttempt, setTargetWord } from "@/features/game/store/gameSlice";
 import { GameSign } from "@/shared/components/layout/game-sign";
 import { AppDispatch, RootState } from "@/shared/store";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAttemptValidation } from "../../hooks";
+import { useAttempts } from "../../hooks";
 import { TargetWord } from "../../types/game";
 import { Attempt } from "./Attempt";
 
@@ -25,7 +25,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
   } = useSelector((state: RootState) => state.game);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
-  const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
+  const { handleAttemptSubmission, canSubmitAttempt } = useAttempts();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
@@ -44,7 +44,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
     }
 
     dispatch(setTargetWord(targetWord));
-  }, [targetWord, dispatch]);
+  }, [targetWord, dispatch, storedTargetWord?.word]);
 
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-12 font-sans">
@@ -64,7 +64,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
               onKeyDown={onKeyDown}
               value={value}
               onChange={(value) =>
-                dispatch(setAttempt({ guess: value, attemptIndex: attemptIndex }))
+                dispatch(setCurrAttempt({ guess: value, attemptIndex: attemptIndex }))
               }
               autoComplete="off"
               disabled={!isActiveAttempt || isGameOver}

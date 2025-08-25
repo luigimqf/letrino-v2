@@ -106,7 +106,51 @@ const gameSlice = createSlice({
       };
     },
 
-    setAttempt: (state, action: PayloadAction<{ guess: string; attemptIndex: number }>) => {
+    setAttempts: (state, action: PayloadAction<Attempt[]>) => {
+      const attemptsPayload = action.payload;
+      const target = state.targetWord?.word;
+
+      if (!attemptsPayload || !target || state.isGameOver) return;
+
+      const attemptsWithStatus = attemptsPayload.map((attempt) => {
+        const guess =
+          attempt.letters
+            ?.map((l) => l.letter)
+            .join("")
+            .toLowerCase() || "";
+        const guessLetters = guess.split("");
+        const targetLetters = target.split("");
+        const lettersWithStatus = guessLetters.map((letter, index) => {
+          if (targetLetters[index] === guessLetters[index]) {
+            return {
+              letter,
+              status: ELetterStatus.CORRECT,
+            };
+          }
+          if (targetLetters.includes(letter)) {
+            return {
+              letter,
+              status: ELetterStatus.WARNING,
+            };
+          }
+
+          return {
+            letter,
+            status: ELetterStatus.INCORRECT,
+          };
+        });
+
+        return {
+          ...attempt,
+          letters: lettersWithStatus,
+        };
+      });
+
+      state.attempts = attemptsWithStatus;
+      state.currentAttemptIndex = action.payload.length;
+    },
+
+    setCurrAttempt: (state, action: PayloadAction<{ guess: string; attemptIndex: number }>) => {
       const { attemptIndex, guess } = action.payload;
       const letters = guess?.split("");
       const attempt: Attempt = {
@@ -186,7 +230,8 @@ const gameSlice = createSlice({
 export const {
   validateAttempt,
   setTargetWord,
-  setAttempt,
+  setCurrAttempt,
+  setAttempts,
   setKeyboardInput,
   setKeyboardBackspace,
   resetGame,
