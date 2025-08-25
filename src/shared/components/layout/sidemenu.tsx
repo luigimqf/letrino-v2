@@ -49,7 +49,7 @@ function SidemenuComponent() {
     mutate: logout,
     reset: resetLogout,
   } = useLogout();
-  const { data: dataResult, isPending: isDataPending } = useUserData();
+  const { data: dataResult, isPending: isDataPending, isSuccess } = useUserData();
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -72,10 +72,16 @@ function SidemenuComponent() {
   }, [isDesktop]);
 
   useEffect(() => {
-    if (dataResult?.success && dataResult?.data) {
+    if( !isDataPending && isSuccess && !dataResult?.data) {
+      dispatch(removeUserInfo());
+      logout();
+      return;
+    }
+    
+    if (isSuccess && dataResult?.data) {
       dispatch(setUserInfo(dataResult?.data));
     }
-  }, [dataResult, dispatch]);
+  }, [dataResult, dispatch, isSuccess, isDataPending, logout]);
 
   useEffect(() => {
     if (logoutResult?.success) {

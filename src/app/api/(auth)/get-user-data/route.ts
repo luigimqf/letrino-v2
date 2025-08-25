@@ -1,8 +1,10 @@
 import { ROUTES } from "@/shared/constants";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+export async function GET() {
+  const cookieStorage = await cookies();
+  const token = cookieStorage.get("token")?.value;
 
   if (!token) {
     return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
