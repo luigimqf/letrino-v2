@@ -23,19 +23,11 @@ export default function UserStatisticPage() {
   const userStatistic = statisticResult?.data;
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <UserStatisticSkeleton isDesktop={isDesktop} />;
   }
 
   if (!userStatistic) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <UserStatisticSkeleton isDesktop={isDesktop} />;
   }
 
   return (
@@ -126,6 +118,67 @@ export default function UserStatisticPage() {
           />
         </div>
       </div>
+    </div>
+  );
+}
+
+function UserStatisticSkeleton({ isDesktop }: { isDesktop: boolean }) {
+  return (
+    <div className="px-4 py-6 lg:px-8 min-h-screen bg-background overflow-auto">
+      <div className="text-center mb-8 lg:mb-12">
+        <div className="flex items-center justify-center mb-4">
+          <div className="h-10 w-10 bg-muted rounded mr-3 animate-pulse" />
+          <div className="h-8 w-40 bg-muted rounded animate-pulse" />
+        </div>
+        <div className="h-4 w-56 bg-muted rounded mx-auto animate-pulse" />
+      </div>
+
+      <div className="max-w-4xl mx-auto mb-8">
+        <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+          <div className="flex items-center justify-center mb-4">
+            <div className="w-16 h-16 bg-muted rounded-full animate-pulse" />
+          </div>
+          <div className="h-8 w-32 bg-muted rounded mx-auto mb-2 animate-pulse" />
+          <div className="flex justify-center">
+            <div className="h-6 w-24 bg-muted rounded-full animate-pulse" />
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto">
+        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'} mb-8`}>
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+
+        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'}`}>
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function StatCardSkeleton() {
+  return (
+    <div className="bg-card border border-border rounded-lg p-6 shadow-sm">
+      <div className="flex items-center mb-4">
+        {/* Icon Skeleton */}
+        <div className="w-12 h-12 bg-muted rounded-lg mr-4 animate-pulse" />
+        
+        <div className="flex-1">
+          {/* Title Skeleton */}
+          <div className="h-5 w-24 bg-muted rounded mb-2 animate-pulse" />
+          {/* Subtitle Skeleton */}
+          <div className="h-3 w-32 bg-muted rounded animate-pulse" />
+        </div>
+      </div>
+      
+      {/* Value Skeleton */}
+      <div className="h-8 w-16 bg-muted rounded animate-pulse" />
     </div>
   );
 }
