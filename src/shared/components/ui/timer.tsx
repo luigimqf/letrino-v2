@@ -1,5 +1,6 @@
 "use client";
 
+import { MILLISECONDS_IN_SECOND, SECONDS_IN_HOUR, SECONDS_IN_MINUTE } from "@/shared/constants";
 import { memo, useEffect, useState } from "react";
 
 function getSecondsUntilMidnight(): number {
@@ -7,17 +8,17 @@ function getSecondsUntilMidnight(): number {
   const nextMidnight = new Date(
     Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1),
   );
-  return Math.floor((nextMidnight.getTime() - now.getTime()) / 1000);
+  return Math.floor((nextMidnight.getTime() - now.getTime()) / MILLISECONDS_IN_SECOND);
 }
 
 function formatTime(seconds: number): string {
-  const hrs = Math.floor(seconds / 3600)
+  const hrs = Math.floor(seconds / SECONDS_IN_HOUR)
     .toString()
     .padStart(2, "0");
-  const mins = Math.floor((seconds % 3600) / 60)
+  const mins = Math.floor((seconds % SECONDS_IN_HOUR) / SECONDS_IN_MINUTE)
     .toString()
     .padStart(2, "0");
-  const secs = (seconds % 60).toString().padStart(2, "0");
+  const secs = (seconds % SECONDS_IN_MINUTE).toString().padStart(2, "0");
   return `${hrs}:${mins}:${secs}`;
 }
 
@@ -26,7 +27,7 @@ const CountdownToUTCComponent = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : getSecondsUntilMidnight()));
+      setSecondsLeft(getSecondsUntilMidnight());
     }, 1000);
 
     return () => clearInterval(interval);

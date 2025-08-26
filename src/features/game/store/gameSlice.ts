@@ -149,6 +149,18 @@ const gameSlice = createSlice({
         };
       });
 
+      const isAnySuccess = attemptsWithStatus.some((attempt) =>
+        attempt.letters.every((l) => l.status === ELetterStatus.CORRECT),
+      );
+
+      if (isAnySuccess) {
+        state.isWin = true;
+        state.isGameOver = true;
+      } else if (attemptsPayload.length >= ATTEMPTS_PER_GRID) {
+        state.isWin = false;
+        state.isGameOver = true;
+      }
+
       state.attempts = attemptsWithStatus;
       state.currentAttemptIndex = action.payload.length;
     },
