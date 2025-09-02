@@ -72,12 +72,12 @@ function SidemenuComponent() {
   }, [isDesktop]);
 
   useEffect(() => {
-    if( !isDataPending && isSuccess && !dataResult?.data) {
+    if (!isDataPending && isSuccess && !dataResult?.data) {
       dispatch(removeUserInfo());
       logout();
       return;
     }
-    
+
     if (isSuccess && dataResult?.data) {
       dispatch(setUserInfo(dataResult?.data));
     }
@@ -304,7 +304,12 @@ function SidemenuComponent() {
         </ul>
       </nav>
 
-      <div className={cn("w-full flex flex-col items-center justify-center mb-4", isOpen ? "visible" : "hidden")}>
+      <div
+        className={cn(
+          "w-full flex flex-col items-center justify-center mb-4",
+          isOpen ? "visible" : "hidden",
+        )}
+      >
         <span>Próxima palavra em:</span>
         <Countdown />
       </div>

@@ -12,8 +12,8 @@ export const useAttempts = () => {
   const { attempts, currentAttemptIndex, targetWord, isGameOver } = useSelector(
     (state: RootState) => state.game,
   );
-  const {data: userAttempts, isSuccess, isPending} = useUserAttempts();
-  
+  const { data: userAttempts, isSuccess, isPending } = useUserAttempts();
+
   const dispatch = useDispatch<AppDispatch>();
 
   const handleAttemptSubmission = useCallback(
@@ -57,16 +57,16 @@ export const useAttempts = () => {
 
   useEffect(() => {
     if (isSuccess && userAttempts?.data) {
-      const newAttempts: Attempt[] = userAttempts?.data?.attempts.map(attempt => ({
+      const newAttempts: Attempt[] = userAttempts?.data?.attempts.map((attempt) => ({
         status: attempt.status,
-        letters: attempt.userInput.split("").map(letter => ({ letter, status: undefined })),
+        letters: attempt.userInput.split("").map((letter) => ({ letter, status: undefined })),
       }));
 
       if (!newAttempts) return;
 
       dispatch(setAttempts(newAttempts));
     }
-  },[userAttempts, isPending, isSuccess, dispatch])
+  }, [userAttempts, isPending, isSuccess, dispatch]);
 
   return {
     handleAttemptSubmission,

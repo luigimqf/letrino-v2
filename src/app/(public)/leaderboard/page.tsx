@@ -47,9 +47,7 @@ export default function LeaderboardPage() {
             <h2 className="text-xl font-semibold text-foreground mb-2">
               Ainda não há dados disponíveis
             </h2>
-            <p className="text-muted-foreground">
-              Seja o primeiro a aparecer no leaderboard!
-            </p>
+            <p className="text-muted-foreground">Seja o primeiro a aparecer no leaderboard!</p>
           </div>
         </div>
       </div>

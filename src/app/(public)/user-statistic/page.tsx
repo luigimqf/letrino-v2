@@ -4,15 +4,13 @@ import StatCard from "@/features/auth/components/StatCard";
 import { useUserStatistics } from "@/features/auth/services/queries";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { RootState } from "@/shared/store";
-import {
-  BarChart3, Star, Target, TrendingUp, Trophy, User, Zap
-} from "lucide-react";
+import { BarChart3, Star, Target, TrendingUp, Trophy, User, Zap } from "lucide-react";
 import { useSelector } from "react-redux";
 
 export default function UserStatisticPage() {
   const { isDesktop } = useMediaQuery();
-  const { data: statisticResult, isLoading } = useUserStatistics()
-  const { user } = useSelector((state: RootState ) => state.auth);
+  const { data: statisticResult, isLoading } = useUserStatistics();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const userStatistic = statisticResult?.data;
 
@@ -41,9 +39,7 @@ export default function UserStatisticPage() {
               <User className="h-8 w-8 text-primary" />
             </div>
           </div>
-          <h2 className="text-2xl font-bold text-center text-foreground mb-2">
-            {user?.username}
-          </h2>
+          <h2 className="text-2xl font-bold text-center text-foreground mb-2">{user?.username}</h2>
           <div className="text-center">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary/10 text-primary">
               <Trophy className="h-4 w-4 mr-1" />
@@ -54,7 +50,7 @@ export default function UserStatisticPage() {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'} mb-8`}>
+        <div className={`grid gap-4 ${isDesktop ? "grid-cols-3" : "grid-cols-1"} mb-8`}>
           <StatCard
             icon={<Target className="h-6 w-6" />}
             title="Jogos Jogados"
@@ -83,7 +79,7 @@ export default function UserStatisticPage() {
           />
         </div>
 
-        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'}`}>
+        <div className={`grid gap-4 ${isDesktop ? "grid-cols-3" : "grid-cols-1"}`}>
           <StatCard
             icon={<TrendingUp className="h-6 w-6" />}
             title="Sequência Atual"
@@ -140,13 +136,13 @@ function UserStatisticSkeleton({ isDesktop }: { isDesktop: boolean }) {
       </div>
 
       <div className="max-w-4xl mx-auto">
-        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'} mb-8`}>
+        <div className={`grid gap-4 ${isDesktop ? "grid-cols-3" : "grid-cols-1"} mb-8`}>
           <StatCardSkeleton />
           <StatCardSkeleton />
           <StatCardSkeleton />
         </div>
 
-        <div className={`grid gap-4 ${isDesktop ? 'grid-cols-3' : 'grid-cols-1'}`}>
+        <div className={`grid gap-4 ${isDesktop ? "grid-cols-3" : "grid-cols-1"}`}>
           <StatCardSkeleton />
           <StatCardSkeleton />
           <StatCardSkeleton />
@@ -162,7 +158,7 @@ function StatCardSkeleton() {
       <div className="flex items-center mb-4">
         {/* Icon Skeleton */}
         <div className="w-12 h-12 bg-muted rounded-lg mr-4 animate-pulse" />
-        
+
         <div className="flex-1">
           {/* Title Skeleton */}
           <div className="h-5 w-24 bg-muted rounded mb-2 animate-pulse" />
@@ -170,12 +166,9 @@ function StatCardSkeleton() {
           <div className="h-3 w-32 bg-muted rounded animate-pulse" />
         </div>
       </div>
-      
+
       {/* Value Skeleton */}
       <div className="h-8 w-16 bg-muted rounded animate-pulse" />
     </div>
   );
 }
-
-
-
