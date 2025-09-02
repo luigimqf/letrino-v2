@@ -5,19 +5,13 @@ import { useUserStatistics } from "@/features/auth/services/queries";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { RootState } from "@/shared/store";
 import {
-  BarChart3,
-  Star,
-  Target,
-  TrendingUp,
-  Trophy,
-  User,
-  Zap
+  BarChart3, Star, Target, TrendingUp, Trophy, User, Zap
 } from "lucide-react";
 import { useSelector } from "react-redux";
 
 export default function UserStatisticPage() {
   const { isDesktop } = useMediaQuery();
-  const { data: statisticResult, isLoading } = useUserStatistics();
+  const { data: statisticResult, isLoading } = useUserStatistics()
   const { user } = useSelector((state: RootState ) => state.auth);
 
   const userStatistic = statisticResult?.data;
