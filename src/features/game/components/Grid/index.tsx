@@ -6,7 +6,7 @@ import {
   INVALID_KEYS,
   LETTERS_PER_ATTEMPT,
 } from "@/features/game/constants";
-import { resetGame, setCurrAttempt, setTargetWord } from "@/features/game/store/gameSlice";
+import { setCurrAttempt, setTargetWord } from "@/features/game/store/gameSlice";
 import { GameSign } from "@/shared/components/layout/game-sign";
 import { AppDispatch, RootState } from "@/shared/store";
 import { REGEXP_ONLY_CHARS } from "input-otp";
@@ -38,10 +38,6 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
 
   useEffect(() => {
     if (!targetWord || !targetWord.word) return;
-
-    if (targetWord.word !== storedTargetWord?.word) {
-      dispatch(resetGame());
-    }
 
     dispatch(setTargetWord(targetWord));
   }, [targetWord, dispatch, storedTargetWord?.word]);

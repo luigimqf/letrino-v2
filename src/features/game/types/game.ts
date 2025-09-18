@@ -23,11 +23,9 @@ export type Attempt = {
 };
 
 export type AuthenticatedAttempt = {
-  attempts: {
-    userInput: string;
-    status: EAttemptStatus;
-  }[];
-};
+  userInput: string;
+  status: EAttemptStatus;
+}[];
 
 export type GameState = {
   attempts: Attempt[];

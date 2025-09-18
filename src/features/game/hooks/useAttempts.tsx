@@ -57,7 +57,7 @@ export const useAttempts = () => {
 
   useEffect(() => {
     if (isSuccess && userAttempts?.data) {
-      const newAttempts: Attempt[] = userAttempts?.data?.attempts.map((attempt) => ({
+      const newAttempts: Attempt[] = userAttempts?.data?.map((attempt) => ({
         status: attempt.status,
         letters: attempt.userInput.split("").map((letter) => ({ letter, status: undefined })),
       }));

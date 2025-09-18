@@ -102,11 +102,19 @@ const gameSlice = createSlice({
     },
 
     setTargetWord: (state, action: PayloadAction<TargetWord>) => {
-      const { word, isGolden } = action.payload;
-      state.targetWord = {
-        word: word.toLowerCase(),
-        isGolden,
-      };
+      const newWord = action.payload;
+
+      if (!newWord.word) return;
+
+      if (state.targetWord?.word !== newWord.word) {
+        Object.assign(state, {
+          ...INITIAL_GAME_STATE,
+          targetWord: newWord,
+        });
+        return;
+      }
+
+      state.targetWord = newWord;
     },
 
     setAttempts: (state, action: PayloadAction<Attempt[]>) => {
@@ -149,10 +157,12 @@ const gameSlice = createSlice({
         };
       });
 
+      state.attempts = attemptsWithStatus;
+      state.currentAttemptIndex = action.payload.length;
+
       const isAnySuccess = attemptsWithStatus.some((attempt) =>
         attempt.letters.every((l) => l.status === ELetterStatus.CORRECT),
       );
-
       if (isAnySuccess) {
         state.isWin = true;
         state.isGameOver = true;
@@ -160,9 +170,6 @@ const gameSlice = createSlice({
         state.isWin = false;
         state.isGameOver = true;
       }
-
-      state.attempts = attemptsWithStatus;
-      state.currentAttemptIndex = action.payload.length;
     },
 
     setCurrAttempt: (state, action: PayloadAction<{ guess: string; attemptIndex: number }>) => {
@@ -199,9 +206,6 @@ const gameSlice = createSlice({
       if (!letters || letters.length <= 0) return;
 
       state.attempts[state.currentAttemptIndex].letters = letters.slice(0, letters.length - 1);
-    },
-    resetGame: (state) => {
-      Object.assign(state, INITIAL_GAME_STATE);
     },
   },
   extraReducers: (builder) => {
@@ -249,6 +253,5 @@ export const {
   setAttempts,
   setKeyboardInput,
   setKeyboardBackspace,
-  resetGame,
 } = gameSlice.actions;
 export default gameSlice.reducer;

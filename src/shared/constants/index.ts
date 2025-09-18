@@ -18,6 +18,7 @@ export enum ROUTES {
   LEADERBOARD = "/leaderboard",
   TUTORIAL = "/tutorial",
   WORD_NOT_FOUND = "/word-not-found",
+  SUBMIT_BUG = "/submit-bug",
 }
 
 export enum ErrorsByCode {
