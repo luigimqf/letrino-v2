@@ -10,13 +10,13 @@ import LeaderboardSkeleton from "./skeleton";
 
 export default function LeaderboardPage() {
   const { isDesktop } = useMediaQuery();
-  const { data, isLoading, isSuccess, error } = useLeaderboard();
+  const { data, isLoading, isError, error } = useLeaderboard();
 
   if (isLoading) {
     return <LeaderboardSkeleton isDesktop={isDesktop} />;
   }
 
-  if (!isSuccess) {
+  if (isError) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -27,10 +27,11 @@ export default function LeaderboardPage() {
     );
   }
 
-  const podiumUsers = data?.data?.leaderboard.slice(0, 3) || [];
-  const otherUsers = data?.data?.leaderboard.slice(3) || [];
+  const leaderboard = data?.data?.leaderboard || [];
+  const podiumUsers = leaderboard.slice(0, 3) || [];
+  const otherUsers = leaderboard.slice(3) || [];
 
-  if (data?.data?.leaderboard.length === 0) {
+  if (leaderboard.length === 0) {
     return (
       <div className="px-4 py-6 lg:px-8">
         <div className="text-center mb-8 lg:mb-12">

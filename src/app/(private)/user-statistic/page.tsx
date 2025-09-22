@@ -5,20 +5,34 @@ import { useUserStatistics } from "@/features/auth/services/queries";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { RootState } from "@/shared/store";
 import { BarChart3, Star, Target, TrendingUp, Trophy, User, Zap } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { toast } from "sonner";
+
+export const DEFAULT_STATISTIC = {
+  gamesPlayed: 0,
+  gamesWon: 0,
+  winPercentage: 0,
+  winStreak: 0,
+  bestWinStreak: 0,
+  score: 0,
+};
 
 export default function UserStatisticPage() {
   const { isDesktop } = useMediaQuery();
   const { data: statisticResult, isLoading } = useUserStatistics();
   const { user } = useSelector((state: RootState) => state.auth);
+  const [userStatistic, setUserStatistic] = useState(DEFAULT_STATISTIC);
 
-  const userStatistic = statisticResult?.data;
+  useEffect(() => {
+    if (!isLoading && !statisticResult?.data) {
+      toast.error("Erro ao carregar estatísticas do usuário");
+      return;
+    }
+    setUserStatistic(statisticResult?.data ?? DEFAULT_STATISTIC);
+  }, [statisticResult, isLoading]);
 
   if (isLoading) {
-    return <UserStatisticSkeleton isDesktop={isDesktop} />;
-  }
-
-  if (!userStatistic) {
     return <UserStatisticSkeleton isDesktop={isDesktop} />;
   }
 

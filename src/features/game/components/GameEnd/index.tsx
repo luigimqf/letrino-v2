@@ -34,7 +34,9 @@ export const GameEnd = () => {
   useEffect(() => {
     if (isGameOver) {
       setShouldOpen(true);
+      return;
     }
+    setShouldOpen(false);
   }, [isGameOver]);
 
   const copyResults = async () => {

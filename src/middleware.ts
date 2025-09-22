@@ -10,7 +10,6 @@ const publicRoutes = [
   { path: ROUTES.WORD_NOT_FOUND, whenAuthenticated: "next" },
   { path: ROUTES.LEADERBOARD, whenAuthenticated: "next" },
   { path: ROUTES.TUTORIAL, whenAuthenticated: "next" },
-  { path: ROUTES.USER_STATISTIC, whenAuthenticated: "next" },
 ] as const;
 
 export function middleware(request: NextRequest) {
