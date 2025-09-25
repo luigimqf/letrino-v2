@@ -42,6 +42,7 @@ export const registerUserAttempt = createAsyncThunk(
         target: targetLower,
         isCorrect,
         newScore: data?.newScore,
+        bonuses: data?.bonuses,
       };
     } catch {
       throw new Error("Failed to register attempt");

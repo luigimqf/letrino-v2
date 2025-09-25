@@ -49,6 +49,8 @@ const authSlicer = createSlice({
           ...state.user,
           score: action.payload.newScore,
         };
+
+        state.bonuses = action.payload.bonuses;
       }
     });
     builder.addCase(logoutUser.fulfilled, (state) => {

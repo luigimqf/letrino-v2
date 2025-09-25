@@ -1,6 +1,6 @@
-import { UserBasicData } from "../types";
+import { Bonuses, UserBasicData } from "../types";
 
-export const USER_INITIAL_STATE: { user: UserBasicData } = {
+export const USER_INITIAL_STATE: { user: UserBasicData; bonuses?: Bonuses } = {
   user: {
     id: null,
     avatar: null,

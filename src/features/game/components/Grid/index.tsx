@@ -14,6 +14,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAttempts } from "../../hooks";
 import { TargetWord } from "../../types/game";
+import { GameEnd } from "../GameEnd";
 import { Attempt } from "./Attempt";
 
 export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
@@ -69,6 +70,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
           );
         })}
       </div>
+      <GameEnd />
     </div>
   );
 };

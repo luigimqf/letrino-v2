@@ -1,4 +1,3 @@
-import { GameEnd } from "@/features/game/components/GameEnd";
 import { Grid } from "@/features/game/components/Grid";
 import { Keyboard } from "@/features/game/components/Keyboard";
 import { TargetWord } from "@/features/game/types/game";
@@ -32,7 +31,6 @@ export default async function GamePage() {
       <main className="w-full h-full flex flex-col py-15 justify-between items-center">
         <Grid targetWord={targetWord} />
         <Keyboard />
-        <GameEnd />
       </main>
     );
   } catch {

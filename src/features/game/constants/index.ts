@@ -1,6 +1,6 @@
-import { ELetterStatus, GameState } from "../types/game";
+import { Attempt, ELetterStatus, GameState } from "../types/game";
 
-export const EMPTY_ATTEMPTS: GameState["attempts"] = Array(6)
+export const EMPTY_ATTEMPTS: Attempt[] = Array(6)
   .fill(null)
   .map(() => ({
     id: undefined,
