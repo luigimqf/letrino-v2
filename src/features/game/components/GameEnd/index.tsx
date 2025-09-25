@@ -106,8 +106,8 @@ export const GameEnd = () => {
       const timeout = setTimeout(() => setCopied(false), 1000);
 
       return () => clearTimeout(timeout);
-    } catch (error) {
-      console.error("Failed to copy:", error);
+    } catch {
+      toast.error("Falha ao copiar resultados. Tente novamente.");
     }
   };
 

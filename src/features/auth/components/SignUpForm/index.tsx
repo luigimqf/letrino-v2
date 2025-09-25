@@ -41,7 +41,7 @@ export default function SignUpForm() {
         duration: 5000,
       });
     }
-  }, [result]);
+  }, [result, router]);
 
   return (
     <form action={handleSignUp} className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10">

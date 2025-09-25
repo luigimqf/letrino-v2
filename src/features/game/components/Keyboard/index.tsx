@@ -11,9 +11,7 @@ import { LetterCell } from "../../types/game";
 import { Key } from "./Key";
 
 export const Keyboard = () => {
-  const { attempts, currentAttemptIndex, isGameOver } = useSelector(
-    (state: RootState) => state.game,
-  );
+  const { attempts, isGameOver } = useSelector((state: RootState) => state.game);
   const { user } = useSelector((state: RootState) => state.auth);
   const { isDesktop } = useMediaQuery();
   const dispatch = useDispatch<AppDispatch>();
@@ -42,7 +40,7 @@ export const Keyboard = () => {
     }
 
     return Array.from(map.values());
-  }, [currentAttemptIndex]);
+  }, [attempts]);
 
   return (
     <div

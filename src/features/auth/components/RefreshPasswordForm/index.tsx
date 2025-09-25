@@ -39,7 +39,7 @@ export default function RefreshPasswordForm() {
         duration: 3000,
       });
     }
-  }, [result]);
+  }, [result, router]);
 
   return (
     <form

@@ -2,6 +2,7 @@
 
 import StatCard from "@/features/auth/components/StatCard";
 import { useUserStatistics } from "@/features/auth/services/queries";
+import { Statistics } from "@/features/auth/types";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { RootState } from "@/shared/store";
 import { BarChart3, Star, Target, TrendingUp, Trophy, User, Zap } from "lucide-react";
@@ -9,13 +10,13 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
-export const DEFAULT_STATISTIC = {
+const DEFAULT_STATISTIC: Statistics = {
   gamesPlayed: 0,
   gamesWon: 0,
-  winPercentage: 0,
   winStreak: 0,
   bestWinStreak: 0,
   score: 0,
+  winPercentage: 0,
 };
 
 export default function UserStatisticPage() {

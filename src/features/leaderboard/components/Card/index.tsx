@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ReactNode } from "react";
 import { PlayerRank } from "../../types";
 
@@ -49,7 +50,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
           <div className="flex justify-center">
             <div className="relative w-16 h-16 lg:w-20 lg:h-20 rounded-full overflow-hidden ring-4 ring-primary/30">
               <img
-                src={user.avatar}
+                src={user.avatar ?? ""}
                 alt={`Avatar de ${user.username}`}
                 className="w-full h-full object-cover"
               />
@@ -103,7 +104,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
 
         <div className="relative w-12 h-12 lg:w-16 lg:h-16 rounded-full overflow-hidden ring-4 ring-primary/30 shrink-0">
           <img
-            src={user.avatar}
+            src={user.avatar ?? ""}
             alt={`Avatar de ${user.username}`}
             className="w-full h-full object-cover"
           />
