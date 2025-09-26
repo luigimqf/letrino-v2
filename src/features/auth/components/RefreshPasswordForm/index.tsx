@@ -5,15 +5,17 @@ import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
-import { ROUTES } from "@/shared/constants";
+import { PasswordRequirements } from "@/shared/components/ui/PasswordRequirements";
+import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function RefreshPasswordForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token");
+  const [newPassword, setNewPassword] = useState("");
 
   const [result, handleRefreshPassword, isPending] = useActionState(refreshPassword, null);
 
@@ -29,9 +31,11 @@ export default function RefreshPasswordForm() {
       router.push(ROUTES.SIGN_IN);
     }
 
-    if (!result?.success && result?.errors?.api_err) {
+    if (!result?.success && result?.errors?.code) {
       toast("Erro ao atualizar senha", {
-        description: result.errors.api_err,
+        description:
+          ErrorsByCode[result.errors.code as keyof typeof ErrorsByCode] ||
+          ErrorsByCode.UNKNOWN_ERROR,
         action: {
           label: "Fechar",
           onClick: () => {},
@@ -48,7 +52,7 @@ export default function RefreshPasswordForm() {
     >
       <div className="flex flex-col gap-5 items-center">
         <Logo />
-        <span className="font-bold text-text-100 font-fredoka">Recupere sua senha</span>
+        <span className="font-bold text-text-100 font-fredoka">Redefina sua senha</span>
       </div>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="new-password">Nova Senha</Label>
@@ -57,7 +61,9 @@ export default function RefreshPasswordForm() {
           id="new-password"
           name="new-password"
           type="password"
+          onChange={(e) => setNewPassword(e.target.value)}
         />
+        <PasswordRequirements password={newPassword} />
         {result?.errors && result?.errors?.new_password && (
           <span
             data-visible={!!result.errors.new_password}

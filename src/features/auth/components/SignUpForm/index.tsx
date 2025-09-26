@@ -6,13 +6,15 @@ import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { PasswordRequirements } from "@/shared/components/ui/PasswordRequirements";
 import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -86,7 +88,9 @@ export default function SignUpForm() {
           id="password"
           name="password"
           type="password"
+          onChange={(e) => setPassword(e.target.value)}
         />
+        <PasswordRequirements password={password} />
         {result?.errors && result?.errors?.password && (
           <span
             data-visible={!!result.errors.password}
