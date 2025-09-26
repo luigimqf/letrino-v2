@@ -5,11 +5,15 @@ import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { ROUTES } from "@/shared/constants";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function ForgotPasswordForm() {
   const [result, handleForgotPassword, isPending] = useActionState(forgotPassword, null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (result?.success) {
@@ -20,6 +24,7 @@ export default function ForgotPasswordForm() {
         },
         duration: 3000,
       });
+      router.push(ROUTES.SIGN_IN);
     }
 
     if (!result?.success && result?.errors?.api_err) {
