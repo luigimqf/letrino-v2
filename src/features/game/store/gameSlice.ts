@@ -41,8 +41,8 @@ export const registerUserAttempt = createAsyncThunk(
         guess: guessLower,
         target: targetLower,
         isCorrect,
-        newScore: data?.newScore,
-        bonuses: data?.bonuses,
+        totalScore: data?.totalScore,
+        scoreDetails: data?.scoreDetails,
       };
     } catch {
       throw new Error("Failed to register attempt");
@@ -222,16 +222,29 @@ const gameSlice = createSlice({
           };
         }
       })
-      .addCase(registerUserAttempt.fulfilled, (state) => {
+      .addCase(registerUserAttempt.fulfilled, (state, action) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
         const lastAttempt = state.attempts[lastAttemptIndex];
 
-        if (lastAttempt) {
-          state.attempts[lastAttemptIndex] = {
-            ...lastAttempt,
-            status: EAttemptStatus.SUCCESS,
-          };
-        }
+        if (!lastAttempt) return;
+
+        state.attempts[lastAttemptIndex] = {
+          ...lastAttempt,
+          status: EAttemptStatus.SUCCESS,
+        };
+
+        const { isCorrect } = action.payload;
+
+        if (!isCorrect) return;
+
+        const { totalScore, scoreDetails } = action.payload;
+
+        if (!totalScore || !scoreDetails) return;
+
+        state.matchResult = {
+          totalScore,
+          scoreDetails,
+        };
       })
       .addCase(registerUserAttempt.rejected, (state) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;

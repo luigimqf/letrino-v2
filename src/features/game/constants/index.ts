@@ -14,6 +14,7 @@ export const INITIAL_GAME_STATE: GameState = {
   targetWord: null,
   isGameOver: false,
   isWin: false,
+  matchResult: null,
 };
 
 export const ENTER_KEY = "Enter";

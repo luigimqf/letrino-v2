@@ -44,13 +44,11 @@ const authSlicer = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(registerUserAttempt.fulfilled, (state, action) => {
-      if (action.payload.isCorrect && action.payload.newScore) {
+      if (action.payload.isCorrect && action.payload.totalScore) {
         state.user = {
           ...state.user,
-          score: action.payload.newScore,
+          score: state.user.score + action.payload.totalScore,
         };
-
-        state.bonuses = action.payload.bonuses;
       }
     });
     builder.addCase(logoutUser.fulfilled, (state) => {

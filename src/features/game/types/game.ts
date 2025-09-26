@@ -33,9 +33,22 @@ export type GameState = {
   targetWord: TargetWord | null;
   isGameOver: boolean;
   isWin: boolean;
+  matchResult: MatchResult | null;
 };
 
 export type TargetWord = {
   word: string;
   isGolden: boolean;
+};
+
+export type MatchResult = {
+  totalScore: number;
+  scoreDetails: ScoreDetails;
+};
+
+export type ScoreDetails = {
+  attemptScore: number;
+  perfectGame: number;
+  winStreak: number;
+  highWinRate: number;
 };

@@ -21,12 +21,6 @@ export type UserBasicData = {
   score: number;
 };
 
-export type Bonuses = {
-  perfectGame: number;
-  winStreak: number;
-  highWinRate: number;
-};
-
 export type Statistics = {
   gamesPlayed: number;
   gamesWon: number;

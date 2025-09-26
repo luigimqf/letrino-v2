@@ -1,6 +1,5 @@
 "use client";
 
-import { Bonuses } from "@/features/auth/types";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,7 @@ import { Copy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { Attempt, ELetterStatus } from "../../types/game";
+import { Attempt, ELetterStatus, MatchResult } from "../../types/game";
 
 const STATUS_EMOJI: Record<ELetterStatus, string> = {
   correct: "🟩",
@@ -49,13 +48,35 @@ const BonusCard = ({
   </div>
 );
 
-const BonusDisplay = ({ bonuses }: { bonuses?: Bonuses }) => {
-  if (!bonuses) return null;
+const ResultDisplay = ({ matchResult }: { matchResult: MatchResult | null }) => {
+  if (!matchResult) return null;
 
   const bonusItems = [
-    { key: "perfectGame", icon: "🎯", title: "Jogo Perfeito", value: bonuses.perfectGame },
-    { key: "winStreak", icon: "🔥", title: "Sequência de Vitórias", value: bonuses.winStreak },
-    { key: "highWinRate", icon: "⭐", title: "Alta Taxa de Vitória", value: bonuses.highWinRate },
+    {
+      key: "attemptScore",
+      icon: "🎉",
+      title: "Número de Tentativas",
+      value: matchResult.scoreDetails.attemptScore,
+    },
+    {
+      key: "perfectGame",
+      icon: "🎯",
+      title: "Jogo Perfeito",
+      value: matchResult.scoreDetails.perfectGame,
+    },
+    {
+      key: "winStreak",
+      icon: "🔥",
+      title: "Sequência de Vitórias",
+      value: matchResult.scoreDetails.winStreak,
+    },
+    {
+      key: "highWinRate",
+      icon: "⭐",
+      title: "Alta Taxa de Vitória",
+      value: matchResult.scoreDetails.highWinRate,
+    },
+    // { key: "goldenWord", icon: "👑", title: "Palavra Dourada", value: matchResult.bonuses.goldenWord },
   ].filter((item) => item.value > 0);
 
   if (bonusItems.length === 0) return null;
@@ -63,7 +84,7 @@ const BonusDisplay = ({ bonuses }: { bonuses?: Bonuses }) => {
   return (
     <div className="mt-6 space-y-3">
       <div className="text-center">
-        <h3 className="text-lg font-semibold text-primary mb-1">🎉 Bônus Conquistados!</h3>
+        <h3 className="text-lg font-semibold text-primary mb-1">🎉 Pontuação Conquistada!</h3>
       </div>
       <div className="space-y-2">
         {bonusItems.map((item, index) => (
@@ -75,14 +96,23 @@ const BonusDisplay = ({ bonuses }: { bonuses?: Bonuses }) => {
             delay={index * 150}
           />
         ))}
+        {bonusItems.length > 1 ? (
+          <BonusCard
+            icon="🏆"
+            title="Pontuação Total"
+            value={matchResult.totalScore}
+            delay={bonusItems.length * 150}
+          />
+        ) : null}
       </div>
     </div>
   );
 };
 
 export const GameEnd = () => {
-  const { attempts, isGameOver, isWin, targetWord } = useSelector((state: RootState) => state.game);
-  const { bonuses } = useSelector((state: RootState) => state.auth);
+  const { attempts, isGameOver, isWin, targetWord, matchResult } = useSelector(
+    (state: RootState) => state.game,
+  );
 
   const [shouldOpen, setShouldOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -141,7 +171,7 @@ export const GameEnd = () => {
             </div>
           </div>
 
-          {isWin && <BonusDisplay bonuses={bonuses} />}
+          {isWin && <ResultDisplay matchResult={matchResult} />}
 
           <div className="mt-6 flex flex-col items-center gap-1">
             <span className="text-muted-foreground">Próxima palavra em:</span>
