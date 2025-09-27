@@ -1,15 +1,18 @@
 "use client";
 import { ROUTES } from "@/shared/constants";
 import { ChevronLeft } from "lucide-react";
-import Link, { LinkProps } from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "../ui/button";
 
-export const Back = ({ href = ROUTES.HOME, ...props }: Partial<LinkProps>) => {
+export const Back = ({ path = ROUTES.HOME, label }: { path: string; label: string }) => {
+  const router = useRouter();
+
   return (
-    <div className="flex items-center cursor-pointer">
+    <div className="flex items-center justify-center">
       <ChevronLeft size={15} />
-      <Link className="text-sm" href={href} {...props}>
-        Voltar
-      </Link>
+      <Button variant="link" className="text-xs" onClick={() => router.push(path)}>
+        {label}
+      </Button>
     </div>
   );
 };

@@ -88,7 +88,7 @@ export default function LeaderboardCard({ user, rank, isPodium, icon }: Leaderbo
   return (
     <div
       className={`
-      p-4 lg:p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl
+      p-4 lg:p-6 rounded-xl border backdrop-blur-sm transition-all duration-300 hover:shadow-xl
       ${getPodiumStyle()}
     `}
     >

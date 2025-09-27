@@ -1,6 +1,7 @@
 "use client";
 
 import { refreshPassword } from "@/app/actions/refresh-password";
+import { Back } from "@/shared/components/layout/Back";
 import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
@@ -48,7 +49,7 @@ export default function RefreshPasswordForm() {
   return (
     <form
       action={handleRefreshPassword}
-      className="bg-bkg-100 w-sm flex flex-col gap-8 px-20 py-10 rounded-xl"
+      className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10"
     >
       <div className="flex flex-col gap-5 items-center">
         <Logo />
@@ -94,6 +95,7 @@ export default function RefreshPasswordForm() {
       <Button disabled={isPending} type="submit">
         Enviar
       </Button>
+      <Back path={ROUTES.SIGN_IN} label="Voltar para o login" />
     </form>
   );
 }

@@ -51,7 +51,6 @@ export default function SignUpForm() {
         <Logo />
         <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
       </div>
-      <Back href={ROUTES.SIGN_IN} />
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="username">Username</Label>
         <Input
@@ -120,6 +119,7 @@ export default function SignUpForm() {
       <Button className="w-50 self-center" disabled={isPending} type="submit">
         Criar perfil
       </Button>
+      <Back path={ROUTES.SIGN_IN} label="Voltar para o login" />
     </form>
   );
 }

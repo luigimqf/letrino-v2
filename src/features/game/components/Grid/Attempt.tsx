@@ -1,12 +1,12 @@
 "use-client";
 
 import { InputOTP } from "@/shared/components/ui/input-otp";
+import { cn } from "@/shared/lib/utils";
 import { OTPInput } from "input-otp";
 import React, { memo } from "react";
-import { LetterCell } from "../../types/game";
 import { LETTERS_PER_ATTEMPT } from "../../constants";
+import { LetterCell } from "../../types/game";
 import { Letter } from "./Letter";
-import { cn } from "@/shared/lib/utils";
 
 type AttemptProps = Omit<React.ComponentProps<typeof OTPInput>, "render"> & {
   letters: LetterCell[];
@@ -37,6 +37,7 @@ const AttemptComponent = ({
       maxLength={maxLength}
       value={value}
       onChange={onChange}
+      type="text"
       {...props}
     >
       {[...Array(LETTERS_PER_ATTEMPT)].map((_, letterIndex) => {

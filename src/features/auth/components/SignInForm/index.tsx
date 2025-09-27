@@ -49,7 +49,6 @@ export default function SignInForm() {
         <Logo />
         <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
       </div>
-      <Back />
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" />
@@ -90,6 +89,7 @@ export default function SignInForm() {
         >
           Criar conta
         </Button>
+        <Back path={ROUTES.HOME} label="Voltar para a home" />
       </div>
     </form>
   );
