@@ -15,10 +15,21 @@ export type LoginData = {
 };
 
 export type UserBasicData = {
-  avatar: string;
-  username: string;
+  id: string | null;
+  avatar: string | null;
+  username: string | null;
   score: number;
 };
+
+export type Statistics = {
+  gamesPlayed: number;
+  gamesWon: number;
+  winStreak: number;
+  bestWinStreak: number;
+  score: number;
+  winPercentage: number;
+};
+
 export type UserInfo = {
   username: string;
 };

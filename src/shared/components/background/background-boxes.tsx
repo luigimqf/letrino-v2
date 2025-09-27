@@ -1,7 +1,7 @@
 "use client";
-import React, { useMemo } from "react";
-import { motion } from "motion/react";
 import { cn } from "@/shared/lib/utils";
+import { motion } from "motion/react";
+import React, { useMemo } from "react";
 
 export const BackgroundBoxes = ({ className, ...rest }: { className?: string }) => {
   const rows = new Array(150).fill(1);

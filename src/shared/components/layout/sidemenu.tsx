@@ -2,41 +2,52 @@
 
 import { useLogout } from "@/features/auth/services/mutations";
 import { useUserData } from "@/features/auth/services/queries";
-import { removeUserInfo, setUserInfo } from "@/features/auth/store/authSlice";
+import { logoutUser, removeUserInfo, setUserInfo } from "@/features/auth/store/authSlice";
+import { UserBasicData } from "@/features/auth/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { ROUTES } from "@/shared/constants";
 import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
 import { cn } from "@/shared/lib/utils";
-import { RootState } from "@/shared/store";
-import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, X } from "lucide-react";
+import { AppDispatch, RootState } from "@/shared/store";
+import { BookOpen, Home, LogIn, LogOut, Menu, Trophy, User, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import { Countdown } from "../ui/timer";
 
 const MENU_ITENS = [
   {
     icon: Home,
     label: "Home",
+    authenticated: false,
     href: ROUTES.HOME,
+  },
+  {
+    icon: User,
+    label: "Estatísticas do usuário",
+    authenticated: true,
+    href: ROUTES.USER_STATISTIC,
   },
   {
     icon: Trophy,
     label: "Leaderboard",
+    authenticated: false,
     href: ROUTES.LEADERBOARD,
   },
   {
     icon: BookOpen,
     label: "Tutorial",
+    authenticated: false,
     href: ROUTES.TUTORIAL,
   },
 ];
 
 function SidemenuComponent() {
   const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const {
     data: logoutResult,
     isPending: isLogoutPending,
@@ -50,8 +61,8 @@ function SidemenuComponent() {
 
   const { isDesktop } = useMediaQuery();
 
-  const isAuthenticated = !!(user?.username && user?.avatar && user?.score);
-  const disabled = isDataPending || isLogoutPending;
+  const isAuthenticated = !!user.id;
+  const disabled = isLogoutPending || isDataPending;
 
   useEffect(() => {
     if (!isDesktop && isOpen) {
@@ -66,17 +77,24 @@ function SidemenuComponent() {
   }, [isDesktop]);
 
   useEffect(() => {
+    if (isDataPending) return;
+
+    if (!dataResult?.success && !dataResult?.data) {
+      dispatch(logoutUser());
+      return;
+    }
+
     if (dataResult?.success && dataResult?.data) {
       dispatch(setUserInfo(dataResult?.data));
     }
-  }, [dataResult, dispatch]);
+  }, [dataResult, dispatch, isDataPending]);
 
   useEffect(() => {
     if (logoutResult?.success) {
       dispatch(removeUserInfo());
       resetLogout();
       router.push(ROUTES.HOME);
-      toast("Logout realizado com sucesso", { duration: 1500 });
+      toast.success("Logout realizado com sucesso!", { duration: 1500 });
       return;
     }
 
@@ -143,12 +161,7 @@ function SidemenuComponent() {
 
             {isAuthenticated && user && (
               <div className="mt-4">
-                <UserInfo
-                  username={user.username}
-                  avatar={user.avatar}
-                  score={user.score}
-                  isOpen={true}
-                />
+                <UserInfo user={user} isOpen={true} />
               </div>
             )}
           </div>
@@ -158,6 +171,7 @@ function SidemenuComponent() {
               {MENU_ITENS.map((item) => {
                 const Icon = item.icon;
                 const isActive = pathname === item.href;
+                if (item.authenticated && !isAuthenticated) return null;
                 return (
                   <li key={item.href} className="w-full">
                     <Link
@@ -240,21 +254,17 @@ function SidemenuComponent() {
 
         {isAuthenticated && user && (
           <div className="mt-4">
-            <UserInfo
-              username={user.username}
-              avatar={user.avatar}
-              score={user.score}
-              isOpen={isOpen}
-            />
+            <UserInfo user={user} isOpen={isOpen} />
           </div>
         )}
       </div>
 
-      <nav className="flex-1 p-2">
+      <nav className="flex-1 p-2 mt-5">
         <ul className="flex flex-col justify-start items-start space-y-2">
           {MENU_ITENS.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
+            if (item.authenticated && !isAuthenticated) return null;
             return (
               <li key={item.href} className="w-full">
                 <Link
@@ -292,6 +302,16 @@ function SidemenuComponent() {
           })}
         </ul>
       </nav>
+
+      <div
+        className={cn(
+          "w-full flex flex-col items-center justify-center mb-4",
+          isOpen ? "visible" : "hidden",
+        )}
+      >
+        <span>Próxima palavra em:</span>
+        <Countdown />
+      </div>
 
       <div className="p-4 border-t border-border">
         <Button
@@ -343,17 +363,11 @@ function MenuBurguer({
   );
 }
 
-function UserInfo({
-  avatar,
-  username,
-  score,
-  isOpen,
-}: {
-  username: string;
-  avatar: string;
-  score: number;
-  isOpen?: boolean;
-}) {
+function UserInfo({ user, isOpen }: { user: UserBasicData; isOpen?: boolean }) {
+  const { username, avatar, score } = user;
+
+  if (!username || !avatar) return null;
+
   return (
     <div className="flex items-center h-8">
       <Avatar className="h-8 w-8 shrink-0">

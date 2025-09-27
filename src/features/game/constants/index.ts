@@ -1,6 +1,6 @@
-import { ELetterStatus, GameState } from "../types/game";
+import { Attempt, ELetterStatus, GameState } from "../types/game";
 
-export const EMPTY_ATTEMPTS: GameState["attempts"] = Array(6)
+export const EMPTY_ATTEMPTS: Attempt[] = Array(6)
   .fill(null)
   .map(() => ({
     id: undefined,
@@ -14,10 +14,11 @@ export const INITIAL_GAME_STATE: GameState = {
   targetWord: null,
   isGameOver: false,
   isWin: false,
+  matchResult: null,
 };
 
-export const ENTER_KEY: string = "Enter";
-export const BACKSPACE_KEY: string = "Backspace";
+export const ENTER_KEY = "Enter";
+export const BACKSPACE_KEY = "Backspace";
 
 export const KEYBOARD_KEYS: string[][] = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -27,8 +28,8 @@ export const KEYBOARD_KEYS: string[][] = [
 
 export const INVALID_KEYS: string[] = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 
-export const ATTEMPTS_PER_GRID: number = 6;
-export const LETTERS_PER_ATTEMPT: number = 5;
+export const ATTEMPTS_PER_GRID = 6;
+export const LETTERS_PER_ATTEMPT = 5;
 
 export const STATUS_PRIORITY: Record<ELetterStatus, number> = {
   [ELetterStatus.CORRECT]: 3,

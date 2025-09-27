@@ -1,4 +1,10 @@
+/* eslint-disable no-unused-vars */
 export const GAME_NAME = "Letrino";
+
+export const MILLISECONDS_IN_SECOND = 1000;
+export const SECONDS_IN_MINUTE = 60;
+export const MINUTES_IN_HOUR = 60;
+export const SECONDS_IN_HOUR = SECONDS_IN_MINUTE * MINUTES_IN_HOUR;
 
 export enum ROUTES {
   HOME = "/",
@@ -7,10 +13,12 @@ export enum ROUTES {
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
   REFRESH_TOKEN = "/refresh-token",
-  GET_USER_DATA = "/user-data",
+  USER_DATA = "/user-data",
+  USER_STATISTIC = "/user-statistic",
   LEADERBOARD = "/leaderboard",
   TUTORIAL = "/tutorial",
   WORD_NOT_FOUND = "/word-not-found",
+  SUBMIT_BUG = "/submit-bug",
 }
 
 export enum ErrorsByCode {

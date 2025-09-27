@@ -35,10 +35,14 @@ export const registerUserAttempt = createAsyncThunk(
         throw new Error("Failed to register attempt");
       }
 
+      const { data } = await response.json();
+
       return {
         guess: guessLower,
         target: targetLower,
         isCorrect,
+        totalScore: data?.totalScore,
+        scoreDetails: data?.scoreDetails,
       };
     } catch {
       throw new Error("Failed to register attempt");
@@ -99,14 +103,77 @@ const gameSlice = createSlice({
     },
 
     setTargetWord: (state, action: PayloadAction<TargetWord>) => {
-      const { word, isGolden } = action.payload;
-      state.targetWord = {
-        word: word.toLowerCase(),
-        isGolden,
-      };
+      const newWord = action.payload;
+
+      if (!newWord.word) return;
+
+      if (state.targetWord?.word !== newWord.word) {
+        Object.assign(state, {
+          ...INITIAL_GAME_STATE,
+          targetWord: newWord,
+        });
+        return;
+      }
+
+      state.targetWord = newWord;
     },
 
-    setAttempt: (state, action: PayloadAction<{ guess: string; attemptIndex: number }>) => {
+    setAttempts: (state, action: PayloadAction<Attempt[]>) => {
+      const attemptsPayload = action.payload;
+      const target = state.targetWord?.word;
+
+      if (!attemptsPayload || !target || state.isGameOver) return;
+
+      const attemptsWithStatus = attemptsPayload.map((attempt) => {
+        const guess =
+          attempt.letters
+            ?.map((l) => l.letter)
+            .join("")
+            .toLowerCase() || "";
+        const guessLetters = guess.split("");
+        const targetLetters = target.split("");
+        const lettersWithStatus = guessLetters.map((letter, index) => {
+          if (targetLetters[index] === guessLetters[index]) {
+            return {
+              letter,
+              status: ELetterStatus.CORRECT,
+            };
+          }
+          if (targetLetters.includes(letter)) {
+            return {
+              letter,
+              status: ELetterStatus.WARNING,
+            };
+          }
+
+          return {
+            letter,
+            status: ELetterStatus.INCORRECT,
+          };
+        });
+
+        return {
+          ...attempt,
+          letters: lettersWithStatus,
+        };
+      });
+
+      state.attempts = attemptsWithStatus;
+      state.currentAttemptIndex = action.payload.length;
+
+      const isAnySuccess = attemptsWithStatus.some((attempt) =>
+        attempt.letters.every((l) => l.status === ELetterStatus.CORRECT),
+      );
+      if (isAnySuccess) {
+        state.isWin = true;
+        state.isGameOver = true;
+      } else if (attemptsPayload.length >= ATTEMPTS_PER_GRID) {
+        state.isWin = false;
+        state.isGameOver = true;
+      }
+    },
+
+    setCurrAttempt: (state, action: PayloadAction<{ guess: string; attemptIndex: number }>) => {
       const { attemptIndex, guess } = action.payload;
       const letters = guess?.split("");
       const attempt: Attempt = {
@@ -141,9 +208,6 @@ const gameSlice = createSlice({
 
       state.attempts[state.currentAttemptIndex].letters = letters.slice(0, letters.length - 1);
     },
-    resetGame: (state) => {
-      Object.assign(state, INITIAL_GAME_STATE);
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -158,16 +222,29 @@ const gameSlice = createSlice({
           };
         }
       })
-      .addCase(registerUserAttempt.fulfilled, (state) => {
+      .addCase(registerUserAttempt.fulfilled, (state, action) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
         const lastAttempt = state.attempts[lastAttemptIndex];
 
-        if (lastAttempt) {
-          state.attempts[lastAttemptIndex] = {
-            ...lastAttempt,
-            status: EAttemptStatus.SUCCESS,
-          };
-        }
+        if (!lastAttempt) return;
+
+        state.attempts[lastAttemptIndex] = {
+          ...lastAttempt,
+          status: EAttemptStatus.SUCCESS,
+        };
+
+        const { isCorrect } = action.payload;
+
+        if (!isCorrect) return;
+
+        const { totalScore, scoreDetails } = action.payload;
+
+        if (!totalScore || !scoreDetails) return;
+
+        state.matchResult = {
+          totalScore,
+          scoreDetails,
+        };
       })
       .addCase(registerUserAttempt.rejected, (state) => {
         const lastAttemptIndex = state.currentAttemptIndex - 1;
@@ -186,9 +263,9 @@ const gameSlice = createSlice({
 export const {
   validateAttempt,
   setTargetWord,
-  setAttempt,
+  setCurrAttempt,
+  setAttempts,
   setKeyboardInput,
   setKeyboardBackspace,
-  resetGame,
 } = gameSlice.actions;
 export default gameSlice.reducer;

@@ -6,13 +6,15 @@ import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { PasswordRequirements } from "@/shared/components/ui/PasswordRequirements";
 import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -41,7 +43,7 @@ export default function SignUpForm() {
         duration: 5000,
       });
     }
-  }, [result]);
+  }, [result, router]);
 
   return (
     <form action={handleSignUp} className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10">
@@ -49,7 +51,6 @@ export default function SignUpForm() {
         <Logo />
         <span className="font-bold text-text-100 font-fredoka">Crie sua conta</span>
       </div>
-      <Back href={ROUTES.SIGN_IN} />
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="username">Username</Label>
         <Input
@@ -86,7 +87,9 @@ export default function SignUpForm() {
           id="password"
           name="password"
           type="password"
+          onChange={(e) => setPassword(e.target.value)}
         />
+        <PasswordRequirements password={password} />
         {result?.errors && result?.errors?.password && (
           <span
             data-visible={!!result.errors.password}
@@ -116,6 +119,7 @@ export default function SignUpForm() {
       <Button className="w-50 self-center" disabled={isPending} type="submit">
         Criar perfil
       </Button>
+      <Back path={ROUTES.SIGN_IN} label="Voltar para o login" />
     </form>
   );
 }

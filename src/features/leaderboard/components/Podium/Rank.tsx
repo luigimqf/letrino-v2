@@ -18,7 +18,7 @@ export const Rank = ({ isFirst, position, player, className, ...props }: RankPro
         className="data-[first='true']:w-[100px] data-[first='true']:h-[100px] scale-100  rounded-full w-20 h-20 border border-primary-100"
       >
         <Avatar className="w-full h-full">
-          <AvatarImage src={player?.avatar} />
+          <AvatarImage src={player?.avatar ?? ""} />
         </Avatar>
 
         <Crown

@@ -1,15 +1,20 @@
 "use client";
 
 import { forgotPassword } from "@/app/actions/forgot-password";
+import { Back } from "@/shared/components/layout/Back";
 import { Logo } from "@/shared/components/layout/Logo";
 import { Button } from "@/shared/components/ui/button";
 import { Input } from "@/shared/components/ui/input";
 import { Label } from "@/shared/components/ui/label";
+import { ROUTES } from "@/shared/constants";
+import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
 
 export default function ForgotPasswordForm() {
   const [result, handleForgotPassword, isPending] = useActionState(forgotPassword, null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (result?.success) {
@@ -20,6 +25,7 @@ export default function ForgotPasswordForm() {
         },
         duration: 3000,
       });
+      router.push(ROUTES.SIGN_IN);
     }
 
     if (!result?.success && result?.errors?.api_err) {
@@ -37,7 +43,7 @@ export default function ForgotPasswordForm() {
   return (
     <form
       action={handleForgotPassword}
-      className="bg-bkg-100 w-sm flex flex-col gap-8 px-20 py-10 rounded-xl"
+      className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10"
     >
       <div className="flex flex-col gap-5 items-center">
         <Logo />
@@ -60,9 +66,12 @@ export default function ForgotPasswordForm() {
           </span>
         )}
       </div>
-      <Button disabled={isPending} type="submit">
-        Enviar
-      </Button>
+      <div className="w-full flex flex-col gap-3">
+        <Button disabled={isPending} type="submit">
+          Enviar
+        </Button>
+        <Back path={ROUTES.SIGN_IN} label="Voltar para o login" />
+      </div>
     </form>
   );
 }

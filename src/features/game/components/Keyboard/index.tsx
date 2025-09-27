@@ -1,23 +1,21 @@
 "use client";
 
+import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { AppDispatch, RootState } from "@/shared/store";
+import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { BACKSPACE_KEY, ENTER_KEY, KEYBOARD_KEYS, STATUS_PRIORITY } from "../../constants";
-import { Key } from "./Key";
-import { AppDispatch, RootState } from "@/shared/store";
+import { useAttempts } from "../../hooks";
 import { setKeyboardBackspace, setKeyboardInput } from "../../store/gameSlice";
 import { LetterCell } from "../../types/game";
-import { useCallback } from "react";
-import { useAttemptValidation } from "../../hooks";
-import { useMediaQuery } from "@/shared/hooks/useMediaQuery";
+import { Key } from "./Key";
 
 export const Keyboard = () => {
-  const { attempts, currentAttemptIndex, isGameOver } = useSelector(
-    (state: RootState) => state.game,
-  );
+  const { attempts, isGameOver } = useSelector((state: RootState) => state.game);
   const { user } = useSelector((state: RootState) => state.auth);
   const { isDesktop } = useMediaQuery();
   const dispatch = useDispatch<AppDispatch>();
-  const { handleAttemptSubmission, canSubmitAttempt } = useAttemptValidation();
+  const { handleAttemptSubmission, canSubmitAttempt } = useAttempts();
 
   const onAction = (key: string) => {
     if (key === ENTER_KEY && canSubmitAttempt()) {
@@ -42,7 +40,7 @@ export const Keyboard = () => {
     }
 
     return Array.from(map.values());
-  }, [currentAttemptIndex]);
+  }, [attempts]);
 
   return (
     <div

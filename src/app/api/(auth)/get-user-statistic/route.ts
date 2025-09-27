@@ -1,17 +1,15 @@
 import { ROUTES } from "@/shared/constants";
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const cookieStorage = await cookies();
-  const token = cookieStorage.get("token")?.value;
+export async function GET(request: NextRequest) {
+  const token = request.cookies.get("token")?.value;
 
   if (!token) {
     return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.USER_DATA}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.USER_STATISTIC}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
