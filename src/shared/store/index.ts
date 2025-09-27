@@ -19,7 +19,7 @@ const persistConfig = {
   storage,
   transforms: [
     encryptTransform({
-      secretKey: process.env.NEXT_PUBLIC_ENCRYPTION_KEY || "default_secret_key",
+      secretKey: process.env.NEXT_PRIVATE_ENCRYPTION_KEY || "default_secret_key",
       onError: (error) => {
         console.error("Encryption Error:", error);
       },
