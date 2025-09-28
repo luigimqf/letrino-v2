@@ -19,6 +19,7 @@ export default async function GamePage() {
       },
     });
 
+    console.log("Fetch response status:", response);
     if (!response.ok) redirect(ROUTES.WORD_NOT_FOUND);
 
     const { data: targetWord }: PromiseReturn<TargetWord> = await response.json();
@@ -33,7 +34,8 @@ export default async function GamePage() {
         <Keyboard />
       </main>
     );
-  } catch {
+  } catch (error) {
+    console.log("Fetch failed:", error);
     redirect(ROUTES.WORD_NOT_FOUND);
   }
 }
