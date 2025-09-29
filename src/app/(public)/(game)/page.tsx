@@ -6,6 +6,8 @@ import { PromiseReturn } from "@/shared/types";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function GamePage() {
   try {
     const cookieStore = await cookies();
