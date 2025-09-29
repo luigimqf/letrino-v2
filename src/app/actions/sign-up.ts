@@ -64,6 +64,7 @@ export async function signUp(_: unknown, formData: FormData): Promise<ServerActi
       },
     });
 
+    console.log(response);
     if (!response.ok) {
       const errData: PromiseReturn = await response.json();
       return {
