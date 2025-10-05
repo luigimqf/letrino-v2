@@ -128,6 +128,7 @@ function SidemenuComponent() {
         <div className="fixed top-4 left-4 z-50">
           <Button
             variant="ghost"
+            aria-label="Menu"
             size="icon"
             onClick={() => setIsOpen(!isOpen)}
             className="h-10 w-10 bg-bkg-100 border border-border shadow-lg hover:bg-accent"
@@ -151,6 +152,7 @@ function SidemenuComponent() {
               <h2 className="text-lg font-fredoka font-semibold text-foreground">Letrino</h2>
               <Button
                 variant="ghost"
+                aria-label="Close menu"
                 size="icon"
                 onClick={() => setIsOpen(false)}
                 className="h-8 w-8"
@@ -212,6 +214,7 @@ function SidemenuComponent() {
           <div className="p-4 border-t border-border">
             <Button
               variant="outline"
+              aria-label="User authentication"
               className="w-full h-10 justify-start"
               disabled={disabled}
               onClick={handleLogout}
@@ -269,6 +272,7 @@ function SidemenuComponent() {
               <li key={item.href} className="w-full">
                 <Link
                   href={item.href}
+                  aria-label={item.label}
                   data-active={isActive}
                   aria-current={isActive ? "page" : undefined}
                   onClick={handleMenuItemClick}
@@ -316,6 +320,7 @@ function SidemenuComponent() {
       <div className="p-4 border-t border-border">
         <Button
           variant="outline"
+          aria-label="User authentication"
           className={cn(
             "w-full h-10 transition-all duration-300 ease-out",
             isOpen ? "justify-start" : "justify-center",
@@ -354,6 +359,7 @@ function MenuBurguer({
   return (
     <Button
       variant="ghost"
+      aria-label="Menu"
       size="icon"
       onClick={() => setIsOpen(!isOpen)}
       className="h-8 w-8 shrink-0"
