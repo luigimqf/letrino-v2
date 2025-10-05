@@ -16,7 +16,7 @@ export const Logo = ({ width = 50, height = 50 }) => {
     checkDark();
     const observer = new MutationObserver(checkDark);
 
-    observer.observe(document.body, {
+    observer.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
