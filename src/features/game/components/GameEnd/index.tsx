@@ -49,62 +49,71 @@ const BonusCard = ({
 );
 
 const ResultDisplay = ({ matchResult }: { matchResult: MatchResult | null }) => {
-  if (!matchResult) return <LoaderCircle className="animate-spin mx-auto" />;
-
-  const bonusItems = [
-    {
-      key: "attemptScore",
-      icon: "🎉",
-      title: "Número de Tentativas",
-      value: matchResult.scoreDetails.attemptScore,
-    },
-    {
-      key: "perfectGame",
-      icon: "🎯",
-      title: "Jogo Perfeito",
-      value: matchResult.scoreDetails.perfectGame,
-    },
-    {
-      key: "winStreak",
-      icon: "🔥",
-      title: "Sequência de Vitórias",
-      value: matchResult.scoreDetails.winStreak,
-    },
-    {
-      key: "highWinRate",
-      icon: "⭐",
-      title: "Alta Taxa de Vitória",
-      value: matchResult.scoreDetails.highWinRate,
-    },
-    // { key: "goldenWord", icon: "👑", title: "Palavra Dourada", value: matchResult.bonuses.goldenWord },
-  ].filter((item) => item.value > 0);
-
-  if (bonusItems.length === 0) return null;
-
   return (
     <div className="mt-6 space-y-3">
       <div className="text-center">
         <h3 className="text-lg font-semibold text-primary mb-1">🎉 Pontuação Conquistada!</h3>
       </div>
-      <div className="space-y-2">
-        {bonusItems.map((item, index) => (
-          <BonusCard
-            key={item.key}
-            icon={item.icon}
-            title={item.title}
-            value={item.value}
-            delay={index * 150}
-          />
-        ))}
-        {bonusItems.length > 1 ? (
-          <BonusCard
-            icon="🏆"
-            title="Pontuação Total"
-            value={matchResult.totalScore}
-            delay={bonusItems.length * 150}
-          />
-        ) : null}
-      </div>
+
+      {!matchResult ? (
+        <div className="flex justify-center py-4">
+          <LoaderCircle className="animate-spin" />
+        </div>
+      ) : (
+        (() => {
+          const bonusItems = [
+            {
+              key: "attemptScore",
+              icon: "🎉",
+              title: "Número de Tentativas",
+              value: matchResult.scoreDetails.attemptScore,
+            },
+            {
+              key: "perfectGame",
+              icon: "🎯",
+              title: "Jogo Perfeito",
+              value: matchResult.scoreDetails.perfectGame,
+            },
+            {
+              key: "winStreak",
+              icon: "🔥",
+              title: "Sequência de Vitórias",
+              value: matchResult.scoreDetails.winStreak,
+            },
+            {
+              key: "highWinRate",
+              icon: "⭐",
+              title: "Alta Taxa de Vitória",
+              value: matchResult.scoreDetails.highWinRate,
+            },
+            // { key: "goldenWord", icon: "👑", title: "Palavra Dourada", value: matchResult.bonuses.goldenWord },
+          ].filter((item) => item.value > 0);
+
+          if (bonusItems.length === 0) return null;
+
+          return (
+            <div className="space-y-2">
+              {bonusItems.map((item, index) => (
+                <BonusCard
+                  key={item.key}
+                  icon={item.icon}
+                  title={item.title}
+                  value={item.value}
+                  delay={index * 150}
+                />
+              ))}
+              {bonusItems.length > 1 ? (
+                <BonusCard
+                  icon="🏆"
+                  title="Pontuação Total"
+                  value={matchResult.totalScore}
+                  delay={bonusItems.length * 150}
+                />
+              ) : null}
+            </div>
+          );
+        })()
+      )}
     </div>
   );
 };
