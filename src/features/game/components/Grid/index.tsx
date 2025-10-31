@@ -70,7 +70,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
           );
         })}
       </div>
-      <GameEnd />
+      <GameEnd isAuthenticated={!!user.id} />
     </div>
   );
 };

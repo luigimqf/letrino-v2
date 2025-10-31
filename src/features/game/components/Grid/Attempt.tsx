@@ -37,7 +37,7 @@ const AttemptComponent = ({
       maxLength={maxLength}
       value={value}
       onChange={onChange}
-      type="text"
+      pattern="[a-zA-Z0-9]*"
       {...props}
     >
       {[...Array(LETTERS_PER_ATTEMPT)].map((_, letterIndex) => {

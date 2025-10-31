@@ -9,7 +9,7 @@ import {
 } from "@/shared/components/ui/dialog";
 import { Countdown } from "@/shared/components/ui/timer";
 import { RootState } from "@/shared/store";
-import { Copy } from "lucide-react";
+import { Copy, LoaderCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -49,7 +49,7 @@ const BonusCard = ({
 );
 
 const ResultDisplay = ({ matchResult }: { matchResult: MatchResult | null }) => {
-  if (!matchResult) return null;
+  if (!matchResult) return <LoaderCircle className="animate-spin mx-auto" />;
 
   const bonusItems = [
     {
@@ -109,7 +109,7 @@ const ResultDisplay = ({ matchResult }: { matchResult: MatchResult | null }) => 
   );
 };
 
-export const GameEnd = () => {
+export const GameEnd = ({ isAuthenticated }: { isAuthenticated: boolean }) => {
   const { attempts, isGameOver, isWin, targetWord, matchResult } = useSelector(
     (state: RootState) => state.game,
   );
@@ -171,7 +171,7 @@ export const GameEnd = () => {
             </div>
           </div>
 
-          {isWin && <ResultDisplay matchResult={matchResult} />}
+          {isWin && isAuthenticated && <ResultDisplay matchResult={matchResult} />}
 
           <div className="mt-6 flex flex-col items-center gap-1">
             <span className="text-muted-foreground">Próxima palavra em:</span>
