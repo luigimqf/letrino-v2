@@ -55,8 +55,8 @@ const gameSlice = createSlice({
   initialState: INITIAL_GAME_STATE,
   reducers: {
     validateAttempt: (state, action: PayloadAction<string>) => {
-      const guess = action.payload.toLowerCase();
-      const target = state.targetWord?.word;
+      const guess = action.payload.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
+      const target = state.targetWord?.word.replace(/[^a-zA-Z0-9]/g, "").toLowerCase();
 
       if (!guess || guess.length < LETTERS_PER_ATTEMPT || !target || state.isGameOver) return;
 
