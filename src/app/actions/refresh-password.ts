@@ -7,8 +7,22 @@ import { z } from "zod";
 
 const newPasswordSchema = z
   .object({
-    new_password: z.string().nonempty("Campo Obrigatório"),
-    confirm_new_password: z.string().nonempty("Campo Obrigatório"),
+    new_password: z
+      .string()
+      .nonempty("Campo Obrigatório")
+      .min(8, "A senha deve ter pelo menos 8 caracteres")
+      .regex(/[A-Z]/, "A senha deve conter ao menos uma letra maiúscula")
+      .regex(/[a-z]/, "A senha deve conter ao menos uma letra minúscula")
+      .regex(/[0-9]/, "A senha deve conter ao menos um número")
+      .regex(/[^A-Za-z0-9]/, "A senha deve conter ao menos um caractere especial"),
+    confirm_new_password: z
+      .string()
+      .nonempty("Campo Obrigatório")
+      .min(8, "A senha deve ter pelo menos 8 caracteres")
+      .regex(/[A-Z]/, "A senha deve conter ao menos uma letra maiúscula")
+      .regex(/[a-z]/, "A senha deve conter ao menos uma letra minúscula")
+      .regex(/[0-9]/, "A senha deve conter ao menos um número")
+      .regex(/[^A-Za-z0-9]/, "A senha deve conter ao menos um caractere especial"),
     token: z.string().nonempty("Token de recuperação necessário"),
   })
   .refine((data) => data.new_password === data.confirm_new_password, {

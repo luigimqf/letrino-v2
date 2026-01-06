@@ -52,4 +52,5 @@ export enum ErrorsByCode {
   CREATE_USER_STATISTIC_FAILED = "Falha ao criar estatísticas do usuário",
   CALCULATE_NEW_SCORE_FAILED = "Falha ao calcular novo score",
   UNKNOWN_ERROR = "Erro desconhecido",
+  REFRESH_PASSWORD_FAILED = "Falha ao redefinir a senha",
 }
