@@ -10,6 +10,7 @@ export enum ROUTES {
   HOME = "/",
   SIGN_IN = "/sign-in",
   SIGN_UP = "/sign-up",
+  CALLBACK = "/callback",
   FORGOT_PASSWORD = "/forgot-password",
   REFRESH_PASSWORD = "/refresh-password",
   REFRESH_TOKEN = "/refresh-token",

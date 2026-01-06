@@ -3,6 +3,7 @@ import { ROUTES } from "./shared/constants";
 
 const publicRoutes = [
   { path: ROUTES.HOME, whenAuthenticated: "next" },
+  { path: ROUTES.CALLBACK, whenAuthenticated: "redirect" },
   { path: ROUTES.SIGN_UP, whenAuthenticated: "redirect" },
   { path: ROUTES.SIGN_IN, whenAuthenticated: "redirect" },
   { path: ROUTES.REFRESH_PASSWORD, whenAuthenticated: "redirect" },

@@ -10,6 +10,7 @@ import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect } from "react";
 import { toast } from "sonner";
+import GoogleButton from "../layout/google-button";
 
 export default function SignInForm() {
   const [result, handleLogin, isPending] = useActionState(signIn, null);
@@ -44,11 +45,13 @@ export default function SignInForm() {
   }, [result, router]);
 
   return (
-    <form action={handleLogin} className="w-lg flex flex-col gap-8 px-20 py-10 rounded-xl z-10">
+    <form action={handleLogin} className="w-lg flex flex-col gap-6 px-20 py-10 rounded-xl z-10">
       <div className="flex flex-col gap-5 items-center">
         <Logo />
         <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
       </div>
+      <GoogleButton className="self-center" redirectTo={`${window.location.origin}/callback`}/>
+      <span className="font-bold self-center">Ou</span>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" />
