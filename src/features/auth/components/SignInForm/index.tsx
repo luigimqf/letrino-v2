@@ -50,7 +50,10 @@ export default function SignInForm() {
         <Logo />
         <span className="font-bold text-text-100 font-fredoka">Faça login em sua conta</span>
       </div>
-      <GoogleButton className="self-center" redirectTo={`${window.location.origin}/callback`}/>
+      <GoogleButton
+        className="self-center"
+        redirectTo={`${window.location.origin}/callback/sign-in`}
+      />
       <span className="font-bold self-center">Ou</span>
       <div className="flex flex-col items-start gap-2">
         <Label htmlFor="email">Email</Label>
