@@ -11,6 +11,7 @@ import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState } from "react";
 import { toast } from "sonner";
+import GoogleButton from "../layout/google-button";
 
 export default function SignUpForm() {
   const [result, handleSignUp, isPending] = useActionState(signUp, null);
@@ -116,9 +117,14 @@ export default function SignUpForm() {
           </span>
         )}
       </div>
-      <Button className="w-50 self-center" disabled={isPending} type="submit">
+      <Button className="w-3/4 self-center" disabled={isPending} type="submit">
         Criar perfil
       </Button>
+      <GoogleButton
+        redirectTo={`${window.location.origin}/callback/sign-up`}
+        label="Registrar com Google"
+        className="w-3/4 self-center"
+      />
       <Back path={ROUTES.SIGN_IN} label="Voltar para o login" />
     </form>
   );

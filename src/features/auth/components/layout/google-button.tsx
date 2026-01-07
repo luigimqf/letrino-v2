@@ -1,15 +1,17 @@
 "use client";
 
+import { Button } from "@/shared/components/ui/button";
 import { cn } from "@/shared/lib/utils";
 import React from "react";
 import { GOOGLE_SCOPES } from "../../constants";
 import GoogleIcon from "./google-icon";
 
 interface GoogleIconProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  label?: string;
   redirectTo: string;
 }
 
-const GoogleButton: React.FC<GoogleIconProps> = ({ redirectTo, className, ...props }) => {
+const GoogleButton: React.FC<GoogleIconProps> = ({ redirectTo, className, label, ...props }) => {
   const handleGoogleSignIn = () => {
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_ID;
     const authUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
@@ -27,16 +29,14 @@ const GoogleButton: React.FC<GoogleIconProps> = ({ redirectTo, className, ...pro
   };
 
   return (
-    <button
+    <Button
       {...props}
-      className={cn(
-        "flex cursor-pointer items-center justify-center border rounded-full w-10 h-10 shadow-sm bg-white text-gray-700 hover:bg-gray-50 transition-colors duration-200 font-medium",
-        className,
-      )}
+      className={cn("border w-10 h-10 shadow-sm", className)}
       onClick={handleGoogleSignIn}
     >
       <GoogleIcon />
-    </button>
+      {label && <span className="ml-2">{label}</span>}
+    </Button>
   );
 };
 

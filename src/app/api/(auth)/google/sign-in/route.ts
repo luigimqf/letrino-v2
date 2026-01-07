@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/google/sign-in`, {
       method: "POST",
       body: JSON.stringify({ code }),
       headers: {
@@ -21,7 +21,18 @@ export async function POST(request: NextRequest) {
     });
 
     if (!response.ok) {
-      return NextResponse.json({ message: "API Error" }, { status: response.status });
+      const errData = await response.json();
+      return NextResponse.json(
+        {
+          success: false,
+          data: null,
+          error: {
+            message: "API Error",
+            code: errData.error?.code || "UNKNOWN_ERROR",
+          },
+        },
+        { status: response.status },
+      );
     }
 
     const { data } = await response.json();
@@ -40,8 +51,25 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
     });
 
-    return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ message: "Internal error", error }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: true,
+        data,
+        error: null,
+      },
+      { status: response.status },
+    );
+  } catch {
+    return NextResponse.json(
+      {
+        success: false,
+        data: null,
+        error: {
+          message: "Internal error",
+          code: "UNKNOWN_ERROR",
+        },
+      },
+      { status: 500 },
+    );
   }
 }
