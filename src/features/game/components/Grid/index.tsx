@@ -26,7 +26,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
   } = useSelector((state: RootState) => state.game);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
-  const { handleAttemptSubmission, canSubmitAttempt } = useAttempts();
+  const { handleAttemptSubmission, canSubmitAttempt, isPending: isLoadingAttempts } = useAttempts();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
@@ -64,7 +64,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
                 dispatch(setCurrAttempt({ guess: value, attemptIndex: attemptIndex }))
               }
               autoComplete="off"
-              disabled={!isActiveAttempt || isGameOver}
+              disabled={!isActiveAttempt || isGameOver || isLoadingAttempts}
               maxLength={LETTERS_PER_ATTEMPT}
             />
           );

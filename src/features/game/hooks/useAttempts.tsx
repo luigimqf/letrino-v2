@@ -71,5 +71,6 @@ export const useAttempts = () => {
   return {
     handleAttemptSubmission,
     canSubmitAttempt,
+    isPending,
   };
 };
