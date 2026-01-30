@@ -1,0 +1,36 @@
+{
+  "name": "letrino-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "prepare": "husky",
+    "dev": "concurrently -n \"FRONT,BACK\" -c \"cyan,magenta\" \"pnpm dev:frontend\" \"pnpm dev:backend\"",
+    "lint": "pnpm -r run lint",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,js,json}\"",
+    "test": "pnpm -r run test --workspaces",
+    "dev:frontend": "pnpm --filter letrino-frontend dev",
+    "dev:backend": "pnpm --filter letrino-api dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "eslint": "^8.57.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
+    "prettier": "^3.8.1"
+  },
+  "lint-staged": {
+    "apps/frontend/**/*.{ts,tsx,js,json}": [
+      "pnpm --filter letrino-frontend exec eslint --fix",
+      "prettier --write"
+    ],
+    "apps/backend/**/*.{ts,tsx,js,json}": [
+      "pnpm --filter letrino-api exec eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "author": "luigimqf",
+  "license": "ISC"
+}

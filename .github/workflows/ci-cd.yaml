@@ -1,0 +1,127 @@
+name: Monorepo pnpm CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'apps/frontend/**'
+            backend:
+              - 'apps/backend/**'
+
+  quality-check:
+    needs: detect-changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm' 
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint & Build Check
+        run: |
+          pnpm -r run lint
+          pnpm -r run build
+
+  deploy-frontend:
+    needs: [detect-changes, quality-check]
+    if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_TEAM_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          
+        run: pnpm dlx vercel ./apps/frontend --prod --token=$VERCEL_TOKEN --yes
+
+  deploy-backend:
+    needs: [detect-changes, quality-check]
+    if: ${{ needs.detect-changes.outputs.backend == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            if ! command -v pnpm &> /dev/null; then
+                echo "--- Installing pnpm ---"
+                npm install -g pnpm
+            fi
+
+            cd ~/projects/letrino-monorepo
+
+            echo "--- Pulling latest code ---"
+            git reset --hard
+            git pull origin main
+
+            echo "--- Installing dependencies (Root) ---"
+            pnpm install --frozen-lockfile
+
+            echo "--- Building project (Backend) ---"
+            pnpm --filter backend run build
+
+            echo "--- Running Migrations ---"
+            export NODE_ENV=production
+            pnpm --filter backend run migration:production:run
+
+            echo "--- Reloading PM2 ---"
+            cd apps/backend
+
+            if pm2 list | grep -q letrino-server; then
+              echo "Reloading existing process..."
+              pm2 reload letrino-server --update-env
+            else
+              echo "Starting new process..."
+              pm2 start npm --name "letrino-server" -- run start
+            fi
+
+            echo "--- Deploy Success ---"
