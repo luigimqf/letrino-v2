@@ -1,4 +1,11 @@
-import { Entity, Column, OneToMany, OneToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  OneToOne,
+  BeforeInsert,
+  BeforeUpdate,
+} from 'typeorm';
 import { UsedWord } from './UsedWord';
 import { Attempt } from './Attempt';
 import { Match } from './Match';
@@ -8,6 +15,8 @@ export interface IWord {
   id: string;
   word: string;
   isGolden: boolean;
+  isCompound: boolean;
+  numberOfLetters: number;
   usedWords: UsedWord[];
   attempts: Attempt[];
   createdAt: Date;
@@ -21,6 +30,12 @@ export class Word extends BaseEntity {
   @Column({ type: 'boolean', default: false })
   isGolden: boolean;
 
+  @Column({ type: 'boolean', default: false })
+  isCompound: boolean;
+
+  @Column({ type: 'int', default: 0 })
+  numberOfLetters: number;
+
   @OneToMany(() => UsedWord, usedWord => usedWord.word)
   usedWords: UsedWord[];
 
@@ -29,4 +44,16 @@ export class Word extends BaseEntity {
 
   @OneToMany(() => Attempt, attempt => attempt.word)
   attempts: Attempt[];
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  detectCompound() {
+    this.isCompound = /[\s-]/.test(this.word);
+  }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  detectLetterCount() {
+    this.numberOfLetters = this.word.replace(/[\s-]/g, '').length;
+  }
 }
