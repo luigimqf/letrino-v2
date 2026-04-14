@@ -12,11 +12,13 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier . --write",
     "seed": "ts-node src/seeders/word.ts",
+    "seed-mode": "ts-node src/seeders/game-mode.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "migration:generate": "cross-env NODE_ENV=development typeorm-ts-node-commonjs -d ./src/config/db/data-source.ts migration:generate ./src/config/db/migrations/default",
     "migration:development:run": "cross-env NODE_ENV=development typeorm-ts-node-commonjs -d ./src/config/db/data-source.ts migration:run",
     "migration:revert": "cross-env NODE_ENV=development typeorm-ts-node-commonjs -d ./src/config/db/data-source.ts migration:revert",
-    "migration:production:run": "cross-env NODE_ENV=production node -r dotenv/config ./node_modules/typeorm/cli.js -d ./dist/config/db/data-source.js migration:run"
+    "migration:production:run": "cross-env NODE_ENV=production node -r dotenv/config ./node_modules/typeorm/cli.js -d ./dist/config/db/data-source.js migration:run",
+    "update:compound-words": "ts-node src/workers/updateWords.ts"
   },
   "keywords": [],
   "author": "",
