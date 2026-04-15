@@ -34,7 +34,11 @@ export class WordRepository implements IWordRepository {
         queryBuilder.where('word.id NOT IN (:...exclude)', { exclude });
       }
 
-      const word = await queryBuilder.orderBy('RANDOM()').limit(1).getOne();
+      const word = await queryBuilder
+        .where('word.numberOfLetters = :letters', { letters: 5 })
+        .orderBy('RANDOM()')
+        .limit(1)
+        .getOne();
 
       if (!word) {
         return Failure.create(Errors.NOT_FOUND);
