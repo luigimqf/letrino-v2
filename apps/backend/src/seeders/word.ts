@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import { words } from '../constants/words';
+import { words } from '../shared/constants/words';
 import { Word } from '../config/db/entity';
 import { AppDataSource } from '../config/db/data-source';
 

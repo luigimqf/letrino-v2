@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { WordRepository } from '../repositories/word.repository';
+import { WordRepository } from '../shared/repositories/word.repository';
 import { AppDataSource } from '../config/db/data-source';
-import { DateUtils } from '../utils/date';
+import { DateUtils } from '../shared/utils/date';
 import { Word } from '../config/db/entity';
 
 export const updateUsedWords = async () => {

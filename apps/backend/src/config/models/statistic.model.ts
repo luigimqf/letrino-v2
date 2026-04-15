@@ -1,5 +1,5 @@
-import { EAttemptStatus } from '../../constants/attempt';
-import { ModelWithTimestamp } from '../../types';
+import { EAttemptStatus } from '../../shared/constants/attempt';
+import { ModelWithTimestamp } from '../../shared/types';
 
 export interface IStatistic extends ModelWithTimestamp {
   wordId: string;

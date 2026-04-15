@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
-import { ETokenStatus } from '../../../constants/token';
+import { ETokenStatus } from '../../../shared/constants/token';
 
 export interface IToken {
   id: string;

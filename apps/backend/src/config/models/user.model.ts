@@ -1,4 +1,4 @@
-import { ModelWithTimestamp } from '../../types';
+import { ModelWithTimestamp } from '../../shared/types';
 
 export interface IUser extends ModelWithTimestamp {
   id: string;

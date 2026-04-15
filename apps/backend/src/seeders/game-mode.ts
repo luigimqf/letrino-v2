@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import { words } from '../constants/words';
+import { words } from '../shared/constants/words';
 import { AppDataSource } from '../config/db/data-source';
 import { GameMode } from '../config/db/entity/GameMode';
 

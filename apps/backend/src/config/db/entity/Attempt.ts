@@ -2,7 +2,7 @@ import { Entity, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './User';
 import { Match } from './Match';
 import { Word } from './Word';
-import { EAttemptStatus } from '../../../constants/attempt';
+import { EAttemptStatus } from '../../../shared/constants/attempt';
 import { BaseEntity } from './BaseEntity';
 
 @Entity('attempts')

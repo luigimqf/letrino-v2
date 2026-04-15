@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { User } from './User';
 import { Attempt } from './Attempt';
-import { EGameStatus } from '../../../constants/match';
+import { EGameStatus } from '../../../shared/constants/match';
 import { Word } from './Word';
 import { BaseEntity } from './BaseEntity';
 

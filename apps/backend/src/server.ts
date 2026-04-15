@@ -1,6 +1,6 @@
 process.env.TZ = 'UTC';
 
-import './utils/crash-handler';
+import './shared/utils/crash-handler';
 import 'reflect-metadata';
 import 'dotenv/config';
 import setupApp from './config/app';
