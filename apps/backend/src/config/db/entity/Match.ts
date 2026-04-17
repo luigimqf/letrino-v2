@@ -11,10 +11,12 @@ import { Attempt } from './Attempt';
 import { EGameStatus } from '../../../shared/constants/match';
 import { Word } from './Word';
 import { BaseEntity } from './BaseEntity';
+import { GameMode } from './GameMode';
 
 export interface IMatch {
   id: string;
   attempts: Attempt[];
+  gamemodeId: string;
   userId: string;
   score: number;
   result: EGameStatus;
@@ -38,8 +40,12 @@ export class Match extends BaseEntity {
   @JoinColumn({ name: 'wordId' })
   word: Word;
 
+  @ManyToOne(() => GameMode, gamemode => gamemode.match)
+  @JoinColumn({ name: 'gamemodeId' })
+  gamemode: GameMode;
+
   @Column()
-  wordId: string;
+  gamemodeId: string;
 
   @Column()
   userId: string;

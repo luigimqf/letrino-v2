@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { BaseEntity } from './BaseEntity';
+import { Match } from './Match';
 
 export interface IGameMode {
   id: string;
@@ -20,4 +21,7 @@ export class GameMode extends BaseEntity {
 
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
+
+  @OneToMany(() => Match, match => match.gamemode)
+  match: Match[];
 }
