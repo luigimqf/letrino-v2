@@ -10,7 +10,8 @@ dotenv.config({ path: path.resolve(process.cwd(), envFile) });
 
 const schema = z.object({
   PORT: z.string(),
-  DB_URL: z.string(),
+  DB_URL_PROD: z.string(),
+  DB_URL_LOCAL: z.string(),
   DB_SSL: z.string().optional(),
   JWT_SECRET: z.string(),
   EMAIL_USER: z.string(),

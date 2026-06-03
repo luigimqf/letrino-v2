@@ -7,7 +7,7 @@ const dir = isProduction ? 'dist' : 'src';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  url: env.DB_URL,
+  url: isProduction ? env.DB_URL_PROD : env.DB_URL_LOCAL,
   synchronize: !isProduction,
   logging: !isProduction,
   entities: [`${dir}/config/db/entity/*.${fileExtension}`],
