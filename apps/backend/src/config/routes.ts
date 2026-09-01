@@ -5,6 +5,7 @@ import { gameRouter } from '../modules/game/game.routes';
 import { meRouter } from '../modules/me/me.routes';
 import { leaderboardRouter } from '../modules/leaderboard/leaderboard.routes';
 import { env } from './enviroment';
+import { gamemodeRouter } from '../modules/gamemode/gamemode.routes';
 
 function setupRoutes(app: Express) {
   // Middleware global do Sentry para contexto
@@ -36,6 +37,7 @@ function setupRoutes(app: Express) {
   app.use('/game', gameRouter);
   app.use('/me', meRouter);
   app.use('/leaderboard', leaderboardRouter);
+  app.use('/gamemodes', gamemodeRouter);
 }
 
 export default setupRoutes;

@@ -43,7 +43,7 @@ export class Match extends BaseEntity {
   @Column()
   wordId: string;
 
-  @ManyToOne(() => GameMode, gamemode => gamemode.match)
+  @ManyToOne(() => GameMode, gamemode => gamemode.games)
   @JoinColumn({ name: 'gamemodeId' })
   gamemode: GameMode;
 

@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import 'dotenv/config';
-import { words } from '../shared/constants/words';
 import { AppDataSource } from '../config/db/data-source';
 import { GameMode } from '../config/db/entity/GameMode';
 
@@ -14,21 +13,27 @@ async function seeder() {
 
     const gameModes = [
       {
+        slug: 'secret-word',
         name: 'Palavra Secreta',
-        description:
-          'Modo clássico onde você precisa descobrir a palavra secreta',
         isActive: true,
       },
       {
-        name: 'Conecta',
-        description: 'Modo onde você conecta palavras relacionadas',
+        slug: 'conect',
+        name: 'Conectado',
+        isActive: true,
+      },
+      {
+        slug: 'ladder',
+        name: 'Cascata',
         isActive: true,
       },
     ];
 
     for (const gameModeData of gameModes) {
       const existingMode = await gameModeRepository.findOne({
-        where: { name: gameModeData.name },
+        where: {
+          slug: gameModeData.slug,
+        },
       });
 
       if (!existingMode) {
