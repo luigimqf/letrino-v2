@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { AuthenticateRequest } from '../../../shared/types';
+import { PlayerRequest } from '../../../shared/types';
 import { Errors } from '../../../shared/constants/error';
 import { notFound, unauthorized, ok } from '../../../shared/utils/http-status';
 import { IGetUserAttemptsUseCase } from '../usecases/get-user-attempts.usecase';
@@ -14,7 +14,7 @@ export class GetUserAttemptController implements IController {
     private readonly getUserAttemptsUsecase: IGetUserAttemptsUseCase
   ) {}
 
-  async handle(req: AuthenticateRequest, res: Response) {
+  async handle(req: PlayerRequest, res: Response) {
     const id = req.userId;
 
     if (!id) {

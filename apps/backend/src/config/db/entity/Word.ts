@@ -39,9 +39,6 @@ export class Word extends BaseEntity {
   @OneToMany(() => UsedWord, usedWord => usedWord.word)
   usedWords: UsedWord[];
 
-  @OneToOne(() => Match, match => match.word)
-  match: Match;
-
   @OneToMany(() => Attempt, attempt => attempt.word)
   attempts: Attempt[];
 

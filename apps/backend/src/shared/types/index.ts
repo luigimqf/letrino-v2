@@ -1,5 +1,6 @@
 import { JwtPayload } from 'jsonwebtoken';
 import { type Request, type Response } from 'express';
+import { PlayerRef } from './player';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IController {
@@ -17,6 +18,9 @@ export type OmitedModelFields<T extends ModelWithTimestamp> = Omit<
   'id' | 'createdAt' | 'updatedAt'
 >;
 
+export interface PlayerRequest extends Request {
+  player?: PlayerRef;
+}
 export interface AuthenticateRequest extends Request {
   userId?: string;
 }

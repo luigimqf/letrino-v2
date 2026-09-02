@@ -43,7 +43,6 @@ interface IUserStats extends ILeaderboardStats {
 interface ICreateMatchDTO {
   attempts?: Attempt[];
   userId: string;
-  wordId: string;
   score?: number;
   result?: EGameStatus;
 }
@@ -64,7 +63,6 @@ export class MatchRepository implements IMatchRepository {
     userId,
     attempts,
     score,
-    wordId,
     result,
   }: ICreateMatchDTO): Promise<Either<ErrorCode, Match>> {
     try {
@@ -72,7 +70,6 @@ export class MatchRepository implements IMatchRepository {
         userId,
         attempts,
         score,
-        wordId,
         result,
       });
       const savedMatch = await this.repository.save(newMatch);

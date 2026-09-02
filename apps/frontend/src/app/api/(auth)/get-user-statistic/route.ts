@@ -1,21 +1,16 @@
-import { ROUTES } from "@/shared/constants";
 import { NextRequest, NextResponse } from "next/server";
+import { AUTH_COOKIE } from "@/shared/constants/cookies";
+import { apiFetch } from "@/shared/lib/api";
 
 export async function GET(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const token = request.cookies.get(AUTH_COOKIE)?.value;
 
   if (!token) {
     return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.USER_STATISTIC}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiFetch("/me/statistics", { method: "GET" });
 
     if (!response.ok) {
       return NextResponse.json(

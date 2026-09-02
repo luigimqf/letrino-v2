@@ -1,17 +1,9 @@
-import { ROUTES } from "@/shared/constants";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
+import { apiFetch } from "@/shared/lib/api";
 
-export async function GET(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
-
+export async function GET() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}${ROUTES.LEADERBOARD}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiFetch("/leaderboard", { method: "GET" });
 
     if (!response.ok) {
       return NextResponse.json(

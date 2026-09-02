@@ -5,6 +5,8 @@ import { ErrorsByCode, ROUTES } from "@/shared/constants";
 import { PromiseReturn } from "@/shared/types";
 import { cookies } from "next/headers";
 import { z } from "zod";
+import { AUTH_COOKIE, REFRESH_COOKIE } from "@/shared/constants/cookies";
+import { claimGuestSession } from "@/shared/lib/claim-guest-session";
 
 type SignInReturn = ServerActionReturn & {
   data?: LoginData;
@@ -70,16 +72,18 @@ export async function signIn(_: unknown, formData: FormData): Promise<SignInRetu
     const cookieStore = await cookies();
 
     cookieStore.set({
-      name: "token",
+      name: AUTH_COOKIE,
       value: data?.token ?? "",
       httpOnly: true,
     });
 
     cookieStore.set({
-      name: "refresh-token",
+      name: REFRESH_COOKIE,
       value: data?.refresh_token ?? "",
       httpOnly: true,
     });
+
+    await claimGuestSession(data?.token);
 
     return {
       success: true,

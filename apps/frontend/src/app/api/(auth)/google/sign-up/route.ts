@@ -1,5 +1,7 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { AUTH_COOKIE, REFRESH_COOKIE } from "@/shared/constants/cookies";
+import { claimGuestSession } from "@/shared/lib/claim-guest-session";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -40,16 +42,18 @@ export async function POST(request: NextRequest) {
     const cookieStore = await cookies();
 
     cookieStore.set({
-      name: "token",
+      name: AUTH_COOKIE,
       value: data?.token ?? "",
       httpOnly: true,
     });
 
     cookieStore.set({
-      name: "refresh-token",
+      name: REFRESH_COOKIE,
       value: data?.refresh_token ?? "",
       httpOnly: true,
     });
+
+    await claimGuestSession(data?.token);
 
     return NextResponse.json(
       {

@@ -2,10 +2,10 @@ import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { env } from '../../config/enviroment';
 import { Errors } from '../constants/error';
-import { AuthenticateRequest, JwtPayloadWithId } from '../types';
+import { PlayerRequest, JwtPayloadWithId } from '../types';
 
 export async function authenticate(
-  req: AuthenticateRequest,
+  req: PlayerRequest,
   res: Response,
   next: NextFunction
 ) {

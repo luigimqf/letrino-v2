@@ -1,5 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 import { ROUTES } from "./shared/constants";
+import { AUTH_COOKIE, GUEST_COOKIE, GUEST_COOKIE_OPTIONS } from "./shared/constants/cookies";
+import { createGuestCookie, readGuestCookie } from "./shared/lib/guest-session";
 
 const publicRoutes = [
   { path: ROUTES.HOME, whenAuthenticated: "next" },
@@ -14,42 +16,68 @@ const publicRoutes = [
   { path: ROUTES.TUTORIAL, whenAuthenticated: "next" },
 ] as const;
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   const publicRoute = publicRoutes.find((route) => route.path === path);
-  const authToken = request.cookies.get("token");
+  const authToken = request.cookies.get(AUTH_COOKIE);
 
-  if (!authToken && publicRoute) {
-    return NextResponse.next();
+  let issuedGuest: string | null = null;
+
+  if (!(await readGuestCookie(request.cookies.get(GUEST_COOKIE)?.value))) {
+    issuedGuest = await createGuestCookie();
+    request.cookies.set(GUEST_COOKIE, issuedGuest);
   }
 
-  if (!authToken && !publicRoute) {
-    const url = request.nextUrl.clone();
-    url.pathname = ROUTES.SIGN_IN;
+  const response = isApiRoute(path)
+    ? NextResponse.next({ request })
+    : decideRoute(request, publicRoute, !!authToken);
 
-    return NextResponse.redirect(url);
+  if (issuedGuest) {
+    response.cookies.set({
+      name: GUEST_COOKIE,
+      value: issuedGuest,
+      ...GUEST_COOKIE_OPTIONS,
+    });
   }
 
-  if (authToken && publicRoute && publicRoute.whenAuthenticated === "redirect") {
-    const redirectUrl = request.nextUrl.clone();
+  return response;
+}
 
-    redirectUrl.pathname = "/";
+function isApiRoute(path: string): boolean {
+  return path.startsWith("/api");
+}
 
-    return NextResponse.redirect(redirectUrl);
-  }
+function decideRoute(
+  request: NextRequest,
+  publicRoute: (typeof publicRoutes)[number] | undefined,
+  isAuthed: boolean,
+): NextResponse {
+  const next = () => NextResponse.next({ request });
 
-  return NextResponse.next();
+  if (!isAuthed) return publicRoute ? next() : redirect(request, ROUTES.SIGN_IN);
+  if (publicRoute?.whenAuthenticated === "redirect") return redirect(request, ROUTES.HOME);
+
+  return next();
+}
+
+function redirect(request: NextRequest, pathname: string) {
+  const url = request.nextUrl.clone();
+  url.pathname = pathname;
+
+  return NextResponse.redirect(url);
 }
 
 export const config: MiddlewareConfig = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     *
+     * `api` fica de fora do lookahead de propósito: os route handlers também
+     * precisam do cookie de convidado para repassá-lo ao backend.
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
 };

@@ -4,3 +4,5 @@ export { Word } from './Word';
 export { UsedWord } from './UsedWord';
 export { Match } from './Match';
 export { Token } from './Token';
+export { GameMode } from './GameMode';
+export { GuestSession } from './GuestSession';

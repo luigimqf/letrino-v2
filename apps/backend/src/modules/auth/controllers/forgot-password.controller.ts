@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { AuthenticateRequest } from '../../../shared/types';
+import { PlayerRequest } from '../../../shared/types';
 import { Errors } from '../../../shared/constants/error';
 import { ok, serverError } from '../../../shared/utils/http-status';
 import { z } from 'zod';
@@ -23,7 +23,7 @@ const emailSchema = z.object({
 export class ForgotPasswordController implements IController {
   constructor(private forgotPasswordUsecase: IForgotPasswordUsecase) {}
   @Validate({ body: emailSchema })
-  async handle(req: AuthenticateRequest, res: Response) {
+  async handle(req: PlayerRequest, res: Response) {
     const { email } = req.body;
 
     const result = await this.forgotPasswordUsecase.execute(email);

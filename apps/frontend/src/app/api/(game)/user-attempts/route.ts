@@ -1,22 +1,9 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { apiFetch } from "@/shared/lib/api";
 
 export async function GET() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
-  if (!token) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user-attempts`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await apiFetch("/me/attempts", { method: "GET" });
 
     if (!response.ok) {
       return NextResponse.json({ message: "API Error" }, { status: response.status });

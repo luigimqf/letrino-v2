@@ -3,14 +3,14 @@ import { AttemptRepository } from '../repositories/attempt.repository';
 import { badRequest, serverError, unauthorized } from '../utils/http-status';
 import { ErrorCode, Errors } from '../constants/error';
 import { EAttemptStatus } from '../constants/attempt';
-import { AuthenticateRequest } from '../types';
+import { PlayerRequest } from '../types';
 import { DateUtils } from '../utils/date';
 import { AppDataSource } from '../../config/db/data-source';
 import { Attempt } from '../../config/db/entity';
 import { Between } from 'typeorm';
 
 export async function checkAttempts(
-  req: AuthenticateRequest,
+  req: PlayerRequest,
   res: Response,
   next: NextFunction
 ) {

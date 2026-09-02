@@ -1,14 +1,7 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { apiFetch } from "@/shared/lib/api";
 
 export async function POST(request: Request) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("token")?.value;
-
-  if (!token) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
   const body = await request.json();
   const { attempt } = body;
 
@@ -19,15 +12,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/attempt/success`, {
+    const response = await apiFetch("/game/attempt/success", {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        attempt,
-      }),
+      body: JSON.stringify({ attempt }),
     });
 
     if (!response.ok) {

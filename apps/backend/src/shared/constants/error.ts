@@ -51,6 +51,7 @@ export enum Errors {
   USER_WORD_NOT_FOUND = 'User word not found',
   TOKEN_CREATION_FAILED = 'Failed to create token',
   TOKEN_ALREADY_USED = 'Token has already been used',
+  GUEST_SESSION_CLAIMED = 'Guest session already claimed by an account',
 }
 
 export enum ErrorCode {
@@ -106,4 +107,5 @@ export enum ErrorCode {
   USER_WORD_NOT_FOUND = 'USER_WORD_NOT_FOUND',
   TOKEN_CREATION_FAILED = 'TOKEN_CREATION_FAILED',
   TOKEN_ALREADY_USED = 'TOKEN_ALREADY_USED',
+  GUEST_SESSION_CLAIMED = 'GUEST_SESSION_CLAIMED',
 }

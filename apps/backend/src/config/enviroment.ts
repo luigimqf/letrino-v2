@@ -14,6 +14,7 @@ const schema = z.object({
   DB_URL_LOCAL: z.string(),
   DB_SSL: z.string().optional(),
   JWT_SECRET: z.string(),
+  GUEST_SESSION_SECRET: z.string(),
   EMAIL_USER: z.string(),
   EMAIL_PASSWORD: z.string(),
   PASSWORD_RESET_URL: z.string(),

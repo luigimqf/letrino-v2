@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { AuthenticateRequest } from '../../../shared/types';
+import { PlayerRequest } from '../../../shared/types';
 import { ErrorCode, Errors } from '../../../shared/constants/error';
 import { unauthorized, ok } from '../../../shared/utils/http-status';
 import { Jwt } from '../../../shared/utils/jwt';
@@ -21,7 +21,7 @@ const refreshTokenSchema = z.object({
 
 class RefreshTokenController implements IController {
   @Validate({ body: refreshTokenSchema })
-  async handle(req: AuthenticateRequest, res: Response) {
+  async handle(req: PlayerRequest, res: Response) {
     const { refresh_token } = req.body;
 
     const jwtResult = Jwt.verify(refresh_token);

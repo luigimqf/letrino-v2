@@ -6,6 +6,8 @@ import { socialSignUpFactory } from './factories/social-sign-up.factory';
 import { refreshTokenFactory } from './controllers/refresh-token.controller';
 import { forgotPasswordFactory } from './factories/forgot-password.factory';
 import { refreshPasswordFactory } from './factories/refresh-password.factory';
+import { claimGuestSessionFactory } from './factories/claim-guest-session.factory';
+import { authenticate } from '../../shared/middlewares/authenticate';
 
 const authRouter = Router();
 
@@ -31,6 +33,10 @@ authRouter.post('/forgot-password', (req, res) =>
 
 authRouter.post('/refresh-password', (req, res) =>
   refreshPasswordFactory().handle(req, res)
+);
+
+authRouter.post('/guest/claim', authenticate, (req, res) =>
+  claimGuestSessionFactory().handle(req, res)
 );
 
 export { authRouter };

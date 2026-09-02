@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { IGetUserDataUsecase } from '../usecases/get-user-data.usecase';
-import { AuthenticateRequest } from '../../../shared/types';
+import { PlayerRequest } from '../../../shared/types';
 import { Errors } from '../../../shared/constants/error';
 import { notFound, unauthorized, ok } from '../../../shared/utils/http-status';
 
@@ -12,7 +12,7 @@ export interface IController {
 export class GetUserDataController implements IController {
   constructor(private readonly getUserDataUsecase: IGetUserDataUsecase) {}
 
-  async handle(req: AuthenticateRequest, res: Response) {
+  async handle(req: PlayerRequest, res: Response) {
     const id = req.userId;
 
     if (!id) {

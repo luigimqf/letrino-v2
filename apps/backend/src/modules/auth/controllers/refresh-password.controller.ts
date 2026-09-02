@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
-import { AuthenticateRequest } from '../../../shared/types';
+import { PlayerRequest } from '../../../shared/types';
 import { ErrorCode, Errors } from '../../../shared/constants/error';
 import { ok, serverError } from '../../../shared/utils/http-status';
 import { z } from 'zod';
@@ -24,7 +24,7 @@ const passwordResetSchema = z.object({
 export class RefreshPasswordController implements IController {
   constructor(private refreshPasswordUsecase: IRefreshPasswordUsecase) {}
   @Validate({ body: passwordResetSchema })
-  async handle(req: AuthenticateRequest, res: Response) {
+  async handle(req: PlayerRequest, res: Response) {
     const { token, newPassword } = req.body;
 
     const decodedResult = Jwt.verify(token);
