@@ -32,8 +32,7 @@ interface IDateRange {
 }
 
 interface IAttemptConditions {
-  userId?: string;
-  wordId?: string;
+  userId?: string | null;
   statisticId?: string;
   result?: EAttemptStatus;
   createdAt?: IDateRange;
@@ -46,14 +45,12 @@ export class AttemptRepository implements IAttemptRepository {
     userId,
     userInput,
     matchId,
-    wordId,
     result,
   }: IAttemptCreate): Promise<Either<Errors, Attempt>> {
     try {
       const attempt = this.repository.create({
         userId,
         matchId,
-        wordId,
         result,
         userInput,
       });
@@ -110,12 +107,6 @@ export class AttemptRepository implements IAttemptRepository {
         });
       }
 
-      if (conditions.wordId) {
-        queryBuilder.andWhere('attempt.wordId = :wordId', {
-          wordId: conditions.wordId,
-        });
-      }
-
       if (conditions.statisticId) {
         queryBuilder.andWhere('attempt.statisticId = :statisticId', {
           statisticId: conditions.statisticId,
@@ -159,7 +150,6 @@ export class AttemptRepository implements IAttemptRepository {
         },
         select: {
           result: true,
-          wordId: true,
           userInput: true,
         },
       });
@@ -178,10 +168,6 @@ export class AttemptRepository implements IAttemptRepository {
 
       if (conditions.userId) {
         whereConditions.userId = conditions.userId;
-      }
-
-      if (conditions.wordId) {
-        whereConditions.wordId = conditions.wordId;
       }
 
       if (conditions.statisticId) {

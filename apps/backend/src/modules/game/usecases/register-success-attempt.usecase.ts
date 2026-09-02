@@ -70,7 +70,6 @@ export class RegisterSuccessAttemptUseCase implements IRegisterSuccessAttemptUse
         userId: id,
         score: 0,
         result: EGameStatus.IN_PROGRESS,
-        wordId: word.value.id,
       });
 
       if (newMatchResult.isFailure() || !newMatchResult.value) {
