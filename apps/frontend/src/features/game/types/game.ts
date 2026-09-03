@@ -36,6 +36,36 @@ export type GameState = {
   matchResult: MatchResult | null;
 };
 
+export enum EMatchStatus {
+  IN_PROGRESS = "in_progress",
+  CORRECT = "correct",
+  INCORRECT = "incorrect",
+}
+
+export enum EMatchAttemptResult {
+  CORRECT = "correct",
+  INCORRECT = "incorrect",
+}
+
+export type ModeMatchAttempt = {
+  userInput: string | null;
+  result: EMatchAttemptResult;
+};
+
+export type ModeMatch = {
+  matchId: string;
+  mode: {
+    slug: string;
+    name: string;
+  };
+  status: EMatchStatus;
+  score: number;
+  dayKey: string;
+  maxAttempts?: number | null;
+  maxErrors?: number | null;
+  attempts: ModeMatchAttempt[];
+};
+
 export type TargetWord = {
   word: string;
   isGolden: boolean;

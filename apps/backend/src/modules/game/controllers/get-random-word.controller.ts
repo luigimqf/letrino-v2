@@ -1,13 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { Errors } from '../../../shared/constants/error';
 import { notFound, ok } from '../../../shared/utils/http-status';
+import { IController } from '../../../shared/types';
 import { IGetRandomWordUseCase } from '../usecases/get-random-word.usecase';
 import { Jwt } from '../../../shared/utils/jwt';
-
-export interface IController {
-  handle(req: Request, res: Response): Promise<any>;
-}
 
 export class GetRandomWordController implements IController {
   constructor(private readonly getRandomWordUsecase: IGetRandomWordUseCase) {}
@@ -15,7 +11,6 @@ export class GetRandomWordController implements IController {
   async handle(req: Request, res: Response) {
     const authorizationHeader = req.headers.authorization;
 
-    console.log('Authorization Header:', authorizationHeader);
     const token =
       authorizationHeader && authorizationHeader.startsWith('Bearer ')
         ? authorizationHeader.split(' ')[1]

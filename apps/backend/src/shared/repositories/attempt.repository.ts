@@ -10,6 +10,7 @@ import { Between, MoreThanOrEqual, LessThan, Repository } from 'typeorm';
 export interface IAttemptRepository {
   create(data: IAttemptCreate): Promise<Either<Errors, Attempt>>;
   findByStatisticId(statisticId: string): Promise<Either<Errors, Attempt[]>>;
+  findByMatchId(matchId: string): Promise<Either<Errors, Attempt[]>>;
   countIncorrectAttemptsToday(userId: string): Promise<Either<Errors, number>>;
   countDocuments(
     conditions: IAttemptConditions
@@ -56,6 +57,25 @@ export class AttemptRepository implements IAttemptRepository {
       });
       const savedAttempt = await this.repository.save(attempt);
       return Success.create(savedAttempt);
+    } catch (error) {
+      return Failure.create(Errors.SERVER_ERROR);
+    }
+  }
+
+  async findByMatchId(matchId: string): Promise<Either<Errors, Attempt[]>> {
+    try {
+      const attempts = await this.repository.find({
+        where: { matchId },
+        select: {
+          id: true,
+          userInput: true,
+          result: true,
+          createdAt: true,
+        },
+        order: { createdAt: 'ASC' },
+      });
+
+      return Success.create(attempts);
     } catch (error) {
       return Failure.create(Errors.SERVER_ERROR);
     }

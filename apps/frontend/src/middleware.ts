@@ -1,6 +1,7 @@
 import { MiddlewareConfig, NextRequest, NextResponse } from "next/server";
 import { ROUTES } from "./shared/constants";
 import { AUTH_COOKIE, GUEST_COOKIE, GUEST_COOKIE_OPTIONS } from "./shared/constants/cookies";
+import { isGamemodePath } from "./shared/constants/modes";
 import { createGuestCookie, readGuestCookie } from "./shared/lib/guest-session";
 
 const publicRoutes = [
@@ -18,7 +19,9 @@ const publicRoutes = [
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const publicRoute = publicRoutes.find((route) => route.path === path);
+  const publicRoute = isGamemodePath(path)
+    ? ({ path, whenAuthenticated: "next" } as const)
+    : publicRoutes.find((route) => route.path === path);
   const authToken = request.cookies.get(AUTH_COOKIE);
 
   let issuedGuest: string | null = null;
@@ -49,7 +52,7 @@ function isApiRoute(path: string): boolean {
 
 function decideRoute(
   request: NextRequest,
-  publicRoute: (typeof publicRoutes)[number] | undefined,
+  publicRoute: { whenAuthenticated: "next" | "redirect" } | undefined,
   isAuthed: boolean,
 ): NextResponse {
   const next = () => NextResponse.next({ request });

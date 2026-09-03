@@ -1,20 +1,14 @@
 import { Router } from 'express';
-import { authenticate } from '../../shared/middlewares/authenticate';
-import { checkAttempts } from '../../shared/middlewares/attempts';
+import { identifyMiddleware } from '../../shared/factories/identify.factory';
 import { getRandomWordFactory } from './factories/get-random-word.factory';
-import { registerSuccessAttemptFactory } from './factories/register-success-attempt.factory';
-import { registerFailedAttemptFactory } from './factories/register-failed-attempt.factory';
+import { getMatchFromModeFactory } from './factories/get-match-from-mode.factory';
 
 const gameRouter = Router();
 
 gameRouter.get('/word', (req, res) => getRandomWordFactory().handle(req, res));
 
-gameRouter.post('/attempt/success', authenticate, checkAttempts, (req, res) =>
-  registerSuccessAttemptFactory().handle(req, res)
-);
-
-gameRouter.post('/attempt/fail', authenticate, checkAttempts, (req, res) =>
-  registerFailedAttemptFactory().handle(req, res)
+gameRouter.get('/match/:slug/today', identifyMiddleware, (req, res) =>
+  getMatchFromModeFactory().handle(req, res)
 );
 
 export { gameRouter };

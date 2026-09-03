@@ -4,12 +4,21 @@ import { ErrorCode, Errors } from '../constants/error';
 import { EGameStatus } from '../constants/match';
 import { DateUtils } from '../utils/date';
 import { Either, Failure, Success } from '../utils/either';
-import { Between, Repository } from 'typeorm';
+import { PlayerRef, playerColumns, playerWhere } from '../types/player';
+import { Between, QueryFailedError, Repository } from 'typeorm';
+
+const UNIQUE_VIOLATION = '23505';
 
 export interface IMatchRepository {
   create(data: ICreateMatchDTO): Promise<Either<ErrorCode, Match>>;
   findByUserId(userId: string): Promise<Either<ErrorCode, Match>>;
   findTodaysMatch(userId: string): Promise<Either<ErrorCode, Match>>;
+  findTodaysMatchByMode(
+    data: ITodaysModeMatchDTO
+  ): Promise<Either<ErrorCode, Match>>;
+  getOrCreateTodaysMatch(
+    data: ITodaysModeMatchDTO
+  ): Promise<Either<ErrorCode, Match>>;
   findAllByUserId(userId: string): Promise<Either<ErrorCode, Match[]>>;
   getStats(userId: string): Promise<Either<ErrorCode, IStats>>;
   getTopScores(limit: number): Promise<Either<ErrorCode, ILeaderboardStats[]>>;
@@ -47,6 +56,12 @@ interface ICreateMatchDTO {
   result?: EGameStatus;
 }
 
+export interface ITodaysModeMatchDTO {
+  player: PlayerRef;
+  gamemodeId: string;
+  dayKey: string;
+}
+
 interface IUpdateMatchDTO {
   id: string;
   data: {
@@ -56,8 +71,73 @@ interface IUpdateMatchDTO {
   };
 }
 
+function isUniqueViolation(error: unknown): boolean {
+  return (
+    error instanceof QueryFailedError &&
+    (error.driverError as { code?: string } | undefined)?.code ===
+      UNIQUE_VIOLATION
+  );
+}
+
 export class MatchRepository implements IMatchRepository {
   constructor(private readonly repository: Repository<Match>) {}
+
+  async findTodaysMatchByMode({
+    player,
+    gamemodeId,
+    dayKey,
+  }: ITodaysModeMatchDTO): Promise<Either<ErrorCode, Match>> {
+    try {
+      const match = await this.repository.findOne({
+        where: {
+          ...playerWhere(player),
+          gamemodeId,
+          dayKey,
+        },
+      });
+
+      if (!match) {
+        return Failure.create(ErrorCode.MATCH_NOT_FOUND);
+      }
+
+      return Success.create(match);
+    } catch (error) {
+      return Failure.create(ErrorCode.SERVER_ERROR);
+    }
+  }
+
+  async getOrCreateTodaysMatch(
+    data: ITodaysModeMatchDTO
+  ): Promise<Either<ErrorCode, Match>> {
+    const existingMatch = await this.findTodaysMatchByMode(data);
+
+    if (
+      existingMatch.isSuccess() ||
+      existingMatch.error !== ErrorCode.MATCH_NOT_FOUND
+    ) {
+      return existingMatch;
+    }
+
+    try {
+      const newMatch = this.repository.create({
+        ...playerColumns(data.player),
+        gamemodeId: data.gamemodeId,
+        dayKey: data.dayKey,
+        score: 0,
+        result: EGameStatus.IN_PROGRESS,
+      });
+
+      const savedMatch = await this.repository.save(newMatch);
+
+      return Success.create(savedMatch);
+    } catch (error) {
+      if (isUniqueViolation(error)) {
+        return this.findTodaysMatchByMode(data);
+      }
+
+      return Failure.create(ErrorCode.MATCH_CREATE_FAILED);
+    }
+  }
 
   async create({
     userId,

@@ -1,5 +1,6 @@
 import authReducer from "@/features/auth/store/authSlice";
 import gameReducer from "@/features/game/store/gameSlice";
+import matchReducer from "@/features/game/store/matchSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import {
   FLUSH,
@@ -33,6 +34,9 @@ const gamePersistedReducer = persistReducer(persistConfig, gameReducer);
 export const store = configureStore({
   reducer: {
     game: gamePersistedReducer,
+    // `match` não é persistido de propósito: a partida do dia vem do backend a
+    // cada carregamento e um cache velho reapareceria depois da virada do dia.
+    match: matchReducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>

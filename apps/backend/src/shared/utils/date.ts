@@ -22,4 +22,8 @@ export class DateUtils {
     utcDate.setUTCHours(23, 59, 59, 999);
     return utcDate;
   }
+
+  static dayKey(date: Date = new Date()): string {
+    return DateUtils.startOfDay(date).toISOString().slice(0, 10);
+  }
 }

@@ -32,8 +32,14 @@ export default async function ModeSelectorPage() {
 
     if (!gamemodes || gamemodes.length <= 0) redirect(ROUTES.WORD_NOT_FOUND);
 
-    const completedCount = gamemodes.filter((mode) => COMPLETED_MODES.includes(mode.slug)).length;
-    const progress = gamemodes.length ? Math.round((completedCount / gamemodes.length) * 100) : 0;
+    const knownGamemodes = gamemodes.filter((mode) => !!GAMEMODES_DATA[mode?.slug]);
+
+    const completedCount = knownGamemodes.filter((mode) =>
+      COMPLETED_MODES.includes(mode.slug),
+    ).length;
+    const progress = knownGamemodes.length
+      ? Math.round((completedCount / knownGamemodes.length) * 100)
+      : 0;
 
     return (
       <main className="flex min-h-0 flex-1 overflow-auto px-4 pb-10 pt-16 sm:pt-6 lg:px-8 lg:pl-24">
@@ -53,13 +59,13 @@ export default async function ModeSelectorPage() {
               <div className="mb-2 flex items-center justify-between text-tiny text-text-200 sm:text-xs">
                 <span>Progresso de hoje</span>
                 <span className="font-medium text-text-100">
-                  {completedCount} de {gamemodes.length}
+                  {completedCount} de {knownGamemodes.length}
                 </span>
               </div>
               <div
                 role="progressbar"
                 aria-valuemin={0}
-                aria-valuemax={gamemodes.length}
+                aria-valuemax={knownGamemodes.length}
                 aria-valuenow={completedCount}
                 aria-label="Modos concluídos hoje"
                 className="h-1.5 w-full overflow-hidden rounded-full bg-bkg-300"
@@ -76,11 +82,11 @@ export default async function ModeSelectorPage() {
             aria-label="Modos de jogo"
             className="grid grid-cols-[repeat(auto-fit,minmax(150px,220px))] justify-center gap-4 sm:gap-6"
           >
-            {gamemodes.map((mode, index) => (
+            {knownGamemodes.map((mode, index) => (
               <Mode
                 key={mode.slug}
                 index={index}
-                Icon={GAMEMODES_DATA[mode?.slug].icon}
+                Icon={GAMEMODES_DATA[mode.slug].icon}
                 slug={mode.slug}
                 name={mode.name}
                 completed={COMPLETED_MODES.includes(mode.slug)}

@@ -20,3 +20,5 @@ export const BONUS_SCORES = {
 } as const;
 
 export const HIGH_WIN_RATE_THRESHOLD = 0.9;
+
+export const MAX_ATTEMPTS_PER_MATCH = 6;

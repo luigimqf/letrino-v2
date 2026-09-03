@@ -6,18 +6,24 @@ import {
   INVALID_KEYS,
   LETTERS_PER_ATTEMPT,
 } from "@/features/game/constants";
-import { setCurrAttempt, setTargetWord } from "@/features/game/store/gameSlice";
+import { setAttempts, setCurrAttempt, setTargetWord } from "@/features/game/store/gameSlice";
 import { GameSign } from "@/shared/components/layout/game-sign";
 import { AppDispatch, RootState } from "@/shared/store";
 import { REGEXP_ONLY_CHARS } from "input-otp";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAttempts } from "../../hooks";
-import { TargetWord } from "../../types/game";
+import { Attempt as AttemptType, TargetWord } from "../../types/game";
 import { GameEnd } from "../GameEnd";
 import { Attempt } from "./Attempt";
 
-export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
+interface IGridProps {
+  targetWord: TargetWord;
+  /** Tentativas já registradas na partida do dia, vindas do servidor. */
+  initialAttempts?: AttemptType[];
+}
+
+export const Grid = ({ targetWord, initialAttempts }: IGridProps) => {
   const {
     attempts,
     currentAttemptIndex,
@@ -26,7 +32,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
   } = useSelector((state: RootState) => state.game);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
-  const { handleAttemptSubmission, canSubmitAttempt, isPending: isLoadingAttempts } = useAttempts();
+  const { handleAttemptSubmission, canSubmitAttempt } = useAttempts();
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (INVALID_KEYS.includes(event.key) || !canSubmitAttempt()) return;
@@ -40,8 +46,13 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
   useEffect(() => {
     if (!targetWord || !targetWord.word) return;
 
+    // A ordem importa: `setAttempts` depende da palavra-alvo já estar no estado.
     dispatch(setTargetWord(targetWord));
-  }, [targetWord, dispatch, storedTargetWord?.word]);
+
+    if (initialAttempts?.length) {
+      dispatch(setAttempts(initialAttempts));
+    }
+  }, [targetWord, initialAttempts, dispatch, storedTargetWord?.word]);
 
   return (
     <div className="w-[250px] flex flex-col justify-start items-center gap-12 font-sans">
@@ -64,7 +75,7 @@ export const Grid = ({ targetWord }: { targetWord: TargetWord }) => {
                 dispatch(setCurrAttempt({ guess: value, attemptIndex: attemptIndex }))
               }
               autoComplete="off"
-              disabled={!isActiveAttempt || isGameOver || isLoadingAttempts}
+              disabled={!isActiveAttempt || isGameOver}
               maxLength={LETTERS_PER_ATTEMPT}
             />
           );
